@@ -7,6 +7,7 @@ import DirectorMessageSection from "@/components/sections/DirectorMessageSection
 import VirtualTourSection from "@/components/sections/VirtualTourSection";
 import NewsSection from "@/components/sections/NewsSection";
 import FAQSection from "@/components/sections/FAQSection";
+import WhyChooseUsSection from "@/components/sections/WhyChooseUsSection";
 
 export default function Home() {
   return (
@@ -38,6 +39,9 @@ export default function Home() {
 
       {/* 9. FAQ */}
       <FAQSection />
+
+      {/* 10. Why Choose Us */}
+      <WhyChooseUsSection />
 
     </main>
   );

@@ -1,8 +1,10 @@
 import "./globals.css";
+import "./styles/program/animations.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 
 import Navbar from "@/components/layouts/Navbar";
+import FloatingButtons from "@/components/FloatingButtons";
 import Footer from "@/components/layouts/Footer";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -47,6 +49,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <Navbar />
         <main>{children}</main>
+        <FloatingButtons />
         <Footer />
       </body>
     </html>
