@@ -19,7 +19,7 @@ export default function Navbar() {
   const selectedLang = languages.find((l) => l.code === currentLang);
 
   return (
-    <header className="w-full shadow-sm">
+<header className="w-full shadow-sm sticky top-0 z-999 bg-white">
       {/* ================= TOP BAR (DESKTOP ONLY) ================= */}
       <div className="w-full bg-[#1A2147] text-white text-sm px-6 md:px-12 hidden md:block">
         <div className="max-w-7xl mx-auto flex items-center justify-end gap-6 py-2">

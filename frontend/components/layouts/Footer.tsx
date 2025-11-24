@@ -11,15 +11,15 @@ export default function Footer() {
         {/* Pola Kotak Kiri */}
         <div className="absolute left-0 top-0 h-full hidden md:flex flex-col opacity-80">
           <div className="flex">
-            <div className="w-10 h-10 bg-[#5320C0]" />
+            <div className="w-10 h-10 bg-[#442489]" />
             <div className="w-10 h-10 bg-gray-100" />
           </div>
           <div className="flex">
             <div className="w-10 h-10 bg-gray-100" />
-            <div className="w-10 h-10 bg-[#6022E6]" />
+            <div className="w-10 h-10 bg-[#442489]" />
           </div>
           <div className="flex">
-            <div className="w-10 h-10 bg-[#7D42FD]" />
+            <div className="w-10 h-10 bg-[#442489]" />
             <div className="w-10 h-10 bg-gray-100" />
           </div>
         </div>
