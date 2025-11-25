@@ -28,23 +28,41 @@ const MENU = [
     title: "Akademik",
     items: [{ label: "Akreditasi", url: "/akademik/akreditasi" }],
     subgroups: [
+  {
+    title: "Program D3",
+    items: [
       {
-        title: "Program D3",
-        items: [
-          { label: "D3 Manajemen Pemasaran", url: "/akademik/d3/manajemen-pemasaran" },
-          { label: "D3 Administrasi Perkantoran", url: "/akademik/d3/administrasi-perkantoran" },
-          { label: "D3 Rekayasa Perangkat Lunak", url: "/akademik/d3/rekayasa-perangkat-lunak" },
-        ],
+        label: "D3 Manajemen Pemasaran",
+        url: "/site/program/d3_manajemen_pemasaran",
       },
       {
-        title: "Program D4",
-        items: [
-          { label: "D4 Bisnis Digital", url: "/akademik/d4/bisnis-digital" },
-          { label: "D4 TR Jaringan Komputer", url: "/akademik/d4/teknologi-jaringan" },
-          { label: "D4 TR Multimedia", url: "/akademik/d4/teknologi-multimedia" },
-        ],
+        label: "D3 Administrasi Perkantoran",
+        url: "/site/program/d3_administrasi_perkantoran",
+      },
+      {
+        label: "D3 Rekayasa Perangkat Lunak",
+        url: "/site/program/d3_rekayasa_perangkat_lunak",
       },
     ],
+  },
+  {
+    title: "Program D4",
+    items: [
+      {
+        label: "D4 Bisnis Digital",
+        url: "/site/program/d4_bisnis_digital",
+      },
+      {
+        label: "D4 TR Jaringan Komputer",
+        url: "/site/program/d4_teknologi_rekayasa_jaringan_komputer",
+      },
+      {
+        label: "D4 TR Multimedia",
+        url: "/site/program/d4_teknologi_rekayasa_multimedia",
+      },
+    ],
+  },
+],
   },
   {
     id: 3,

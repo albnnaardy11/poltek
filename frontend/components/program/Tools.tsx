@@ -1,24 +1,60 @@
 "use client";
 
-export default function Tools() {
-  // Load logo-1.png sampai logo-10.png
-  const logos = Array.from({ length: 10 }).map(
-    (_, i) => `/images/program/rpl/logo (${i + 1}).png`
-  );
+interface ToolsProps {
+  program: "rpl" | "manajemen" | "administrasi";
+}
+
+export default function Tools({ program }: ToolsProps) {
+  // ===========================
+  // LOGO LIST PER PROGRAM
+  // ===========================
+  const logoMap: Record<string, string[]> = {
+    rpl: Array.from({ length: 10 }).map(
+      (_, i) => `/images/program/rpl/logo (${i + 1}).png`
+    ),
+
+    manajemen: Array.from({ length: 8 }).map(
+      (_, i) => `/images/program/manajemen/logo (${i + 1}).png`
+    ),
+
+    administrasi: Array.from({ length: 8 }).map(
+      (_, i) => `/images/program/administrasi/logo (${i + 1}).png`
+    ),
+  };
+
+  // ===========================
+  // TEXT PER PROGRAM
+  // ===========================
+  const textMap = {
+    rpl: {
+      label: "Tools dan Equipment",
+      desc: "untuk Pembelajaran Keahlian RPL\nRekayasa Perangkat Lunak",
+    },
+    manajemen: {
+      label: "Marketing Tools & Platform",
+      desc: "untuk Pembelajaran Keahlian Manajemen Pemasaran",
+    },
+    administrasi: {
+      label: "Office Tools & Software",
+      desc: "untuk Pembelajaran Keahlian Administrasi Perkantoran",
+    },
+  };
+
+  const logos = logoMap[program];
+  const text = textMap[program];
 
   return (
     <section className="py-20 bg-white">
       <div className="max-w-7xl mx-auto px-6 lg:px-10 text-center">
 
-        {/* Title */}
+        {/* Title Chip */}
         <span className="inline-block bg-[#0F1B3D] text-white text-sm px-6 py-2 rounded-full font-medium">
-          Tools dan Equipment
+          {text.label}
         </span>
 
-        <p className="text-[#0F1B3D] mt-3 font-medium">
-          untuk Pembelajaran Keahlian RPL
-          <br />
-          Rekayasa Perangkat Lunak
+        {/* Subtitle */}
+        <p className="text-[#0F1B3D] mt-3 font-medium whitespace-pre-line">
+          {text.desc}
         </p>
 
         {/* Logo Slider */}

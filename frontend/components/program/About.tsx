@@ -1,15 +1,42 @@
 "use client";
 
-export default function About() {
+interface AboutProps {
+  program: "rpl" | "manajemen" | "administrasi";
+}
+
+export default function About({ program }: AboutProps) {
+  const content = {
+    rpl: {
+      title: "Tentang Program Studi Rekayasa Perangkat Lunak",
+      desc: `Program Diploma III Rekayasa Perangkat Lunak berfokus pada keterampilan praktis di bidang software engineering. 
+      Mahasiswa dibekali kemampuan pemrograman, database, web & mobile development, serta software testing. 
+      Pembelajaran berbasis project sehingga menyerupai kebutuhan industri teknologi.`,
+    },
+    manajemen: {
+      title: "Tentang Program Studi Manajemen Pemasaran",
+      desc: `Program Manajemen Pemasaran membekali mahasiswa dengan kompetensi pemasaran modern seperti digital marketing, 
+      branding, riset pasar, sales strategy, hingga pengelolaan campaign. Lulusannya siap bekerja di bidang bisnis, 
+      start-up, hingga industri kreatif.`,
+    },
+    administrasi: {
+      title: "Tentang Program Studi Administrasi Perkantoran",
+      desc: `Program Administrasi Perkantoran berfokus pada pengelolaan dokumen, layanan administrasi, 
+      teknologi perkantoran, komunikasi bisnis, dan manajemen arsip. Mahasiswa dipersiapkan menguasai skill 
+      administrasi profesional yang dibutuhkan dunia kerja.`,
+    },
+  };
+
+  const data = content[program];
+
   return (
     <section id="about" className="py-20 bg-white">
       <div className="max-w-4xl mx-auto px-6">
         {/* Title */}
         <h2 className="text-center text-3xl font-bold text-[#F15A24]">
-          Tentang Program Studi
+          {data.title}
         </h2>
 
-        {/* Card Container */}
+        {/* Card */}
         <div className="mt-10 bg-white rounded-3xl shadow-lg border border-gray-100 p-6">
           {/* Fake Browser Header */}
           <div className="flex items-center gap-2 mb-4">
@@ -22,16 +49,8 @@ export default function About() {
             </span>
           </div>
 
-          {/* Description Text */}
-          <p className="text-gray-700 leading-relaxed">
-            Program Diploma III Rekayasa Perangkat Lunak adalah program vokasi
-            yang berfokus pada keterampilan praktis di bidang software
-            engineering. Mahasiswa dibekali kemampuan pemrograman, pengelolaan
-            database, pengembangan web dan mobile, serta software testing dan
-            deployment. Pembelajaran dilakukan secara hands-on melalui
-            project-based learning yang menyerupai kondisi kerja nyata di
-            industri teknologi.
-          </p>
+          {/* Description */}
+          <p className="text-gray-700 leading-relaxed">{data.desc}</p>
 
           {/* Code Box */}
           <div className="mt-5 bg-[#0F1B3D] text-white rounded-xl p-4 font-mono text-sm">
@@ -43,7 +62,9 @@ export default function About() {
               <span className="text-pink-400">→</span>{" "}
               <span className="text-green-400">ready</span>
               <span className="text-white">.</span>
-              <span className="text-yellow-300">to_build_the_future</span>
+              <span className="text-yellow-300">
+                to_build_the_future
+              </span>
               <span className="text-white">()</span>
             </p>
           </div>
