@@ -17,7 +17,7 @@ export default function HeroMedia() {
   const videoUrl = "/videos/DemoVideos.mp4";
 
   const carouselImages = [
-    "/images/carousel/carousel1.jpg",
+    "/images/carousel/image1.jpg",
     "/images/carousel/carousel2.jpg",
     "/images/carousel/carousel3.jpg",
   ];

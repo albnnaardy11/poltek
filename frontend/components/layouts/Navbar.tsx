@@ -5,236 +5,303 @@ import Image from "next/image";
 import Link from "next/link";
 import { ChevronDown, Menu, X, Phone, Mail, Globe } from "lucide-react";
 
+// ======================= DATA MENU ======================= //
+
+const LANGUAGES = [
+  { code: "id", name: "Indonesia", flag: "🇮🇩" },
+  { code: "en", name: "English", flag: "🇺🇸" },
+];
+
+const MENU = [
+  {
+    id: 1,
+    title: "Profil",
+    items: [
+      { label: "Sejarah", url: "/profil/sejarah" },
+      { label: "Visi & Misi", url: "/profil/visi-misi" },
+      { label: "Sambutan Direktur", url: "/profil/sambutan-direktur" },
+      { label: "Fasilitas", url: "/profil/fasilitas" },
+    ],
+  },
+  {
+    id: 2,
+    title: "Akademik",
+    items: [{ label: "Akreditasi", url: "/akademik/akreditasi" }],
+    subgroups: [
+      {
+        title: "Program D3",
+        items: [
+          { label: "D3 Manajemen Pemasaran", url: "/akademik/d3/manajemen-pemasaran" },
+          { label: "D3 Administrasi Perkantoran", url: "/akademik/d3/administrasi-perkantoran" },
+          { label: "D3 Rekayasa Perangkat Lunak", url: "/akademik/d3/rekayasa-perangkat-lunak" },
+        ],
+      },
+      {
+        title: "Program D4",
+        items: [
+          { label: "D4 Bisnis Digital", url: "/akademik/d4/bisnis-digital" },
+          { label: "D4 TR Jaringan Komputer", url: "/akademik/d4/teknologi-jaringan" },
+          { label: "D4 TR Multimedia", url: "/akademik/d4/teknologi-multimedia" },
+        ],
+      },
+    ],
+  },
+  {
+    id: 3,
+    title: "Informasi",
+    items: [
+      { label: "Berita", url: "/informasi/berita" },
+      { label: "Agenda", url: "/informasi/agenda" },
+      { label: "Pengumuman", url: "/informasi/pengumuman" },
+    ],
+  },
+  {
+    id: 4,
+    title: "Dokumentasi",
+    items: [
+      { label: "Galeri", url: "/dokumentasi/galeri" },
+      { label: "Dokumen", url: "/dokumentasi/dokumen" },
+    ],
+  },
+];
+
 export default function Navbar() {
-  const [openMenu, setOpenMenu] = useState(false);
-  const [dropdown, setDropdown] = useState<number | null>(null);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [openDropdown, setOpenDropdown] = useState<number | null>(null);
   const [openLang, setOpenLang] = useState(false);
   const [currentLang, setCurrentLang] = useState("id");
 
-  const languages = [
-    { code: "id", name: "Indonesia", flag: "🇮🇩" },
-    { code: "en", name: "English", flag: "🇺🇸" },
-  ];
+  const selectedLang = LANGUAGES.find((l) => l.code === currentLang);
 
-  const selectedLang = languages.find((l) => l.code === currentLang);
+  // ======================= COMPONENT ======================= //
 
   return (
-<header className="w-full shadow-sm sticky top-0 z-999 bg-white">
-      {/* ================= TOP BAR (DESKTOP ONLY) ================= */}
+    <header className="w-full shadow-sm sticky top-0 z-[999] bg-white">
+
+      {/* ================= TOP BAR ================= */}
       <div className="w-full bg-[#1A2147] text-white text-sm px-6 md:px-12 hidden md:block">
         <div className="max-w-7xl mx-auto flex items-center justify-end gap-6 py-2">
-          {/* Bahasa dropdown */}
+
+          {/* Language */}
           <div className="relative">
-            <div
+            <button
               onClick={() => setOpenLang(!openLang)}
-              className="flex items-center gap-2 cursor-pointer hover:text-gray-300 transition"
+              className="flex items-center gap-2 hover:text-gray-300 transition"
             >
               <Globe size={16} />
-              <span className="flex items-center gap-1">
-                {selectedLang?.flag} {selectedLang?.name}
-              </span>
-            </div>
+              {selectedLang?.flag} {selectedLang?.name}
+            </button>
 
             {openLang && (
               <div className="absolute right-0 mt-2 bg-white text-black shadow-lg rounded-md py-2 w-40 z-50">
-                {languages.map((lang) => (
-                  <div
+                {LANGUAGES.map((lang) => (
+                  <button
                     key={lang.code}
                     onClick={() => {
                       setCurrentLang(lang.code);
                       setOpenLang(false);
                     }}
-                    className="px-3 py-2 cursor-pointer hover:bg-gray-100 flex items-center gap-2"
+                    className="w-full px-3 py-2 text-left hover:bg-gray-100 flex items-center gap-2"
                   >
-                    <span>{lang.flag}</span>
-                    <span>{lang.name}</span>
-                  </div>
+                    <span>{lang.flag}</span> {lang.name}
+                  </button>
                 ))}
               </div>
             )}
           </div>
 
           <div className="flex items-center gap-2">
-            <Phone size={16} /> <span>+62 851-9932-8825</span>
+            <Phone size={16} /> +62 851-9932-8825
           </div>
 
           <div className="flex items-center gap-2">
-            <Mail size={16} /> <span>poltek.prestasiprima@gmail.id</span>
+            <Mail size={16} /> poltek.prestasiprima@gmail.id
           </div>
         </div>
       </div>
 
       {/* ================= MAIN NAVBAR ================= */}
-      <nav className="bg-white w-full px-6 md:px-12 py-4">
+      <nav className="px-6 md:px-12 py-4 bg-white">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
-          {/* LOGO + TEXT INLINE */}
-          <div className="flex items-center gap-3">
+
+          {/* Logo */}
+          <Link href="/" className="flex items-center gap-3">
             <Image
               src="/images/logo_politeknik.png"
               alt="Logo Politeknik"
               width={50}
               height={50}
-              className="object-contain"
             />
             <span className="font-semibold text-gray-800 text-lg whitespace-nowrap">
               <span className="text-orange-600">Politeknik</span> Prestasi Prima
             </span>
-          </div>
+          </Link>
 
-          {/* MENU – DESKTOP */}
+          {/* DESKTOP MENU */}
           <ul className="hidden md:flex items-center gap-8 font-medium">
-            <li><Link href="#" className="hover:text-orange-600">Beranda</Link></li>
-
-            {/* Akademik */}
-            <li className="relative group">
-              <button className="flex items-center gap-1 hover:text-orange-600">
-                Akademik <ChevronDown size={16} />
-              </button>
-
-              <div className="absolute left-0 mt-2 w-44 bg-white shadow-lg rounded-lg py-3 
-                opacity-0 invisible group-hover:opacity-100 group-hover:visible 
-                translate-y-2 group-hover:translate-y-0 transition-all duration-300">
-                <Link href="#" className="block px-4 py-2 hover:bg-gray-50">Menu 1</Link>
-                <Link href="#" className="block px-4 py-2 hover:bg-gray-50">Menu 2</Link>
-                <Link href="#" className="block px-4 py-2 hover:bg-gray-50">Menu 3</Link>
-              </div>
+            <li>
+              <Link href="/" className="hover:text-orange-600">Beranda</Link>
             </li>
 
-            {/* Informasi */}
-            <li className="relative group">
-              <button className="flex items-center gap-1 hover:text-orange-600">
-                Informasi <ChevronDown size={16} />
-              </button>
+            {/* Loop Menu Desktop */}
+            {MENU.map((menu) => (
+              <li key={menu.id} className="relative group">
+                <button className="flex items-center gap-1 hover:text-orange-600">
+                  {menu.title} <ChevronDown size={16} />
+                </button>
 
-              <div className="absolute left-0 mt-2 w-44 bg-white shadow-lg rounded-lg py-3 
-                opacity-0 invisible group-hover:opacity-100 group-hover:visible 
-                translate-y-2 group-hover:translate-y-0 transition-all duration-300">
-                <Link href="#" className="block px-4 py-2 hover:bg-gray-50">Menu 1</Link>
-                <Link href="#" className="block px-4 py-2 hover:bg-gray-50">Menu 2</Link>
-                <Link href="#" className="block px-4 py-2 hover:bg-gray-50">Menu 3</Link>
-              </div>
+                {/* Dropdown */}
+                <div className="absolute left-0 mt-2 w-60 bg-white shadow-lg py-3
+                    opacity-0 invisible group-hover:opacity-100 group-hover:visible 
+                    translate-y-2 group-hover:translate-y-0 transition-all duration-300">
+
+                  {/* Items */}
+                  {menu.items?.map((item) => (
+                    <Link
+                      key={item.url}
+                      href={item.url}
+                      className="block px-4 py-2 hover:bg-gray-50"
+                    >
+                      {item.label}
+                    </Link>
+                  ))}
+
+                  {/* Subgroups */}
+                  {menu.subgroups?.map((sub) => (
+                    <div key={sub.title} className="relative group/sub">
+                      <span className="block px-4 py-2 hover:bg-gray-50 flex justify-between items-center cursor-pointer">
+                        {sub.title} <ChevronDown size={14} />
+                      </span>
+
+                      <div className="absolute left-full top-0 w-60 bg-white shadow-lg py-3
+                          opacity-0 invisible group-hover/sub:opacity-100 group-hover/sub:visible
+                          translate-x-2 group-hover/sub:translate-x-0 transition-all duration-200">
+
+                        {sub.items.map((child) => (
+                          <Link
+                            key={child.url}
+                            href={child.url}
+                            className="block px-4 py-2 hover:bg-gray-50"
+                          >
+                            {child.label}
+                          </Link>
+                        ))}
+
+                      </div>
+                    </div>
+                  ))}
+
+                </div>
+              </li>
+            ))}
+
+            <li>
+              <Link href="/brosur" className="hover:text-orange-600">Download Brosur</Link>
             </li>
-
-            {/* Dokumentasi */}
-            <li className="relative group">
-              <button className="flex items-center gap-1 hover:text-orange-600">
-                Dokumentasi <ChevronDown size={16} />
-              </button>
-
-              <div className="absolute left-0 mt-2 w-44 bg-white shadow-lg rounded-lg py-3 
-                opacity-0 invisible group-hover:opacity-100 group-hover:visible 
-                translate-y-2 group-hover:translate-y-0 transition-all duration-300">
-                <Link href="#" className="block px-4 py-2 hover:bg-gray-50">Menu 1</Link>
-                <Link href="#" className="block px-4 py-2 hover:bg-gray-50">Menu 2</Link>
-                <Link href="#" className="block px-4 py-2 hover:bg-gray-50">Menu 3</Link>
-              </div>
-            </li>
-
-            <li><Link href="#" className="hover:text-orange-600">Download Brosur</Link></li>
           </ul>
 
-          {/* Menu Button – Mobile */}
-          <button className="md:hidden" onClick={() => setOpenMenu(!openMenu)}>
-            {openMenu ? <X size={26} /> : <Menu size={26} />}
+          {/* MOBILE BUTTON */}
+          <button className="md:hidden" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+            {isMenuOpen ? <X size={26} /> : <Menu size={26} />}
           </button>
+
         </div>
 
         {/* ================= MOBILE MENU ================= */}
-        {openMenu && (
-          <div className="md:hidden mt-4 p-4 bg-white border rounded-xl shadow">
-            <ul className="space-y-3 font-medium">
+        {isMenuOpen && (
+          <div className="md:hidden mt-4 p-4 bg-white border shadow-sm animate-fadeIn">
+            <ul className="space-y-4 font-medium">
 
-              {/* Bahasa */}
-              <li className="flex flex-col">
-                <div
-                  className="flex items-center gap-2 cursor-pointer"
+              {/* Language */}
+              <li>
+                <button
+                  className="w-full flex justify-between items-center py-2"
                   onClick={() => setOpenLang(!openLang)}
                 >
-                  <Globe size={18} /> 
-                  {selectedLang?.flag} {selectedLang?.name}
-                </div>
+                  <span className="flex items-center gap-2">
+                    <Globe size={18} /> {selectedLang?.flag} {selectedLang?.name}
+                  </span>
+                  <ChevronDown className={`${openLang ? "rotate-180" : ""} transition`} />
+                </button>
 
                 {openLang && (
-                  <div className="mt-2 pl-4 space-y-2">
-                    {languages.map((lang) => (
-                      <div
+                  <div className="mt-2 pl-4 border-l space-y-2">
+                    {LANGUAGES.map((lang) => (
+                      <button
                         key={lang.code}
                         onClick={() => {
                           setCurrentLang(lang.code);
                           setOpenLang(false);
                         }}
-                        className="flex items-center gap-2 cursor-pointer hover:text-orange-600"
+                        className="flex items-center gap-2 hover:text-orange-600"
                       >
                         {lang.flag} {lang.name}
-                      </div>
+                      </button>
                     ))}
                   </div>
                 )}
               </li>
 
-              {/* Kontak */}
-              <li className="flex items-center gap-2">
-                <Phone size={18} /> +62 851-9932-8825
-              </li>
-              <li className="flex items-center gap-2">
-                <Mail size={18} /> poltek.prestasiprima@gmail.id
-              </li>
+              {/* Loop Menu Mobile */}
+              {MENU.map((menu) => (
+                <li key={menu.id}>
+                  <button
+                    onClick={() => setOpenDropdown(openDropdown === menu.id ? null : menu.id)}
+                    className="w-full flex justify-between items-center py-2"
+                  >
+                    {menu.title}
+                    <ChevronDown
+                      className={`transition ${openDropdown === menu.id ? "rotate-180" : ""}`}
+                    />
+                  </button>
 
-              {/* Main Menu */}
-              <li><Link href="#" className="block">Beranda</Link></li>
+                  {openDropdown === menu.id && (
+                    <div className="mt-2 pl-4 space-y-3 border-l">
 
-              {/* Akademik */}
+                      {/* Items */}
+                      {menu.items?.map((item) => (
+                        <Link
+                          key={item.url}
+                          href={item.url}
+                          className="block text-sm hover:text-orange-600"
+                        >
+                          {item.label}
+                        </Link>
+                      ))}
+
+                      {/* Subgroups */}
+                      {menu.subgroups?.map((sub) => (
+                        <details key={sub.title} className="text-sm">
+                          <summary className="cursor-pointer py-1 hover:text-orange-600">
+                            {sub.title}
+                          </summary>
+
+                          <div className="pl-4 mt-1 space-y-1">
+                            {sub.items.map((child) => (
+                              <Link
+                                key={child.url}
+                                href={child.url}
+                                className="block hover:text-orange-600"
+                              >
+                                {child.label}
+                              </Link>
+                            ))}
+                          </div>
+                        </details>
+                      ))}
+
+                    </div>
+                  )}
+                </li>
+              ))}
+
+              {/* Brosur */}
               <li>
-                <button
-                  onClick={() => setDropdown(dropdown === 1 ? null : 1)}
-                  className="w-full flex justify-between items-center"
-                >
-                  Akademik <ChevronDown size={16} />
-                </button>
-                {dropdown === 1 && (
-                  <div className="mt-2 pl-4 space-y-1 text-sm">
-                    <Link href="#" className="block">Menu 1</Link>
-                    <Link href="#" className="block">Menu 2</Link>
-                    <Link href="#" className="block">Menu 3</Link>
-                  </div>
-                )}
+                <Link href="/brosur" className="block py-2 hover:text-orange-600">
+                  Download Brosur
+                </Link>
               </li>
 
-              {/* Informasi */}
-              <li>
-                <button
-                  onClick={() => setDropdown(dropdown === 2 ? null : 2)}
-                  className="w-full flex justify-between items-center"
-                >
-                  Informasi <ChevronDown size={16} />
-                </button>
-                {dropdown === 2 && (
-                  <div className="mt-2 pl-4 space-y-1 text-sm">
-                    <Link href="#" className="block">Menu 1</Link>
-                    <Link href="#" className="block">Menu 2</Link>
-                    <Link href="#" className="block">Menu 3</Link>
-                  </div>
-                )}
-              </li>
-
-              {/* Dokumentasi */}
-              <li>
-                <button
-                  onClick={() => setDropdown(dropdown === 3 ? null : 3)}
-                  className="w-full flex justify-between items-center"
-                >
-                  Dokumentasi <ChevronDown size={16} />
-                </button>
-                {dropdown === 3 && (
-                  <div className="mt-2 pl-4 space-y-1 text-sm">
-                    <Link href="#" className="block">Menu 1</Link>
-                    <Link href="#" className="block">Menu 2</Link>
-                    <Link href="#" className="block">Menu 3</Link>
-                  </div>
-                )}
-              </li>
-
-              <li><Link href="#" className="block">Download Brosur</Link></li>
             </ul>
           </div>
         )}

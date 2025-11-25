@@ -43,3 +43,34 @@ public/images/sections/(untuk menaruh gambar section)
 AI, saya ingin melanjutkan pengerjaan website Politeknik saya. 
 Project ini menggunakan Next.js 14, TypeScript, dan Tailwind CSS, 
 dengan struktur folder yang sudah saya buat di app/, components/layouts/, components/sections/, dan public/images/sections/.
+
+Beranda
+Akademik
+ ├── Akreditasi
+ │     ├── Akreditasi Institusi
+ │     └── Akreditasi Program Studi
+ ├── Program
+ │     ├── D3
+ │     │     ├── Manajemen Pemasaran
+ │     │     ├── Administrasi Perkantoran
+ │     │     └── Rekayasa Perangkat Lunak
+ │     └── D4
+ │           ├── Bisnis Digital
+ │           ├── TR Jaringan Komputer
+ │           └── TR Multimedia
+Informasi
+ ├── Berita
+ ├── Agenda
+ └── Pengumuman
+Dokumentasi
+ ├── Galeri
+ ├── Video
+ └── Dokumen
+Tentang
+ ├── Sejarah
+ ├── Visi Misi
+ ├── Sambutan Direktur
+ └── Fasilitas
+Download Brosur (button)
+
+

@@ -2,7 +2,7 @@
 
 import React from "react";
 
-export default function PmbSection() {
+export default function QuickActionSection() {
   return (
     <section className="max-w-7xl mx-auto px-6 py-24 mt-12">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -11,7 +11,7 @@ export default function PmbSection() {
         <a
           href="#"
           className="
-            group relative block h-[420px] rounded-2xl p-7 bg-white/90 backdrop-blur
+            group relative h-[420px] rounded-2xl p-7 bg-white/90 backdrop-blur
             border border-zinc-200 shadow-md
             transition-all duration-500 
             hover:-translate-y-3 hover:shadow-2xl
@@ -20,10 +20,10 @@ export default function PmbSection() {
         >
           {/* Highlight Glow */}
           <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-all duration-500 pointer-events-none">
-            <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent" />
+            <div className="absolute inset-0 bg-linear-to-br from-blue-500/5 to-transparent" />
           </div>
 
-          {/* Icon Wrapper */}
+          {/* Icon */}
           <div className="mb-6 mt-2">
             <div className="w-20 h-20 rounded-xl bg-blue-50 flex items-center justify-center group-hover:scale-110 transition duration-300">
               <i className="ri-macbook-line text-[#1D234E] text-5xl" />
@@ -47,7 +47,7 @@ export default function PmbSection() {
         <a
           href="#"
           className="
-            group relative block h-[420px] rounded-2xl p-7 
+            group relative h-[420px] rounded-2xl p-7 
             bg-[#1D234E] text-white shadow-md
             transition-all duration-500
             hover:-translate-y-3 hover:shadow-2xl
@@ -60,6 +60,7 @@ export default function PmbSection() {
           {/* Moving Gradient Light */}
           <div className="absolute -inset-10 opacity-0 group-hover:opacity-40 bg-[radial-gradient(circle_at_top_right,white,transparent_40%)] transition-all duration-700" />
 
+          {/* Icon */}
           <div className="mb-6 mt-2">
             <div className="w-20 h-20 rounded-xl bg-white/10 flex items-center justify-center group-hover:scale-110 transition duration-300">
               <i className="ri-wallet-line text-white text-5xl" />
@@ -83,8 +84,8 @@ export default function PmbSection() {
         <a
           href="#"
           className="
-            group relative block h-[420px] rounded-2xl p-7 
-            bg-gradient-to-br from-[#ff7a00] to-[#ff8f2a]
+            group relative h-[420px] rounded-2xl p-7 
+            bg-linear-to-br from-[#ff7a00] to-[#ff8f2a]
             text-white shadow-md
             transition-all duration-500
             hover:-translate-y-3 hover:shadow-2xl
@@ -94,6 +95,7 @@ export default function PmbSection() {
           {/* Diagonal Shine */}
           <div className="absolute inset-0 opacity-0 group-hover:opacity-30 bg-linear-to-br from-white/10 to-transparent transition duration-700" />
 
+          {/* Icon */}
           <div className="mb-6 mt-2">
             <div className="w-20 h-20 rounded-xl bg-black/10 flex items-center justify-center group-hover:scale-110 transition duration-300">
               <i className="ri-file-text-line text-white text-5xl" />

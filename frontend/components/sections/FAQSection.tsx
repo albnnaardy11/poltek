@@ -65,9 +65,9 @@ export default function FAQSection() {
     <section className="py-24 bg-white flex flex-col items-center px-6">
       {/* Title */}
       <h2 className="text-4xl font-bold text-center mb-12">
-        <span className="text-orange-500">F</span>
-        <span className="text-purple-800">A</span>
-        <span className="text-orange-500">Q</span>
+        <span className="text-purple-800">F</span>
+        <span className="text-orange-500">A</span>
+        <span className="text-purple-800">Q</span>
       </h2>
 
       {/* FAQ Wrapper (for click outside detection) */}

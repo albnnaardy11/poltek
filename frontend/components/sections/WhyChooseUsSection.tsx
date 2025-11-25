@@ -56,19 +56,21 @@ export default function WhyChooseUsSection() {
   return (
     <section className="w-full py-20 bg-gray-100">
       <div className="max-w-7xl mx-auto px-4">
-
         {/* Title */}
         <div className="text-center mb-14" data-aos="fade-up">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
-            10 Alasan Kuliah di Politeknik Kami
+          <h2 className="text-3xl md:text-4xl font-bold">
+            <span className="text-[#0e162e]">10 Alasan Kuliah</span>{" "}
+            <span className="text-[#0e162e]">di</span>{" "}
+            <span className="text-[#FF6700]">Politeknik Kami</span>{" "}
           </h2>
-          <p className="text-gray-500 mt-3">
-            Bergabunglah dengan ribuan mahasiswa yang telah memilih masa depan cerah bersama kami.
+          <p className="mt-3 text-sm md:text-base text-[#0e162e]">
+            Bergabunglah dengan ribuan mahasiswa yang telah memilih masa depan
+            cerah bersama kami.
           </p>
         </div>
 
-        {/* Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Grid Desktop */}
+        <div className="hidden md:grid grid-cols-2 gap-6">
           {reasons.map((item, index) => (
             <div
               key={index}
@@ -76,24 +78,41 @@ export default function WhyChooseUsSection() {
               data-aos="fade-up"
               data-aos-delay={index * 60}
             >
-              {/* Icon */}
-              <div className="h-12 w-12 rounded-full bg-purple-100 flex items-center justify-center flex-shrink-0">
+              <div className="h-12 w-12 rounded-full bg-purple-100 flex items-center justify-center shrink-0">
                 <CheckCircleIcon className="w-7 h-7 text-purple-600" />
               </div>
 
-              {/* Text */}
               <div>
                 <h3 className="font-semibold text-lg text-gray-900">
                   {item.title}
                 </h3>
-                <p className="text-gray-500 text-sm mt-1">
-                  {item.desc}
-                </p>
+                <p className="text-gray-500 text-sm mt-1">{item.desc}</p>
               </div>
             </div>
           ))}
         </div>
 
+        {/* Mobile Version */}
+        <div className="md:hidden space-y-4">
+          {reasons.slice(0, 5).map((item, index) => (
+            <div
+              key={index}
+              className="bg-white rounded-xl shadow-sm hover:shadow-md transition-all p-4 flex gap-3 items-start"
+              data-aos="fade-up"
+              data-aos-delay={index * 60}
+            >
+              <div className="h-10 w-10 rounded-full bg-purple-100 flex items-center justify-center shrink-0">
+                <CheckCircleIcon className="w-5 h-5 text-purple-600" />
+              </div>
+              <div>
+                <h3 className="font-semibold text-sm text-gray-900">
+                  {item.title}
+                </h3>
+                <p className="text-gray-500 text-xs mt-0.5">{item.desc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );
