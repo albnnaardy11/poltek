@@ -46,32 +46,32 @@ dengan struktur folder yang sudah saya buat di app/, components/layouts/, compon
 
 Beranda
 Akademik
- ├── Akreditasi
- │     ├── Akreditasi Institusi
- │     └── Akreditasi Program Studi
- ├── Program
- │     ├── D3
- │     │     ├── Manajemen Pemasaran
- │     │     ├── Administrasi Perkantoran
- │     │     └── Rekayasa Perangkat Lunak
- │     └── D4
- │           ├── Bisnis Digital
- │           ├── TR Jaringan Komputer
- │           └── TR Multimedia
+├── Akreditasi
+│ ├── Akreditasi Institusi
+│ └── Akreditasi Program Studi
+├── Program
+│ ├── D3
+│ │ ├── Manajemen Pemasaran
+│ │ ├── Administrasi Perkantoran
+│ │ └── Rekayasa Perangkat Lunak
+│ └── D4
+│ ├── Bisnis Digital
+│ ├── TR Jaringan Komputer
+│ └── TR Multimedia
 Informasi
- ├── Berita
- ├── Agenda
- └── Pengumuman
+├── Berita
+├── Agenda
+└── Pengumuman
 Dokumentasi
- ├── Galeri
- ├── Video
- └── Dokumen
+├── Galeri
+├── Video
+└── Dokumen
 Tentang
- ├── Sejarah
- ├── Visi Misi
- ├── Sambutan Direktur
- └── Fasilitas
-Download Brosur (button)
+├── Sejarah
+├── Visi Misi
+├── Sambutan Direktur
+└── Fasilitas
+Download Brosur
 
 homepage done
 about done
