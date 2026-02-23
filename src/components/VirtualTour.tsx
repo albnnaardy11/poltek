@@ -37,8 +37,9 @@ const LoadingScreen = () => (
 );
 
 // ─── MODERN COMPASS ────────────────────────────────────────────
-const ModernCompass = ({ yawDeg }: { yawDeg: number }) => {
-  const size = 110;
+const ModernCompass = ({ yawDeg, isMobile }: { yawDeg: number; isMobile: boolean }) => {
+  // Responsif: 85px di mobile, 110px di desktop
+  const size = isMobile ? 85 : 110;
   const r = size / 2;
   const directions = [
     { label: 'N', deg: 0, major: true },
@@ -268,7 +269,6 @@ const SCENES: Scene[] = [
     description: "Kantin kampus dengan berbagai pilihan menu makanan dan minuman.",
     markers: [
       { id: "kt-1", position: { yaw: "30deg", pitch: "-5deg" }, info: { icon: "Utensils", title: "Area Makan", description: "Area makan yang nyaman dengan kapasitas menampung ratusan mahasiswa sekaligus." } },
-      { id: "kt-2", position: { yaw: "200deg", pitch: "-8deg" }, info: { icon: "ShoppingBag", title: "Gerai Makanan", description: "Berbagai pilihan menu dari makanan berat, ringan, hingga minuman segar tersedia setiap hari." } },
     ],
   },
   {
@@ -326,7 +326,8 @@ const SCENES: Scene[] = [
 export default function VirtualTour() {
   const [isClient, setIsClient] = useState(false);
   const [currentScene, setCurrentScene] = useState<Scene>(SCENES[0]);
-  const [isNavOpen, setIsNavOpen] = useState(true);
+  const [isNavOpen, setIsNavOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const [isPanoramaLoaded, setIsPanoramaLoaded] = useState(false);
   const [yawDeg, setYawDeg] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
@@ -334,7 +335,13 @@ export default function VirtualTour() {
   const viewerRef = useRef<any>(null);
   const markersPluginRef = useRef<any>(null);
 
-  useEffect(() => { setIsClient(true); }, []);
+  useEffect(() => {
+    setIsClient(true);
+    const mobile = window.innerWidth < 768;
+    setIsMobile(mobile);
+    // Buka sidebar hanya di layar >= 768px (desktop/tablet landscape)
+    if (!mobile) setIsNavOpen(true);
+  }, []);
   if (!isClient) return <LoadingScreen />;
 
   // ── Scene change with fade transition ──
@@ -414,7 +421,7 @@ export default function VirtualTour() {
       </div>
 
       {/* ── CUSTOM COMPASS ── */}
-      {isPanoramaLoaded && <ModernCompass yawDeg={yawDeg} />}
+      {isPanoramaLoaded && <ModernCompass yawDeg={yawDeg} isMobile={isMobile} />}
 
       {/* ── MINIMAP ── */}
       {isPanoramaLoaded && (
@@ -433,7 +440,7 @@ export default function VirtualTour() {
       </button>
 
       {/* ── SIDEBAR NAVIGATION ── */}
-      <div className={`absolute left-3 sm:left-6 top-3 sm:top-6 md:top-8 z-30 flex flex-col w-44 sm:w-56 md:w-64 max-h-[80vh] bg-gradient-to-b from-[#131432]/95 to-[#0a0b1a]/95 backdrop-blur-2xl rounded-3xl border border-white/10 text-white shadow-[0_20px_50px_rgba(0,0,0,0.6)] transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] origin-left ${isNavOpen ? 'translate-x-0 opacity-100 scale-100 pointer-events-auto' : '-translate-x-[120%] opacity-0 scale-95 pointer-events-none'}`}>
+      <div className={`absolute left-3 sm:left-4 md:left-6 top-3 sm:top-4 md:top-8 z-30 flex flex-col w-40 sm:w-52 md:w-64 max-h-[75vh] bg-gradient-to-b from-[#131432]/97 to-[#0a0b1a]/97 backdrop-blur-2xl rounded-2xl border border-white/10 text-white shadow-[0_20px_50px_rgba(0,0,0,0.6)] transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] origin-left ${isNavOpen ? 'translate-x-0 opacity-100 scale-100 pointer-events-auto' : '-translate-x-[120%] opacity-0 scale-95 pointer-events-none'}`}>
         <div className="pt-5 pb-4 px-5 border-b border-white/5 flex items-center justify-between">
           <h3 className="font-bold tracking-[0.2em] text-xs uppercase text-white">NAVIGASI</h3>
           <button onClick={() => setIsNavOpen(false)} className="flex justify-center items-center w-8 h-8 rounded-full bg-white/5 hover:bg-[#F47920] text-slate-300 hover:text-white transition-all duration-300">
@@ -456,8 +463,8 @@ export default function VirtualTour() {
             );
           })}
         </div>
-        {/* Scene description */}
-        <div className="px-5 py-3 border-t border-white/5">
+        {/* Scene description - hanya di layar >= sm */}
+        <div className="hidden sm:block px-4 py-3 border-t border-white/5">
           <p className="text-[10px] text-slate-400 leading-relaxed">{currentScene.description}</p>
         </div>
       </div>
@@ -475,7 +482,11 @@ export default function VirtualTour() {
       />
 
       {/* ── SCENE TITLE BADGE ── */}
-      <div className="absolute top-3 sm:top-6 left-1/2 -translate-x-1/2 z-20 pointer-events-none">
+      <div className={`absolute top-3 sm:top-6 left-1/2 -translate-x-1/2 z-20 pointer-events-none transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] ${
+        isNavOpen && isMobile
+          ? 'opacity-0 scale-75 -translate-y-3 blur-sm'
+          : 'opacity-100 scale-100 translate-y-0 blur-0'
+      }`}>
         <div className="bg-gradient-to-r from-[#131432]/90 via-[#352079]/90 to-[#131432]/90 backdrop-blur-md px-6 py-2 rounded-full text-white font-medium border border-white/10 shadow-[0_8px_32px_rgba(53,32,121,0.4)] tracking-wide text-xs sm:text-sm flex items-center gap-2 whitespace-nowrap">
           <span className="w-1.5 h-1.5 rounded-full bg-orange-400 animate-pulse flex-shrink-0" />
           {currentScene.name}
