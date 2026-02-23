@@ -1,17 +1,29 @@
 import { PrismaClient } from "@prisma/client";
 import { getAuditContext } from "./audit-context";
+import { semanticBus } from "./semantic/mediator";
+import { SemanticEntity } from "./semantic/types";
 
 const globalForPrisma = global as unknown as { prisma: PrismaClient };
 
-/**
- * Base Prisma Client with Singleton enforcement.
- */
 const basePrisma = globalForPrisma.prisma || new PrismaClient({
   log: process.env.NODE_ENV === "development" ? ["query", "warn", "error"] : ["error"],
 });
 
 /**
- * EXTENSION: Autonomous Audit & Traceability
+ * Helper to map Prisma models to Semantic Entities
+ */
+const mapToSemanticEntity = (model: string): SemanticEntity => {
+  const mapping: Record<string, SemanticEntity> = {
+    Program: "ACADEMIC_PROGRAM",
+    News: "NEWS_ARTICLE",
+    Setting: "SYSTEM_SETTING",
+    Admin: "ADMIN_IDENTITY",
+  };
+  return mapping[model] || "SYSTEM_SETTING";
+};
+
+/**
+ * EXTENSION: Autonomous Audit & Semantic Dispatch
  */
 export const prisma = basePrisma.$extends({
   query: {
@@ -24,7 +36,6 @@ export const prisma = basePrisma.$extends({
         }
 
         const context = getAuditContext();
-        // If no admin context (e.g., public signup or system seed), skip auditing or log as SYSTEM.
         if (!context) return query(args);
 
         let beforeState = null;
@@ -34,8 +45,21 @@ export const prisma = basePrisma.$extends({
 
         const result = await query(args);
 
-        // Fire-and-forget logging to minimize latency on the main thread
-        // In a high-traffic scenario, this should be pushed to a Message Queue (SQS/Redis).
+        // --- AUTONOMOUS INTEROPERABILITY: Semantic Dispatch ---
+        const semanticEntity = mapToSemanticEntity(model);
+        semanticBus.publish({
+          topic: `domain.${semanticEntity.toLowerCase()}`,
+          entity: semanticEntity,
+          action: operation.toUpperCase() as any,
+          payload: { before: beforeState, after: result },
+          metadata: {
+            origin: "PRISMA_ENGINE",
+            adminId: context.adminId,
+            version: "4.0.0",
+          }
+        });
+
+        // --- AUDIT LOGGING ---
         (async () => {
           try {
             await basePrisma.auditLog.create({
@@ -53,7 +77,7 @@ export const prisma = basePrisma.$extends({
               },
             });
           } catch (e) {
-            console.error("[AUDIT_FAILURE]: Could not persist audit log", e);
+            console.error("[AUDIT_FAILURE]:", e);
           }
         })();
 
