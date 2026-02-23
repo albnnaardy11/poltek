@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 import { encryptPaseto } from "@/lib/auth-paseto";
-import { cookies, headers } from "next/headers";
+import { cookies } from "next/headers";
 import { prisma } from "@/lib/prisma";
+import { withAuditContext } from "@/lib/auth-utils";
 import bcrypt from "bcryptjs";
 
 // ── In-Memory Rate Limiter ────────────────────────────────────────────────────
@@ -42,68 +43,82 @@ function clearRateLimit(ip: string) {
 
 export async function POST(request: Request) {
   const ip = getRateLimitKey(request);
-  const { blocked } = checkRateLimit(ip);
+  const userAgent = request.headers.get("user-agent") || "unknown";
 
-  if (blocked) {
-    return NextResponse.json(
-      { success: false, error: "Terlalu banyak percobaan. Coba lagi dalam 15 menit." },
-      { status: 429 }
-    );
-  }
+  // Wrap the entire login logic in an Audit Context
+  return await withAuditContext(ip, userAgent, async () => {
+    const { blocked } = await checkRateLimit(ip);
 
-  try {
-    const body = await request.json();
-    const email = String(body.email ?? "").trim().toLowerCase();
-    const password = String(body.password ?? "");
-
-    if (!email || !password) {
+    if (blocked) {
       return NextResponse.json(
-        { success: false, error: "Email dan password wajib diisi." },
-        { status: 400 }
+        { success: false, error: "Terlalu banyak percobaan. Coba lagi dalam 15 menit." },
+        { status: 429 }
       );
     }
 
-    // 1. Fetch admin record — always run bcrypt even if not found (timing-safe)
-    const admin = await prisma.admin.findUnique({ where: { email } });
-    const DUMMY_HASH = "$2a$10$x/7LJ3RaRHbp.9f3n1a2yuKKy2bCMfBZWfTsaHJAi5MbDpKYIjSk6";
-    const hashToCompare = admin?.password ?? DUMMY_HASH;
+    try {
+      const body = await request.json();
+      const email = String(body.email ?? "").trim().toLowerCase();
+      const password = String(body.password ?? "");
 
-    // 2. Constant-time compare — prevents timing-based user enumeration
-    const isPasswordValid = await bcrypt.compare(password, hashToCompare);
+      if (!email || !password) {
+        return NextResponse.json(
+          { success: false, error: "Email dan password wajib diisi." },
+          { status: 400 }
+        );
+      }
 
-    if (!admin || !isPasswordValid) {
+      // 1. Fetch admin record with EXPLICIT password selection to bypass any global filters or type regressions
+      const admin = await prisma.admin.findUnique({ 
+        where: { email },
+        select: {
+          id: true,
+          email: true,
+          password: true, // We need this for bcrypt
+          role: true,
+        }
+      });
+
+      const DUMMY_HASH = "$2a$10$x/7LJ3RaRHbp.9f3n1a2yuKKy2bCMfBZWfTsaHJAi5MbDpKYIjSk6";
+      const hashToCompare = admin?.password ?? DUMMY_HASH;
+
+      // 2. Constant-time compare
+      const isPasswordValid = await bcrypt.compare(password, hashToCompare);
+
+      if (!admin || !isPasswordValid) {
+        return NextResponse.json(
+          { success: false, error: "Email atau password salah." },
+          { status: 401 }
+        );
+      }
+
+      // 3. Success Flow
+      await clearRateLimit(ip);
+
+      const token = await encryptPaseto({
+        userId: admin.id,
+        role: admin.role,
+        email: admin.email,
+      });
+
+      const cookieStore = await cookies();
+      cookieStore.set("admin_token", token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict",
+        path: "/admin",
+        maxAge: 60 * 60 * 8, 
+      });
+
+      return NextResponse.json({ success: true, role: admin.role });
+
+    } catch (error) {
+      console.error("[AUTH] Login Error:", error);
       return NextResponse.json(
-        { success: false, error: "Email atau password salah." },
-        { status: 401 }
+        { success: false, error: "Terjadi kesalahan sistem." },
+        { status: 500 }
       );
     }
-
-    // 3. Issue PASETO token — reset rate limit on success
-    clearRateLimit(ip);
-
-    const token = await encryptPaseto({
-      userId: admin.id,
-      role: admin.role,
-      email: admin.email,
-    });
-
-    const cookieStore = await cookies();
-    cookieStore.set("admin_token", token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
-      path: "/admin",
-      maxAge: 60 * 60 * 8, // 8 hours — reasonable session window
-    });
-
-    return NextResponse.json({ success: true, role: admin.role });
-
-  } catch (error) {
-    console.error("[AUTH] Login Error:", error);
-    return NextResponse.json(
-      { success: false, error: "Terjadi kesalahan sistem." },
-      { status: 500 }
-    );
-  }
+  });
 }
 

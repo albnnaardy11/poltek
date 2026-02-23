@@ -21,6 +21,7 @@
     "@supabase/ssr": "^0.8.0",
     "@supabase/supabase-js": "^2.95.3",
     "@tabler/icons-react": "^3.35.0",
+    "@upstash/redis": "^1.36.2",
     "aos": "^2.3.4",
     "axios": "^1.13.2",
     "bcryptjs": "^3.0.3",
