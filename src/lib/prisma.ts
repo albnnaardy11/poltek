@@ -3,11 +3,21 @@ import { getAuditContext } from "./audit-context";
 import { semanticBus } from "./semantic/mediator";
 import { SemanticEntity } from "./semantic/types";
 
-const globalForPrisma = global as unknown as { prisma: PrismaClient };
+const globalForPrisma = global as unknown as { prisma: PrismaClient; db: PrismaClient };
 
-const basePrisma = globalForPrisma.prisma || new PrismaClient({
-  log: process.env.NODE_ENV === "development" ? ["query", "warn", "error"] : ["error"],
-});
+/**
+ * RAW CLIENT: Used for pre-auth operations (e.g., login) that need full field
+ * access and must NOT trigger the audit extension (no session context exists yet).
+ * Import as `db` from this module.
+ */
+export const db: PrismaClient =
+  globalForPrisma.db ||
+  new PrismaClient({
+    log: process.env.NODE_ENV === "development" ? ["query", "warn", "error"] : ["error"],
+  });
+
+// basePrisma delegates to the same raw client
+const basePrisma = db;
 
 /**
  * Helper to map Prisma models to Semantic Entities
@@ -87,4 +97,6 @@ export const prisma = basePrisma.$extends({
   },
 });
 
-if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = basePrisma;
+if (process.env.NODE_ENV !== "production") {
+  globalForPrisma.db = db;
+}

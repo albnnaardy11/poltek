@@ -1,61 +1,66 @@
-import { encrypt, decrypt } from "paseto-ts/v4";
+import { SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
 import { Role } from "@prisma/client";
 
-/**
- * STRICT REQUIREMENT: The secret key must be exactly 32 characters for AES-256-GCM (PASETO v4.local).
- * Failure to provide this in production will result in a system halt.
- */
-const SECRET_KEY = process.env.PASETO_SECRET_KEY;
+// ── Key Setup ─────────────────────────────────────────────────────────────────
+// jose needs a Uint8Array key of at least 256 bits (32 bytes) for HS256.
+const SECRET_KEY = process.env.PASETO_SECRET_KEY || "dev_secret_key_must_be_32_chars_!!";
+const encodedKey = new TextEncoder().encode(
+  SECRET_KEY.padEnd(32, "_").slice(0, 32)
+);
 
-if (!SECRET_KEY && process.env.NODE_ENV === "production") {
-  throw new Error("CRITICAL: PASETO_SECRET_KEY is not defined in production environment.");
+const SESSION_DURATION = 60 * 60 * 8; // 8 hours in seconds
+
+if (!process.env.PASETO_SECRET_KEY && process.env.NODE_ENV === "production") {
+  throw new Error("CRITICAL: PASETO_SECRET_KEY is not defined in production.");
 }
-
-// Development fallback with a clear warning.
-const FINAL_KEY = (SECRET_KEY || "dev_secret_key_must_be_32_chars_!!").padEnd(32).slice(0, 32);
-
-const encoder = new TextEncoder();
-const encodedKey = encoder.encode(FINAL_KEY);
+// ─────────────────────────────────────────────────────────────────────────────
 
 export interface AdminPayload {
   userId: string;
   role: Role;
   email: string;
-  iat: string;
-  exp: string;
 }
 
 /**
- * Encrypts a payload into a PASETO v4.local token.
- * Uses strict typing to ensure payload integrity.
+ * Signs a JWT session token with HS256.
+ * Replaces PASETO for maximum compatibility with Next.js App Router + Edge runtime.
+ * jose is the industry standard and is actively maintained.
  */
-export async function encryptPaseto(payload: Omit<AdminPayload, "iat" | "exp">) {
-  const now = Math.floor(Date.now() / 1000);
-  return await encrypt(encodedKey, {
-    ...payload,
-    iat: now.toString(),
-    exp: (now + 60 * 60 * 8).toString(), // 8 Hours
-  });
+export async function encryptPaseto(payload: AdminPayload): Promise<string> {
+  return new SignJWT({ ...payload })
+    .setProtectedHeader({ alg: "HS256" })
+    .setIssuedAt()
+    .setExpirationTime(`${SESSION_DURATION}s`)
+    .sign(encodedKey);
 }
 
 /**
- * Decrypts and validates a PASETO token.
- * Returns null if the token is tampered with or expired.
+ * Verifies and decodes a JWT session token.
+ * Returns null if expired, tampered, or malformed.
  */
 export async function decryptPaseto(token: string): Promise<AdminPayload | null> {
   try {
-    const { payload } = await decrypt(encodedKey, token);
-    return payload as unknown as AdminPayload;
+    const { payload } = await jwtVerify(token, encodedKey, {
+      algorithms: ["HS256"],
+    });
+    return {
+      userId: payload.userId as string,
+      role: payload.role as Role,
+      email: payload.email as string,
+    };
   } catch (error) {
-    // Audit-ready logging: In a real system, this should trigger a security event.
-    console.error("[SECURITY] PASETO Decryption failed:", error instanceof Error ? error.message : "Invalid Token");
+    console.error(
+      "[SECURITY] JWT verification failed:",
+      error instanceof Error ? error.message : "Invalid Token"
+    );
     return null;
   }
 }
 
 /**
- * Helper to retrieve the current session in Server Components / Actions.
+ * Reads and verifies the current session from the HTTP cookie.
+ * Safe to call from any Server Component or Route Handler.
  */
 export async function getSession(): Promise<AdminPayload | null> {
   try {

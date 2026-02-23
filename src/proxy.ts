@@ -1,7 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { decryptPaseto } from "@/lib/auth-paseto";
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const token = request.cookies.get("admin_token")?.value;
 

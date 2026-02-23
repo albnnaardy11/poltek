@@ -1,5 +1,5 @@
 import { DomainEvent, EventHandler } from "./types";
-import { v4 as uuidv4 } from "uuid";
+import { randomUUID } from "crypto";
 
 class SemanticMediator {
   private handlers: Map<string, EventHandler[]> = new Map();
@@ -20,7 +20,7 @@ class SemanticMediator {
   async publish(eventData: Omit<DomainEvent, "id" | "timestamp">) {
     const event: DomainEvent = {
       ...eventData,
-      id: uuidv4(),
+      id: randomUUID(),
       timestamp: new Date().toISOString(),
     };
 
