@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { 
   RiWheelchairLine, 
   RiArrowUpLine, 
@@ -22,6 +23,8 @@ import {
 } from "react-icons/ri";
 
 export default function FloatingButtons() {
+  const pathname = usePathname();
+
   /* ----------------------------------------------------
      STATE & REFS
   ----------------------------------------------------- */
@@ -202,6 +205,8 @@ export default function FloatingButtons() {
   /* ----------------------------------------------------
      RENDER
   ----------------------------------------------------- */
+  if (pathname === "/virtual-tour") return null;
+
   return (
     <>
       <style jsx global>{`

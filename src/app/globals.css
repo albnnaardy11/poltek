@@ -73,3 +73,18 @@ body {
   color: var(--foreground);
   font-family: inherit;
 }
+
+/* ====================================================
+   360 VIRTUAL TOUR - NATIVE LOADER OVERRIDE (FORCE HIDDEN)
+==================================================== */
+.psv-loader-container,
+.psv-loader,
+.psv-loader-canvas,
+.psv-loader-text,
+.psv-loader-image {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  z-index: -9999 !important;
+  pointer-events: none !important;
+}
