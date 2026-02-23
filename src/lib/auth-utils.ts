@@ -1,17 +1,17 @@
 import { getSession } from "./auth-paseto";
 import { prisma } from "./prisma";
+import { Role } from "@prisma/client";
 
 /**
  * Resolves the currently authenticated admin from the PASETO session token.
- * This is the SINGLE source of truth for admin identity. No fallback.
- * The Supabase auth surface has been eliminated to reduce attack vectors.
+ * This is the SINGLE source of truth for admin identity. 
+ * Performs a DB double-check to ensure the account hasn't been revoked.
  */
 export async function getCurrentAdmin() {
   const session = await getSession();
   if (!session) return null;
 
-  // Always verify against DB to catch revoked/deleted admins.
-  // The PASETO token is valid cryptographically, but the admin record might be gone.
+  // Verify against DB to catch revoked/deleted admins or role changes.
   const admin = await prisma.admin.findUnique({
     where: { id: session.userId },
     select: {
@@ -27,16 +27,16 @@ export async function getCurrentAdmin() {
 }
 
 /**
- * Role-Based Access Control guard for Server Actions.
- * Throws if the current session lacks the required role.
- * @throws {Error} Unauthorized
+ * Role-Based Access Control guard for Server Actions & Components.
+ * Uses Prisma's Role enum to ensure type-safety at compile time.
  */
-export async function checkRole(allowedRoles: string[]) {
+export async function checkRole(allowedRoles: Role[]) {
   const admin = await getCurrentAdmin();
 
   if (!admin || !allowedRoles.includes(admin.role)) {
+    // In a production Web 4.0 app, this should be logged as a potential intrusion attempt.
     throw new Error(
-      `UNAUTHORIZED: Required one of [${allowedRoles.join(", ")}], got ${admin?.role ?? "none"}`
+      `UNAUTHORIZED: Required privileges [${allowedRoles.join(", ")}], but session has [${admin?.role ?? "NONE"}]`
     );
   }
 
