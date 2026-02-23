@@ -249,7 +249,6 @@ const SCENES: Scene[] = [
     description: "Pintu masuk utama kampus Politeknik Prestasi Prima.",
     markers: [
       { id: "hd-1", position: { yaw: "0deg", pitch: "-5deg" }, info: { icon: "DoorOpen", title: "Gerbang Utama", description: "Gerbang resmi kampus yang menjadi akses masuk utama civitas akademika dan tamu." } },
-      { id: "hd-2", position: { yaw: "120deg", pitch: "-10deg" }, info: { icon: "Trees", title: "Taman Kampus", description: "Area hijau yang tertata rapi sebagai ruang terbuka dan sarana penghijauan kampus." } },
     ],
   },
   {
@@ -258,8 +257,7 @@ const SCENES: Scene[] = [
     image: "/images/tour360/aula.jpeg",
     description: "Aula serbaguna kampus untuk kegiatan akademik dan non-akademik.",
     markers: [
-      { id: "au-1", position: { yaw: "0deg", pitch: "0deg" }, info: { icon: "Music", title: "Panggung Utama", description: "Panggung aula yang digunakan untuk wisuda, seminar, dan acara besar kampus." } },
-      { id: "au-2", position: { yaw: "180deg", pitch: "-5deg" }, info: { icon: "MonitorPlay", title: "Proyektor & AV", description: "Sistem audio-visual modern mendukung presentasi dan pertunjukan berkualitas tinggi." } },
+      { id: "au-1", position: { yaw: "0deg", pitch: "0deg" }, info: { icon: "Music", title: "Panggung Utama", description: "Panggung aula yang digunakan untuk seminar, dan acara besar kampus." } },
     ],
   },
   {
@@ -277,7 +275,6 @@ const SCENES: Scene[] = [
     image: "/images/tour360/kelas.jpeg",
     description: "Ruang kelas modern dengan fasilitas belajar mengajar terdepan.",
     markers: [
-      { id: "kl-1", position: { yaw: "0deg", pitch: "0deg" }, info: { icon: "Tv", title: "Smart Board", description: "Papan tulis digital interaktif untuk metode pembelajaran yang lebih engaging dan modern." } },
       { id: "kl-2", position: { yaw: "170deg", pitch: "-10deg" }, info: { icon: "Armchair", title: "Tempat Duduk Ergonomis", description: "Meja dan kursi dirancang ergonomis untuk kenyamanan belajar selama berjam-jam." } },
     ],
   },

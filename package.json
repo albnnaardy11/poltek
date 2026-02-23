@@ -23,6 +23,7 @@
     "@tabler/icons-react": "^3.35.0",
     "aos": "^2.3.4",
     "axios": "^1.13.2",
+    "bcryptjs": "^3.0.3",
     "date-fns": "^4.1.0",
     "framer-motion": "^12.23.24",
     "lucide-react": "^0.554.0",
@@ -38,6 +39,7 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
+    "@types/bcryptjs": "^2.4.6",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",

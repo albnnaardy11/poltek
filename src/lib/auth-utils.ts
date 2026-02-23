@@ -31,9 +31,12 @@ export async function getCurrentAdmin() {
     // This allows you to login with any account and immediately have access
     if (process.env.NODE_ENV === 'development') {
       try {
+        // Dummy hash for "admin123" to satisfy the DB constraint
+        const dummyHash = "$2a$10$7Z/2bF6i/3v3n4m5z6x7y8u9i0o1p2q3r4s5t6u7v8w9x0y1z2a3"; 
         admin = await prisma.admin.create({
           data: {
             email: user.email!,
+            password: dummyHash,
             name: user.user_metadata?.full_name || user.email?.split('@')[0],
             role: "SUPER_ADMIN",
           },

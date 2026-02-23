@@ -407,6 +407,24 @@ async function main() {
     });
   }
 
+  console.log('Seeding admin...');
+  const bcrypt = require('bcryptjs');
+  const hashedPassword = await bcrypt.hash('admin123', 10);
+
+  await prisma.admin.upsert({
+    where: { email: 'admin@poltek.ac.id' },
+    update: {
+      password: hashedPassword,
+      role: 'SUPER_ADMIN',
+    },
+    create: {
+      email: 'admin@poltek.ac.id',
+      password: hashedPassword,
+      name: 'Super Admin',
+      role: 'SUPER_ADMIN',
+    },
+  });
+
   console.log('Seeding finished.');
 }
 
