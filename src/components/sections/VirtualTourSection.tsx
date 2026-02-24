@@ -66,7 +66,7 @@ export default function VirtualTourSection() {
           </div>
 
           <Link
-            href="#"
+            href="/virtual-tour"
             className="group relative mt-16 inline-flex items-center gap-4 bg-orange-500 hover:bg-orange-600 text-white px-10 py-5 rounded-2xl font-black text-sm uppercase tracking-widest shadow-xl shadow-orange-900/20 transition-all duration-300 hover:-translate-y-1"
           >
             Mulai Virtual Tour

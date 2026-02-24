@@ -336,6 +336,17 @@ export default function VirtualTour() {
     setIsClient(true);
     const mobile = window.innerWidth < 768;
     setIsMobile(mobile);
+
+    // Deep link detection
+    const params = new URLSearchParams(window.location.search);
+    const targetId = params.get("scene");
+    if (targetId) {
+      const match = SCENES.find((s) => s.id === targetId);
+      if (match) {
+        setCurrentScene(match);
+      }
+    }
+
     // Buka sidebar hanya di layar >= 768px (desktop/tablet landscape)
     if (!mobile) setIsNavOpen(true);
   }, []);

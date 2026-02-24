@@ -2,19 +2,13 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { Plus_Jakarta_Sans } from "next/font/google";
 import { 
   RiCompass3Fill, 
   RiFocus3Line, 
-  RiVideoChatLine, 
-  RiMapPinRangeLine,
-  RiArrowRightUpLine,
-  RiFocus2Line,
-  RiCloseLine
+  RiArrowRightUpLine
 } from "react-icons/ri";
-import { FaVrCardboard } from "react-icons/fa";
 
 const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -27,52 +21,77 @@ interface TourLocation {
   subtitle: string;
   description: string;
   image: string;
-  panoramaUrl: string; // Placeholder for actual 360 link
   tags: string[];
 }
 
 const TOUR_LOCATIONS: TourLocation[] = [
   {
-    id: "rps-hall",
-    title: "Gedung RPS (Hall)",
-    subtitle: "Pusat Teknologi & Eksperimen",
-    description: "Gedung RPS merupakan landmark utama kampus yang berfungsi sebagai pusat pengembangan teknologi dua lantai. Dilengkapi aula luas dengan videotron modern serta ruang IoT untuk eksperimen dan riset mahasiswa.",
-    image: "/images/facility/facility1.png",
-    panoramaUrl: "https://kuula.co/share/collection/7l7hR", 
-    tags: ["IoT Center", "Main Hall", "Tech Hub"]
+    id: "halaman-depan",
+    title: "Halaman Depan",
+    subtitle: "Gerbang Utama Kampus",
+    description: "Pintu masuk utama kampus Politeknik Prestasi Prima yang asri dan merepresentasikan wajah institusi kami.",
+    image: "/images/tour360/halaman-depan.jpeg",
+    tags: ["Gerbang Utama", "Area Publik"]
   },
   {
-    id: "backyard",
-    title: "Halaman Belakang",
-    subtitle: "Creative Green Space",
-    description: "Area outdoor multifungsi yang dirancang untuk mendukung interaksi sosial, kegiatan organisasi mahasiswa, upacara, dan berbagai event kampus dengan suasana yang asri dan nyaman.",
-    image: "/images/facility/facility4.png",
-    panoramaUrl: "https://kuula.co/share/collection/7l7hR",
-    tags: ["Outdoor", "Event Space", "Student Center"]
+    id: "aula",
+    title: "Aula Serbaguna",
+    subtitle: "Pusat Kegiatan Kampus",
+    description: "Aula luas untuk berbagai kegiatan akademik, seminar, serta event mahasiswa yang terintegrasi dengan berbagai fasilitas.",
+    image: "/images/tour360/aula.jpeg",
+    tags: ["Event Space", "Main Hall"]
   },
   {
-    id: "computer-lab",
+    id: "kantin",
+    title: "Kantin Digital",
+    subtitle: "Food & Beverage",
+    description: "Area relaksasi dan tempat berinteraksi mahasiswa dengan sajian kuliner lezat yang tertata bersih.",
+    image: "/images/tour360/kantin.jpeg",
+    tags: ["Food Court", "Hangout"]
+  },
+  {
+    id: "kelas",
+    title: "Ruang Kelas",
+    subtitle: "Smart Learning Environment",
+    description: "Ruang kelas modern dengan tempat duduk ergonomis yang mendukung kenyamanan belajar mengajar yang maksimal.",
+    image: "/images/tour360/kelas.jpeg",
+    tags: ["Smart Class", "Interactive"]
+  },
+  {
+    id: "lab",
     title: "Laboratorium Komputer",
     subtitle: "High-Spec Digital Workshop",
-    description: "Ruang praktikum yang dilengkapi dengan puluhan unit PC berspesifikasi tinggi untuk mendukung pembelajaran pemrograman, networking, dan pengembangan sistem informasi.",
-    image: "/images/facility/ruang-kelas01-1024x768.jpeg",
-    panoramaUrl: "https://kuula.co/share/collection/7l7hR",
-    tags: ["IT Lab", "Modern PC", "Software Dev"]
+    description: "Laboratorium berspesifikasi tinggi untuk praktik programming, desain, dan jaringan dengan koneksi internet cepat.",
+    image: "/images/tour360/lab.jpeg",
+    tags: ["IT Lab", "Modern PC", "High Speed"]
   },
   {
-    id: "smart-classroom",
-    title: "Smart Classroom",
-    subtitle: "Next-Gen Learning Environment",
-    description: "Ruang kelas masa depan yang mengintegrasikan teknologi Smart Board, sistem audio visual terpadu, dan desain ergonomis untuk kenyamanan belajar mengajar yang maksimal.",
-    image: "/images/facility/ruang-kelas03-1024x768.jpeg",
-    panoramaUrl: "https://kuula.co/share/collection/7l7hR",
-    tags: ["Interactive", "Smart Board", "Hybrid Ready"]
+    id: "mushola",
+    title: "Mushola",
+    subtitle: "Area Ibadah",
+    description: "Fasilitas ibadah yang luas, bersih dan nyaman untuk mendukung kegiatan spiritual civitas akademika.",
+    image: "/images/tour360/mushola.jpeg",
+    tags: ["Spiritual", "Quiet Space"]
+  },
+  {
+    id: "parkiran",
+    title: "Area Parkir",
+    subtitle: "Fasilitas Kendaraan",
+    description: "Area parkir luas dengan kapasitas besar yang dijaga oleh petugas keamanan selama jam operasional kampus (24 Jam).",
+    image: "/images/tour360/parkiran.jpeg",
+    tags: ["Secure", "Spacious"]
+  },
+  {
+    id: "ruang-staff",
+    title: "Ruang Staff",
+    subtitle: "Pusat Layanan Administrasi",
+    description: "Ruang kerja staf modern dan pusat pelayanan terpadu administrasi akademik bagi kebutuhan mahasiswa.",
+    image: "/images/tour360/ruang-staff.jpeg",
+    tags: ["Admin", "Layanan Terpadu"]
   }
 ];
 
 export default function FacilityVirtualTourPage() {
-  const [selectedTour, setSelectedTour] = useState<TourLocation | null>(null);
-
   return (
     <main className={`${jakarta.className} min-h-screen bg-[#080c1b] text-white selection:bg-[#F15A24]/30`}>
       {/* 1. HERO SECTION - Immersive Design */}
@@ -127,26 +146,16 @@ export default function FacilityVirtualTourPage() {
             </h1>
 
             <p className="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto mb-12 leading-relaxed font-medium">
-              Masuki setiap sudut lingkungan Politeknik Prestasi Prima melalui teknologi virtual tour 360° berkualitas tinggi, langsung dari kenyamanan layar Anda.
+              Masuki setiap sudut lingkungan Politeknik Prestasi Prima melalui teknologi virtual tour 360° berkualitas tinggi, langsung dari layar Anda.
             </p>
 
             <div className="flex flex-wrap justify-center gap-6">
-              <button 
-                onClick={() => {
-                  const el = document.getElementById('explore-section');
-                  el?.scrollIntoView({ behavior: 'smooth' });
-                }}
+              <Link 
+                href="/virtual-tour"
                 className="group relative bg-[#F15A24] text-white px-10 py-5 rounded-2xl font-bold text-sm uppercase tracking-widest shadow-2xl shadow-[#F15A24]/30 overflow-hidden"
               >
-                <span className="relative z-10">Mulai Eksplorasi</span>
+                <span className="relative z-10">Mulai Eksplorasi Cepat</span>
                 <div className="absolute inset-0 bg-white translate-y-full group-hover:translate-y-0 transition-transform duration-300 -z-0 opacity-10" />
-              </button>
-              
-              <Link
-                href="/facility"
-                className="bg-white/5 backdrop-blur-md border border-white/10 text-white px-10 py-5 rounded-2xl font-bold text-sm uppercase tracking-widest hover:bg-white/10 transition-all"
-              >
-                Daftar Fasilitas
               </Link>
             </div>
           </motion.div>
@@ -179,11 +188,11 @@ export default function FacilityVirtualTourPage() {
               <h2 className="text-4xl md:text-6xl font-black text-white">Sudut Pandang <span className="text-[#F15A24]">Baru</span></h2>
             </div>
             <p className="text-gray-400 max-w-md font-medium">
-              Pilih lokasi yang ingin Anda telusuri secara detail. Setiap area dilengkapi informasi interaktif untuk memandu perjalanan Anda.
+              Pilih lokasi yang ingin Anda telusuri secara detail. Saat ini seluruh tour terintegrasi ke dalam satu pengalaman 360° yang imersif.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-10">
             {TOUR_LOCATIONS.map((loc, idx) => (
               <motion.div
                 key={loc.id}
@@ -191,129 +200,61 @@ export default function FacilityVirtualTourPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: idx * 0.1 }}
-                className="group relative rounded-[2rem] overflow-hidden bg-[#1D234E]/30 border border-white/5 hover:border-[#F15A24]/30 transition-all duration-500 cursor-pointer"
-                onClick={() => setSelectedTour(loc)}
               >
-                {/* Image Wrap */}
-                <div className="relative h-[400px] overflow-hidden">
-                  <Image
-                    src={loc.image}
-                    alt={loc.title}
-                    fill
-                    className="object-cover transition-transform duration-700 group-hover:scale-105"
-                    unoptimized
-                  />
-                  
-                  {/* Overlays */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#080c1b] via-[#080c1b]/20 to-transparent" />
-                  
-                  {/* Floating Action Badge */}
-                  <div className="absolute top-6 right-6 flex gap-2">
-                    <div className="bg-white/10 backdrop-blur-md p-3 rounded-full border border-white/20 group-hover:bg-[#F15A24] group-hover:text-white transition-all shadow-xl">
-                      <RiFocus3Line className="text-2xl" />
+                <Link
+                  href={`/virtual-tour?scene=${loc.id}`}
+                  className="group block relative rounded-[2rem] overflow-hidden bg-[#1D234E]/30 border border-white/5 hover:border-[#F15A24]/30 transition-all duration-500 cursor-pointer h-full"
+                >
+                  {/* Image Wrap */}
+                  <div className="relative h-[300px] md:h-[400px] overflow-hidden">
+                    <Image
+                      src={loc.image}
+                      alt={loc.title}
+                      fill
+                      className="object-cover transition-transform duration-700 group-hover:scale-105"
+                      unoptimized
+                    />
+                    
+                    {/* Overlays */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#080c1b] via-[#080c1b]/20 to-transparent" />
+                    
+                    {/* Floating Action Badge */}
+                    <div className="absolute top-6 right-6 flex gap-2">
+                      <div className="bg-white/10 backdrop-blur-md p-3 rounded-full border border-white/20 group-hover:bg-[#F15A24] group-hover:text-white transition-all shadow-xl">
+                        <RiFocus3Line className="text-2xl" />
+                      </div>
+                    </div>
+
+                    {/* Content Over Post */}
+                    <div className="absolute bottom-6 left-6 right-6 md:bottom-10 md:left-10 md:right-10">
+                      <div className="flex flex-wrap gap-2 mb-4">
+                        {loc.tags.map(tag => (
+                          <span key={tag} className="text-[10px] font-black uppercase tracking-widest bg-white/10 backdrop-blur-md px-3 py-1 rounded-full border border-white/10">
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                      <h3 className="text-2xl md:text-3xl font-black mb-2 group-hover:text-[#F15A24] transition-colors">{loc.title}</h3>
+                      <p className="text-gray-300 text-sm line-clamp-2 opacity-80">{loc.subtitle}</p>
                     </div>
                   </div>
 
-                  {/* Content Over Post */}
-                  <div className="absolute bottom-10 left-10 right-10">
-                    <div className="flex flex-wrap gap-2 mb-4">
-                      {loc.tags.map(tag => (
-                        <span key={tag} className="text-[10px] font-black uppercase tracking-widest bg-white/10 backdrop-blur-md px-3 py-1 rounded-full border border-white/10">
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                    <h3 className="text-3xl font-black mb-2 group-hover:text-[#F15A24] transition-colors">{loc.title}</h3>
-                    <p className="text-gray-300 text-sm line-clamp-2 opacity-80">{loc.subtitle}</p>
-                  </div>
-                </div>
-
-                {/* Hover Reveal Info */}
-                <div className="p-8 border-t border-white/5">
-                  <div className="flex items-center justify-between group/btn">
-                    <span className="text-sm font-bold uppercase tracking-widest">Inisiasi Tour</span>
-                    <div className="flex items-center gap-2 text-[#F15A24] font-black">
-                      <span className="text-xs">LAUNCH 360°</span>
-                      <RiArrowRightUpLine className="text-xl transition-transform group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1" />
+                  {/* Hover Reveal Info */}
+                  <div className="p-6 md:p-8 border-t border-white/5 bg-[#080c1b]/50 backdrop-blur-md">
+                    <div className="flex items-center justify-between group/btn">
+                      <span className="text-sm font-bold uppercase tracking-widest text-white/90">Inisiasi Tour</span>
+                      <div className="flex items-center gap-2 text-[#F15A24] font-black">
+                        <span className="text-xs">LAUNCH 360°</span>
+                        <RiArrowRightUpLine className="text-xl transition-transform group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1" />
+                      </div>
                     </div>
                   </div>
-                </div>
+                </Link>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
-
-      {/* 3. TOUR VIEWER MODAL - The Real "Tour" Mockup */}
-      <AnimatePresence>
-        {selectedTour && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[1000] flex items-center justify-center p-0 md:p-10"
-          >
-            {/* Backdrop */}
-            <div 
-              className="absolute inset-0 bg-black/95 backdrop-blur-2xl cursor-pointer"
-              onClick={() => setSelectedTour(null)}
-            />
-
-            {/* Modal Content */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: 30 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 30 }}
-              className="relative w-full h-full max-w-7xl bg-[#080c1b] rounded-none md:rounded-[3rem] overflow-hidden shadow-[0_0_100px_rgba(241,90,36,0.2)] flex flex-col"
-            >
-              {/* Top Controls */}
-              <div className="relative z-20 flex items-center justify-between p-6 md:p-8 bg-gradient-to-b from-black/80 to-transparent">
-                <div>
-                  <h2 className="text-xl md:text-3xl font-black tracking-tight">{selectedTour.title}</h2>
-                  <p className="text-[#F15A24] text-xs font-bold uppercase tracking-widest flex items-center gap-2">
-                    <RiFocus2Line className="animate-spin-slow" /> Immersive Mode Active
-                  </p>
-                </div>
-                <button 
-                  onClick={() => setSelectedTour(null)}
-                  className="p-3 bg-white/10 hover:bg-[#F15A24] rounded-full transition-all text-white border border-white/20"
-                >
-                  <RiCloseLine className="text-2xl" />
-                </button>
-              </div>
-
-              {/* VR/360 VIEWER - Using Iframe Mockup for demonstration */}
-              <div className="relative flex-1 bg-black">
-                {/* Actual Kuula/360 Iframe or fallback */}
-                <iframe
-                  src={selectedTour.panoramaUrl}
-                  className="w-full h-full border-0 pointer-events-auto"
-                  allowFullScreen
-                  allow="accelerometer; gyroscope; magnetometer; vr"
-                ></iframe>
-
-                {/* HUD Overlay Mockup */}
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none opacity-20">
-                   <div className="w-20 h-20 border-2 border-dashed border-[#F15A24] rounded-full animate-ping" />
-                </div>
-              </div>
-
-              {/* Bottom Info Bar */}
-              <div className="relative z-20 p-8 bg-gradient-to-t from-black/90 to-transparent flex flex-col md:flex-row items-center justify-between gap-6">
-                <div className="max-w-xl text-center md:text-left">
-                  <p className="text-gray-300 text-sm leading-relaxed">{selectedTour.description}</p>
-                </div>
-                
-                <div className="flex gap-4">
-                   <button className="flex items-center gap-3 bg-[#F15A24] text-white px-8 py-4 rounded-xl font-bold text-xs uppercase tracking-widest hover:brightness-110 shadow-xl shadow-[#F15A24]/20 overflow-hidden">
-                      <FaVrCardboard className="text-xl" /> Enter VR Mode
-                   </button>
-                </div>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
 
       {/* 4. CALL TO ACTION - Immersive End */}
       <section className="relative py-40 overflow-hidden">
@@ -340,8 +281,8 @@ export default function FacilityVirtualTourPage() {
                <Link href="https://wa.me/6285199328825" className="w-full sm:w-auto bg-[#F15A24] text-white px-12 py-5 rounded-2xl font-black text-xs uppercase tracking-widest shadow-2xl shadow-[#F15A24]/30 hover:scale-105 transition-transform">
                   Daftar Sekarang
                </Link>
-               <Link href="/facility" className="w-full sm:w-auto bg-white/5 border border-white/10 text-white px-12 py-5 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-white/10 transition-all">
-                  Informasi Fasilitas
+               <Link href="/virtual-tour" className="w-full sm:w-auto bg-white/5 border border-white/10 text-white px-12 py-5 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-white/10 transition-all">
+                  Eksplorasi Fasilitas
                </Link>
             </div>
           </motion.div>
