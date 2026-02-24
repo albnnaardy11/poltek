@@ -19,9 +19,10 @@ import Link from "next/link";
 import { format } from "date-fns";
 import { id } from "date-fns/locale";
 import Image from "next/image";
+import { VisitorChart } from "@/components/admin/VisitorChart";
 
 async function getDashboardData() {
-  const [newsCount, galleryCount, programCount, visitorStats, unreadMessages, latestNews, latestMessages] = await Promise.all([
+  const [newsCount, galleryCount, programCount, visitorStats, unreadMessages, latestNews, latestMessages, weeklyStats] = await Promise.all([
     prisma.news.count(),
     prisma.gallery.count(),
     prisma.program.count(),
@@ -38,8 +39,25 @@ async function getDashboardData() {
     prisma.contactMessage.findMany({
       orderBy: { createdAt: 'desc' },
       take: 3
+    }),
+    prisma.dailyStat.findMany({
+      orderBy: { date: 'desc' },
+      take: 7
     })
   ]);
+
+  // Sort ascending for chart (oldest to newest left-to-right)
+  const chartData = weeklyStats.reverse().map(stat => ({
+    label: format(stat.date, 'dd MMM', { locale: id }),
+    value: stat.visitors,
+    views: stat.pageViews
+  }));
+
+  // If no data, provide a fallback structure so chart doesn't break
+  if (chartData.length === 0) {
+     const today = new Date();
+     chartData.push({ label: format(today, 'dd MMM', { locale: id }), value: 0, views: 0 });
+  }
 
   return {
     stats: {
@@ -50,12 +68,13 @@ async function getDashboardData() {
       unreadMessages
     },
     latestNews,
-    latestMessages
+    latestMessages,
+    chartData
   };
 }
 
 export default async function DashboardPage() {
-  const { stats, latestNews, latestMessages } = await getDashboardData();
+  const { stats, latestNews, latestMessages, chartData } = await getDashboardData();
 
   const statsCards = [
     { title: "Total Berita", count: stats.news, icon: Newspaper, iconColor: "text-white", iconBg: "bg-gradient-to-tr from-[#4338CA] to-indigo-400" },
@@ -103,48 +122,7 @@ export default async function DashboardPage() {
             </div>
           </div>
           
-          <div className="h-64 w-full relative">
-            <svg className="w-full h-full" viewBox="0 0 800 200" preserveAspectRatio="none">
-              <defs>
-                <linearGradient id="chartGradient" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#4338CA" stopOpacity="0.2" />
-                  <stop offset="50%" stopColor="#f97316" stopOpacity="0.1" />
-                  <stop offset="100%" stopColor="#f97316" stopOpacity="0" />
-                </linearGradient>
-                <linearGradient id="lineGradient" x1="0" y1="0" x2="1" y2="0">
-                   <stop offset="0%" stopColor="#4338CA" />
-                   <stop offset="100%" stopColor="#f97316" />
-                </linearGradient>
-              </defs>
-              <path 
-                d="M0,50 L100,60 L200,50 L300,55 L400,160 L500,160 L600,155 L700,160 L800,50" 
-                fill="none" 
-                stroke="url(#lineGradient)" 
-                strokeWidth="4" 
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path 
-                d="M0,50 L100,60 L200,50 L300,55 L400,160 L500,160 L600,155 L700,160 L800,50 L800,200 L0,200 Z" 
-                fill="url(#chartGradient)"
-              />
-              {[0, 100, 200, 300, 400, 500, 600, 700, 800].map((x, i) => {
-                const y = [50, 60, 50, 55, 160, 160, 155, 160, 50][i];
-                return (
-                  <circle key={i} cx={x} cy={y} r="5" fill="white" stroke={i < 4 ? "#4338CA" : "#f97316"} strokeWidth="3" />
-                )
-              })}
-            </svg>
-            <div className="flex justify-between mt-4 text-[10px] font-bold text-slate-400 capitalize">
-               <span>04 Feb</span>
-               <span>05 Feb</span>
-               <span>06 Feb</span>
-               <span>07 Feb</span>
-               <span>08 Feb</span>
-               <span>09 Feb</span>
-               <span>10 Feb</span>
-            </div>
-          </div>
+          <VisitorChart data={chartData} />
         </div>
 
         {/* Quick Actions (Dark Card) */}

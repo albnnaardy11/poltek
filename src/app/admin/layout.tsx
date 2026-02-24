@@ -101,22 +101,14 @@ function AdminLayoutContent({ children }: { children: React.ReactNode }) {
   }, []);
 
   const handleLogout = async () => {
-    setIsLoggingOut(true);
-    
     try {
       await fetch("/api/logout", { method: "POST" });
-      // Give time for animation
-      setTimeout(() => {
-        router.push("/admin/login");
-        router.refresh();
-      }, 400);
+      // Hard redirect to clear Next.js client cache and force proxy to re-eval cookies
+      window.location.href = "/admin/login";
     } catch (err) {
       console.error("Logout failed:", err);
-      setIsLoggingOut(false);
     }
   };
-
-  const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   // Skip layout for login page
   if (pathname === "/admin/login") {
@@ -125,41 +117,6 @@ function AdminLayoutContent({ children }: { children: React.ReactNode }) {
 
   return (
     <AnimatePresence mode="wait">
-      {isLoggingOut ? (
-        <motion.div
-          key="logout-loader"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          className="fixed inset-0 z-[9999] bg-[#0F172A]/90 backdrop-blur-sm flex flex-col items-center justify-center p-4"
-        >
-          <div className="relative">
-            {/* Center Icon */}
-            <motion.div
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ delay: 0.1 }}
-              className="absolute inset-0 flex items-center justify-center"
-            >
-              <div className="w-16 h-16 bg-gradient-to-tr from-[#4338CA] via-indigo-500 to-orange-500 rounded-2xl flex items-center justify-center shadow-2xl shadow-indigo-500/20">
-                <GraduationCap size={28} className="text-white" />
-              </div>
-            </motion.div>
-          </div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="mt-8 text-center"
-          >
-            <h2 className="text-white text-sm font-black uppercase tracking-[0.3em] mb-1">
-              Admin<span className="text-orange-500">PP</span>
-            </h2>
-            <p className="text-slate-400 text-[10px] font-bold uppercase tracking-widest opacity-60">Sesi Berakhir</p>
-          </motion.div>
-        </motion.div>
-      ) : (
         <motion.div 
           key="admin-layout"
           initial={{ opacity: 0 }}
@@ -364,7 +321,6 @@ function AdminLayoutContent({ children }: { children: React.ReactNode }) {
         }
       `}</style>
     </motion.div>
-      )}
     </AnimatePresence>
   );
 }

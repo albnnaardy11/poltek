@@ -3,8 +3,10 @@ import { cookies } from "next/headers";
 
 export async function POST() {
   const cookieStore = await cookies();
-  cookieStore.delete("admin_token");
-  
+  cookieStore.set("admin_token", "", {
+    path: "/admin",
+    maxAge: 0,
+  });
   return NextResponse.json({ 
     success: true, 
     message: "Logout berhasil" 
