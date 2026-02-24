@@ -266,9 +266,9 @@ export default function Footer() {
            </div>
            
            <div className="flex items-center gap-8 text-[10px] font-black uppercase tracking-widest text-gray-500">
-              <Link href="#" className="hover:text-white transition-colors">Privacy Policy</Link>
-              <Link href="#" className="hover:text-white transition-colors">Terms of Service</Link>
-              <Link href="#" className="hover:text-[#F15A24] transition-colors">Oren Solution V2.0</Link>
+              <Link href="/" className="hover:text-white transition-colors">Privacy Policy</Link>
+              <Link href="/" className="hover:text-white transition-colors">Terms of Service</Link>
+              <Link href="/" className="hover:text-[#F15A24] transition-colors">Oren Solution V2.0</Link>
            </div>
         </div>
       </div>

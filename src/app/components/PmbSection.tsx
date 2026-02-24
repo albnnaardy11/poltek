@@ -5,7 +5,7 @@ export default function PmbSection() {
 
         {/* CARD 1 */}
         <a
-          href="#"
+          href="https://wa.me/6281380008079"
           className="group block h-[416px] rounded-[20px] border-4 border-dashed border-[#1D234E] p-7 bg-white shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-[#1D234E]/30 flex flex-col"
         >
           <div className="mb-6 mt-2">
@@ -27,7 +27,7 @@ export default function PmbSection() {
 
         {/* CARD 2 */}
         <a
-          href="#"
+          href="https://wa.me/6281380008079"
           className="group block h-[416px] rounded-[20px] bg-[#1D234E] p-7 text-white shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-white/30 relative overflow-hidden flex flex-col"
         >
           <div className="mb-6 mt-2">
@@ -51,7 +51,7 @@ export default function PmbSection() {
 
         {/* CARD 3 */}
         <a
-          href="#"
+          href="https://wa.me/6281380008079"
           className="group block h-[416px] rounded-[20px] bg-[#ff7a00] p-7 text-white shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-white/30 relative overflow-hidden flex flex-col"
         >
           <div className="mb-6 mt-2">

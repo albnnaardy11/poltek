@@ -27,7 +27,7 @@ export const MENU: MenuItem[] = [
         title: "Fasilitas",
         items: [
           { label: "Facility", url: "/facility" },
-          { label: "Facility Tour", url: "/facility-tour" },
+          { label: "Virtual Tour", url: "/facility-tour" },
         ],
       },
       {
