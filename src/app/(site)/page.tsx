@@ -9,7 +9,23 @@ import NewsSection from "@/components/sections/NewsSection";
 import FAQSection from "@/components/sections/FAQSection";
 import WhyChooseUsSection from "@/components/sections/WhyChooseUsSection";
 
-import { getLatestNews, getPublicFaqs } from "@/actions/public";
+import { getLatestNews, getPublicFaqs, getPublicSeo } from "@/actions/public";
+import { Metadata } from "next";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const seo = await getPublicSeo("/");
+  
+  if (!seo) return {
+    title: "Politeknik Prestasi Prima",
+    description: "Membangun Masa Depan Digital bersama Politeknik Prestasi Prima"
+  };
+
+  return {
+    title: seo.title,
+    description: seo.description || undefined,
+    keywords: seo.keywords || undefined,
+  };
+}
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;

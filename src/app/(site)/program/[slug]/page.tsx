@@ -1,7 +1,31 @@
 import { notFound } from "next/navigation";
-import { getProgramBySlug } from "@/actions/public";
+import { getProgramBySlug, getPublicSeo } from "@/actions/public";
 import ProgramDetailTemplate from "@/components/program/ProgramDetailTemplate";
 import { ProgramDetail } from "@/data/programs";
+import { Metadata } from "next";
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  const path = `/program/${slug}`;
+  
+  const [seo, program] = await Promise.all([
+     getPublicSeo(path),
+     getProgramBySlug(slug)
+  ]);
+
+  if (seo) {
+    return {
+      title: seo.title,
+      description: seo.description || undefined,
+      keywords: seo.keywords || undefined
+    };
+  }
+
+  return {
+    title: program ? `${program.title} | Politeknik Prestasi Prima` : "Program Studi",
+    description: program?.description || "Program Studi Politeknik Prestasi Prima"
+  };
+}
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;

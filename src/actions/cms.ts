@@ -599,3 +599,62 @@ export async function deleteNavigation(id: string) {
     return { success: false, error: err.message };
   }
 }
+
+// SEO ACTIONS
+export async function getSeoSettings() {
+  try {
+    const admin = await checkRole(["SUPER_ADMIN", "NEWS_EDITOR"]);
+    // @ts-ignore
+    return await prisma.seoSetting.findMany({
+      orderBy: { path: "asc" },
+    });
+  } catch (error) {
+    console.error("Error fetching SEO settings:", error);
+    return [];
+  }
+}
+
+export async function upsertSeoSetting(data: any) {
+  try {
+    const admin = await checkRole(["SUPER_ADMIN"]);
+    // @ts-ignore
+    const seo = await prisma.seoSetting.upsert({
+      where: { path: data.path },
+      update: {
+        title: data.title,
+        description: data.description,
+        keywords: data.keywords,
+        image: data.image
+      },
+      create: {
+        path: data.path,
+        title: data.title,
+        description: data.description,
+        keywords: data.keywords,
+        image: data.image
+      },
+    });
+
+    revalidatePath("/", "layout");
+    return { success: true, data: seo };
+  } catch (err: any) {
+    console.error("Error upserting SEO setting:", err);
+    return { success: false, error: err.message };
+  }
+}
+
+export async function deleteSeoSetting(id: string) {
+  try {
+    const admin = await checkRole(["SUPER_ADMIN"]);
+    // @ts-ignore
+    await prisma.seoSetting.delete({
+      where: { id },
+    });
+
+    revalidatePath("/", "layout");
+    return { success: true };
+  } catch (err: any) {
+    console.error("Error deleting SEO setting:", err);
+    return { success: false, error: err.message };
+  }
+}

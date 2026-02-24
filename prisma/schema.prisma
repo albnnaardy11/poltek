@@ -146,6 +146,18 @@ model Navigation {
   @@map("navigations")
 }
 
+model SeoSetting {
+  id          String   @id @default(cuid())
+  path        String   @unique // e.g., "/", "/about", "/news"
+  title       String
+  description String?
+  keywords    String?
+  image       String?  // Optional og:image
+  updatedAt   DateTime @updatedAt
+
+  @@map("seo_settings")
+}
+
 enum Role {
   SUPER_ADMIN
   NEWS_EDITOR

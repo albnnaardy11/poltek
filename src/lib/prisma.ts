@@ -28,7 +28,9 @@ const mapToSemanticEntity = (model: string): SemanticEntity => {
     News: "NEWS_ARTICLE",
     Setting: "SYSTEM_SETTING",
     Admin: "ADMIN_IDENTITY",
-    Faq: "SYSTEM_SETTING", // Using SYSTEM_SETTING for FAQ as requested or default
+    Faq: "SYSTEM_SETTING",
+    Navigation: "SYSTEM_SETTING",
+    SeoSetting: "SYSTEM_SETTING",
   };
 
   return mapping[model] || "SYSTEM_SETTING";

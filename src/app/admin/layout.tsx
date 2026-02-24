@@ -23,7 +23,8 @@ import {
   Globe,
   HelpCircle,
   Plus,
-  AlertCircle
+  AlertCircle,
+  Zap
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -42,6 +43,7 @@ const sidebarCategories = [
       { name: "Media Gallery", href: "/admin/gallery", icon: ImageIcon },
       { name: "FAQ Support", href: "/admin/faq", icon: HelpCircle },
       { name: "Menu Manager", href: "/admin/navigation", icon: Layers },
+      { name: "SEO Manager", href: "/admin/seo", icon: Zap },
       { name: "Inbox Messages", href: "/admin/inbox", icon: Inbox },
       { name: "Audit Logs", href: "/admin/audit", icon: ShieldAlert },
       { name: "System Settings", href: "/admin/settings", icon: Settings },

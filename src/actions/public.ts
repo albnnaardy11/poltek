@@ -235,3 +235,16 @@ export async function getPublicNavigations() {
     return [];
   }
 }
+
+export async function getPublicSeo(path: string) {
+  try {
+    // @ts-ignore
+    const seo = await prisma.seoSetting.findUnique({
+      where: { path },
+    });
+    return seo;
+  } catch (error) {
+    console.error("Error fetching SEO for path:", path, error);
+    return null;
+  }
+}
