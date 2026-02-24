@@ -538,4 +538,64 @@ export async function deleteFaq(id: string) {
     return { success: false, error: error.message || "Gagal menghapus FAQ" };
   }
 }
+// NAVIGATION ACTIONS
+export async function getNavigations() {
+  try {
+    // @ts-ignore
+    return await prisma.navigation.findMany({
+      orderBy: { order: "asc" },
+    });
+  } catch (error) {
+    console.error("Error fetching navigations:", error);
+    return [];
+  }
+}
 
+export async function createNavigation(data: any) {
+  try {
+    const admin = await checkRole(["SUPER_ADMIN"]);
+    // @ts-ignore
+    const nav = await prisma.navigation.create({
+      data,
+    });
+
+    revalidatePath("/", "layout");
+    return { success: true, data: nav };
+  } catch (err: any) {
+    console.error("Error creating navigation:", err);
+    return { success: false, error: err.message };
+  }
+}
+
+export async function updateNavigation(id: string, data: any) {
+  try {
+    const admin = await checkRole(["SUPER_ADMIN"]);
+    // @ts-ignore
+    const nav = await prisma.navigation.update({
+      where: { id },
+      data,
+    });
+
+    revalidatePath("/", "layout");
+    return { success: true, data: nav };
+  } catch (err: any) {
+    console.error("Error updating navigation:", err);
+    return { success: false, error: err.message };
+  }
+}
+
+export async function deleteNavigation(id: string) {
+  try {
+    const admin = await checkRole(["SUPER_ADMIN"]);
+    // @ts-ignore
+    await prisma.navigation.delete({
+      where: { id },
+    });
+
+    revalidatePath("/", "layout");
+    return { success: true };
+  } catch (err: any) {
+    console.error("Error deleting navigation:", err);
+    return { success: false, error: err.message };
+  }
+}

@@ -8,10 +8,12 @@ import { MENU } from "@/data/menu";
 import { useState } from "react";
 import { submitContactForm } from "@/actions/public";
 
-export default function Footer({ settings = {} }: { settings?: Record<string, string> }) {
+export default function Footer({ settings = {}, initialMenu = [] }: { settings?: Record<string, string>, initialMenu?: any[] }) {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const menuData = initialMenu.length > 0 ? initialMenu : MENU;
+
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -141,13 +143,13 @@ export default function Footer({ settings = {} }: { settings?: Record<string, st
 
           {/* Links Columns */}
           <div className="lg:col-span-8 flex flex-wrap gap-x-12 gap-y-16 justify-between">
-             {MENU.map((section) => (
+             {menuData.map((section: any) => (
                <div key={section.id} className="min-w-[140px]">
                   <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-[#F15A24] mb-8">
                      {section.title}
                   </h3>
                   <ul className="space-y-4">
-                    {section.items?.map((link) => (
+                    {section.items?.map((link: any) => (
                       <li key={link.label}>
                          <Link 
                            href={link.url}
@@ -159,8 +161,8 @@ export default function Footer({ settings = {} }: { settings?: Record<string, st
                       </li>
                     ))}
                     {/* Additional nested items if any */}
-                    {section.subgroups?.map(sub => (
-                      sub.items.map(subLink => (
+                    {section.subgroups?.map((sub: any) => (
+                      sub.items.map((subLink: any) => (
                         <li key={subLink.label}>
                           <Link 
                             href={subLink.url}
@@ -173,6 +175,7 @@ export default function Footer({ settings = {} }: { settings?: Record<string, st
                       ))
                     ))}
                   </ul>
+
                </div>
              ))}
 

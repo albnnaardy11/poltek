@@ -7,9 +7,11 @@ import { motion, AnimatePresence } from "framer-motion";
 import { RiMenuLine, RiCloseLine, RiArrowDownSLine } from "react-icons/ri";
 import { MENU } from "@/data/menu";
 
-export default function MobileNavbar({ settings = {} }: { settings?: Record<string, string> }) {
+export default function MobileNavbar({ settings = {}, initialMenu = [] }: { settings?: Record<string, string>, initialMenu?: any[] }) {
   const [open, setOpen] = useState(false);
   const [dropdown, setDropdown] = useState<string | null>(null);
+  const menuData = initialMenu.length > 0 ? initialMenu : MENU;
+
 
   return (
     <div className="w-full bg-[#020617] p-5 lg:hidden border-b border-white/[0.08] relative z-50">
@@ -53,7 +55,7 @@ export default function MobileNavbar({ settings = {} }: { settings?: Record<stri
               </Link>
 
               {/* Menu Dinamis */}
-              {MENU.map((menu) => (
+              {menuData.map((menu: any) => (
                 <div key={menu.id} className="px-2">
                   <button
                     onClick={() =>
@@ -79,7 +81,7 @@ export default function MobileNavbar({ settings = {} }: { settings?: Record<stri
                         exit={{ opacity: 0, x: -10 }}
                         className="pl-6 space-y-1 mb-4"
                       >
-                        {menu.items?.map((item) => (
+                        {menu.items?.map((item: any) => (
                           <Link
                             key={item.label}
                             href={item.url || "#"}
@@ -90,11 +92,11 @@ export default function MobileNavbar({ settings = {} }: { settings?: Record<stri
                           </Link>
                         ))}
 
-                        {menu.subgroups?.map((sub) => (
+                        {menu.subgroups?.map((sub: any) => (
                           <div key={sub.title} className="pt-2">
                             <span className="text-[8px] font-black uppercase tracking-widest text-white/20 block mb-2 px-1">{sub.title}</span>
                             <div className="space-y-1">
-                              {sub.items.map((child) => (
+                              {sub.items.map((child: any) => (
                                 <Link
                                   key={child.label}
                                   href={child.url}

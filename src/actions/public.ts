@@ -182,3 +182,56 @@ export async function getPublicFaqs(category?: string) {
     return [];
   }
 }
+
+export async function getPublicNavigations() {
+  try {
+    // @ts-ignore
+    return await prisma.navigation.findMany({
+      where: { isActive: true },
+      orderBy: { order: "asc" },
+    });
+  } catch (error) {
+    console.error("Error fetching public navigations:", error);
+    return [];
+  }
+}export async function getPublicMenu() {
+  try {
+    // @ts-ignore
+    const items = await prisma.navigation.findMany({
+      where: { isActive: true },
+      orderBy: { order: "asc" },
+    });
+
+    const rootItems = items.filter((i: any) => !i.parentId && i.type === "HEADER");
+    
+    return rootItems.map((root: any) => {
+      const children = items.filter((i: any) => i.parentId === root.id);
+      
+      // Basic items (direct links)
+      const menuItems = children
+        .filter((c: any) => c.url)
+        .map((c: any) => ({ label: c.title, url: c.url }));
+        
+      // Subgroups (no url)
+      const subgroups = children
+        .filter((c: any) => !c.url)
+        .map((sg: any) => ({
+          title: sg.title,
+          items: items
+            .filter((i: any) => i.parentId === sg.id)
+            .map((i: any) => ({ label: i.title, url: i.url }))
+        }));
+
+      return {
+        id: root.id,
+        title: root.title,
+        url: root.url,
+        items: menuItems.length > 0 ? menuItems : [],
+        subgroups: subgroups.length > 0 ? subgroups : []
+      };
+    });
+  } catch (error) {
+    console.error("Error building menu:", error);
+    return [];
+  }
+}

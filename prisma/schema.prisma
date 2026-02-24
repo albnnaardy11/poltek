@@ -131,9 +131,24 @@ model Faq {
   @@map("faqs")
 }
 
+model Navigation {
+  id        String   @id @default(cuid())
+  title     String
+  url       String?
+  parentId  String?
+  order     Int      @default(0)
+  isActive  Boolean  @default(true)
+  type      String   @default("HEADER") // HEADER, FOOTER
+  metadata  Json?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("navigations")
+}
 
 enum Role {
   SUPER_ADMIN
   NEWS_EDITOR
   ACADEMIC_ADMIN
 }
+

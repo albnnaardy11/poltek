@@ -2,7 +2,7 @@ import Topbar from "./Topbar";
 import Navbar from "./Navbar";
 import MobileNavbar from "./MobileNavbar";
 
-export default function Header({ settings = {} }: { settings?: Record<string, string> }) {
+export default function Header({ settings = {}, menu = [] }: { settings?: Record<string, string>, menu?: any[] }) {
   return (
     <header className="w-full sticky top-0 z-[999] bg-[#020617]/90 backdrop-blur-2xl border-b border-white/[0.08] shadow-[0_4px_30px_rgba(0,0,0,0.5)]">
       <div className="hidden lg:block">
@@ -11,13 +11,14 @@ export default function Header({ settings = {} }: { settings?: Record<string, st
 
       {/* Desktop Navbar */}
       <div className="hidden lg:block">
-        <Navbar settings={settings} />
+        <Navbar settings={settings} initialMenu={menu} />
       </div>
 
       {/* Mobile Navbar */}
       <div className="lg:hidden">
-        <MobileNavbar settings={settings} />
+        <MobileNavbar settings={settings} initialMenu={menu} />
       </div>
     </header>
   );
 }
+

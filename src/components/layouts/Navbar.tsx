@@ -8,13 +8,20 @@ import { MENU, MenuItem } from "@/data/menu";
 import { useState, useEffect } from "react";
 import { getAllProgramsMenu } from "@/actions/public";
 
-export default function Navbar({ settings = {} }: { settings?: Record<string, string> }) {
+export default function Navbar({ settings = {}, initialMenu = [] }: { settings?: Record<string, string>, initialMenu?: MenuItem[] }) {
   const [hoveredMenu, setHoveredMenu] = useState<string | null>(null);
-  const [dynamicMenu, setDynamicMenu] = useState<MenuItem[]>(MENU);
+  const [dynamicMenu, setDynamicMenu] = useState<MenuItem[]>(initialMenu.length > 0 ? initialMenu : MENU);
+
+  useEffect(() => {
+    if (initialMenu.length > 0) {
+      setDynamicMenu(initialMenu);
+    }
+  }, [initialMenu]);
 
   useEffect(() => {
     const fetchPrograms = async () => {
       const programs = await getAllProgramsMenu();
+
       
       setDynamicMenu(prevMenu => {
         return prevMenu.map(item => {
