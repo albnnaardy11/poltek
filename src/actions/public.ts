@@ -1,6 +1,6 @@
 "use server";
 
-import { prisma } from "@/lib/prisma";
+import { prisma, db } from "@/lib/prisma";
 import { sendAutoReply, sendAdminNotification } from "@/lib/mail";
 
 export async function getProgramBySlug(slug: string) {
@@ -239,7 +239,7 @@ export async function getPublicNavigations() {
 export async function getPublicSeo(path: string) {
   try {
     // @ts-ignore
-    const seo = await prisma.seoSetting.findUnique({
+    const seo = await db.seoSetting.findUnique({
       where: { path },
     });
     return seo;

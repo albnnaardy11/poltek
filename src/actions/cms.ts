@@ -1,6 +1,6 @@
 "use server";
 
-import { prisma } from "@/lib/prisma";
+import { prisma, db } from "@/lib/prisma";
 import { Prisma } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { getCurrentAdmin, checkRole } from "@/lib/auth-utils";
@@ -605,7 +605,7 @@ export async function getSeoSettings() {
   try {
     const admin = await checkRole(["SUPER_ADMIN", "NEWS_EDITOR"]);
     // @ts-ignore
-    return await prisma.seoSetting.findMany({
+    return await db.seoSetting.findMany({
       orderBy: { path: "asc" },
     });
   } catch (error) {
@@ -618,7 +618,7 @@ export async function upsertSeoSetting(data: any) {
   try {
     const admin = await checkRole(["SUPER_ADMIN"]);
     // @ts-ignore
-    const seo = await prisma.seoSetting.upsert({
+    const seo = await db.seoSetting.upsert({
       where: { path: data.path },
       update: {
         title: data.title,
@@ -647,7 +647,7 @@ export async function deleteSeoSetting(id: string) {
   try {
     const admin = await checkRole(["SUPER_ADMIN"]);
     // @ts-ignore
-    await prisma.seoSetting.delete({
+    await db.seoSetting.delete({
       where: { id },
     });
 
