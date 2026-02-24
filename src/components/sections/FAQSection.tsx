@@ -4,34 +4,43 @@ import { useState } from "react";
 import { RiAddLine, RiSubtractLine, RiQuestionLine, RiWhatsappLine, RiMessage2Line } from "react-icons/ri";
 import { motion, AnimatePresence } from "framer-motion";
 
-const faqs = [
+
+interface FaqItem {
+  question: string;
+  answer: string;
+  category?: string;
+}
+
+const staticFaqs = [
   {
-    q: "Bagaimana cara mendaftar ke Politeknik Prestasi Prima?",
-    a: "Calon mahasiswa dapat mendaftar melalui website resmi di menu Pendaftaran atau datang langsung ke kampus untuk proses pendaftaran offline melalui tim admisi kami.",
+    question: "Bagaimana cara mendaftar ke Politeknik Prestasi Prima?",
+    answer: "Calon mahasiswa dapat mendaftar melalui website resmi di menu Pendaftaran atau datang langsung ke kampus untuk proses pendaftaran offline melalui tim admisi kami.",
   },
   {
-    q: "Apa syarat pendaftaran mahasiswa baru?",
-    a: "Syarat umum meliputi scan ijazah SMA/SMK sederajat, pas foto terbaru, kartu identitas, dan pengisian formulir pendaftaran. Beberapa program studi mungkin memerlukan tes kompetensi dasar.",
+    question: "Apa syarat pendaftaran mahasiswa baru?",
+    answer: "Syarat umum meliputi scan ijazah SMA/SMK sederajat, pas foto terbaru, kartu identitas, dan pengisian formulir pendaftaran. Beberapa program studi mungkin memerlukan tes kompetensi dasar.",
   },
   {
-    q: "Program studi apa saja yang tersedia di Poltek Presma?",
-    a: "Kami menawarkan berbagai program vokasi unggulan mulai dari D3 Administrasi Perkantoran, Manajemen Pemasaran, hingga D4 Teknologi Rekayasa Perangkat Lunak dan Multimedia.",
+    question: "Program studi apa saja yang tersedia di Poltek Presma?",
+    answer: "Kami menawarkan berbagai program vokasi unggulan mulai dari D3 Administrasi Perkantoran, Manajemen Pemasaran, hingga D4 Teknologi Rekayasa Perangkat Lunak dan Multimedia.",
   },
   {
-    q: "Kapan jadwal pendaftaran tahun akademik berikutnya?",
-    a: "Gelombang pendaftaran biasanya dibuka mulai Januari untuk Gelombang 1. Informasi detail mengenai tanggal penting dapat Anda pantau melalui dashboard pendaftaran.",
+    question: "Kapan jadwal pendaftaran tahun akademik berikutnya?",
+    answer: "Gelombang pendaftaran biasanya dibuka mulai Januari untuk Gelombang 1. Informasi detail mengenai tanggal penting dapat Anda pantau melalui dashboard pendaftaran.",
   },
   {
-    q: "Apakah Poltek Presma menawarkan beasiswa?",
-    a: "Ya, kami memiliki program Beasiswa Prestasi, Beasiswa Tahfidz, dan Beasiswa Mitra Industri yang dapat memberikan potongan biaya kuliah hingga 100%.",
+    question: "Apakah Poltek Presma menawarkan beasiswa?",
+    answer: "Ya, kami memiliki program Beasiswa Prestasi, Beasiswa Tahfidz, dan Beasiswa Mitra Industri yang dapat memberikan potongan biaya kuliah hingga 100%.",
   },
 ];
 
-export default function FAQSection() {
+export default function FAQSection({ initialFaqs = [] }: { initialFaqs?: any[] }) {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
+  
+  const displayFaqs = initialFaqs.length > 0 ? initialFaqs : staticFaqs;
 
   return (
-    <section className="relative w-full bg-white py-24 lg:py-32 overflow-hidden px-6">
+    <section className="relative w-full bg-white py-24 lg:py-32 overflow-hidden px-6" id="faq">
       <div className="max-w-4xl mx-auto">
         {/* Header content */}
         <motion.div 
@@ -54,7 +63,7 @@ export default function FAQSection() {
 
         {/* FAQ Items */}
         <div className="space-y-4">
-          {faqs.map((item, idx) => {
+          {displayFaqs.map((item, idx) => {
             const isOpen = openIndex === idx;
 
             return (
@@ -77,7 +86,7 @@ export default function FAQSection() {
                   <span className={`text-lg md:text-xl font-black transition-colors ${
                     isOpen ? "text-[#1D234E]" : "text-gray-700 group-hover:text-purple-700"
                   }`}>
-                    {item.q}
+                    {item.question || item.q}
                   </span>
                   
                   <div className={`shrink-0 w-10 h-10 rounded-2xl flex items-center justify-center transition-all duration-500 ${
@@ -98,7 +107,7 @@ export default function FAQSection() {
                       <div className="px-8 pb-8">
                         <div className="h-[1px] bg-purple-100 mb-6" />
                         <p className="text-lg lg:text-xl font-medium leading-relaxed text-gray-600">
-                          {item.a}
+                          {item.answer || item.a}
                         </p>
                       </div>
                     </motion.div>
@@ -126,7 +135,7 @@ export default function FAQSection() {
           </div>
           
           <a
-            href="https://wa.me/628123456789"
+            href="https://wa.me/6281380008079"
             className="group relative w-full sm:w-auto px-6 py-4 sm:px-8 bg-green-600 hover:bg-green-700 text-white rounded-2xl font-black text-xs sm:text-sm uppercase tracking-widest transition-all shadow-xl shadow-green-900/40 text-center whitespace-nowrap flex items-center justify-center gap-2"
           >
             <RiWhatsappLine size={20} />
@@ -137,3 +146,4 @@ export default function FAQSection() {
     </section>
   );
 }
+

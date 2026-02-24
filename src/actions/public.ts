@@ -168,3 +168,17 @@ export async function getPublicSettings() {
     return {};
   }
 }
+
+export async function getPublicFaqs(category?: string) {
+  try {
+    const where = category ? { category: { contains: category, mode: 'insensitive' as const } } : {};
+    // @ts-ignore
+    return await prisma.faq.findMany({
+      where,
+      orderBy: { order: 'asc' },
+    });
+  } catch (error) {
+    console.error("Error fetching public FAQs:", error);
+    return [];
+  }
+}

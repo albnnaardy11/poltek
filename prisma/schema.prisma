@@ -119,6 +119,19 @@ model Setting {
   @@map("settings")
 }
 
+model Faq {
+  id        String   @id @default(cuid())
+  question  String
+  answer    String
+  category  String   @default("Umum")
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("faqs")
+}
+
+
 enum Role {
   SUPER_ADMIN
   NEWS_EDITOR

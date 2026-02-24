@@ -9,13 +9,14 @@ import NewsSection from "@/components/sections/NewsSection";
 import FAQSection from "@/components/sections/FAQSection";
 import WhyChooseUsSection from "@/components/sections/WhyChooseUsSection";
 
-import { getLatestNews } from "@/actions/public";
+import { getLatestNews, getPublicFaqs } from "@/actions/public";
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
 export default async function Home() {
   const latestNews = await getLatestNews();
+  const faqs = await getPublicFaqs();
 
   return (
     <main className="min-h-screen w-full">
@@ -48,7 +49,7 @@ export default async function Home() {
       <NewsSection initialNews={latestNews} />
 
       {/* 9. FAQ */}
-      <FAQSection />
+      <FAQSection initialFaqs={faqs} />
 
 
     </main>

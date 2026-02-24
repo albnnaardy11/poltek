@@ -434,3 +434,108 @@ export async function changeAdminPassword(data: { oldPassword: string, newPasswo
     return { success: false, error: err.message || "Gagal mengganti password" };
   }
 }
+
+// FAQ ACTIONS
+export async function getFaqs() {
+  try {
+    // @ts-ignore - Prisma type sync issue on Windows
+    return await prisma.faq.findMany({
+      orderBy: { order: "asc" },
+    });
+  } catch (error) {
+    console.error("Error fetching FAQs:", error);
+    return [];
+  }
+}
+
+export async function createFaq(data: {
+  question: string;
+  answer: string;
+  category?: string;
+  order?: number;
+}) {
+  try {
+    const admin = await checkRole(["SUPER_ADMIN"]);
+    
+    // @ts-ignore - Prisma type sync issue on Windows
+    const faq = await prisma.faq.create({
+      data,
+    });
+
+    await createAuditLog({
+      adminId: admin.id,
+      action: "CREATE",
+      entity: "FAQ",
+      entityId: faq.id,
+      details: { question: faq.question }
+    });
+
+    revalidatePath("/admin/faq");
+    revalidatePath("/"); // Revalidate home for FAQ section
+    return { success: true, data: faq };
+  } catch (err: unknown) {
+    const error = err as Error;
+    console.error("Error creating FAQ:", error);
+    return { success: false, error: error.message || "Gagal membuat FAQ" };
+  }
+}
+
+export async function updateFaq(id: string, data: Partial<{
+  question: string;
+  answer: string;
+  category: string;
+  order: number;
+}>) {
+  try {
+    const admin = await checkRole(["SUPER_ADMIN"]);
+    
+    // @ts-ignore - Prisma type sync issue on Windows
+    const faq = await prisma.faq.update({
+      where: { id },
+      data,
+    });
+
+    await createAuditLog({
+      adminId: admin.id,
+      action: "UPDATE",
+      entity: "FAQ",
+      entityId: id,
+      details: { question: faq.question }
+    });
+
+    revalidatePath("/admin/faq");
+    revalidatePath("/");
+    return { success: true, data: faq };
+  } catch (err: unknown) {
+    const error = err as Error;
+    console.error("Error updating FAQ:", error);
+    return { success: false, error: error.message || "Gagal memperbarui FAQ" };
+  }
+}
+
+export async function deleteFaq(id: string) {
+  try {
+    const admin = await checkRole(["SUPER_ADMIN"]);
+    
+    // @ts-ignore - Prisma type sync issue on Windows
+    await prisma.faq.delete({
+      where: { id },
+    });
+
+    await createAuditLog({
+      adminId: admin.id,
+      action: "DELETE",
+      entity: "FAQ",
+      entityId: id
+    });
+
+    revalidatePath("/admin/faq");
+    revalidatePath("/");
+    return { success: true };
+  } catch (err: unknown) {
+    const error = err as Error;
+    console.error("Error deleting FAQ:", error);
+    return { success: false, error: error.message || "Gagal menghapus FAQ" };
+  }
+}
+

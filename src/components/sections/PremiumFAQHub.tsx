@@ -18,8 +18,10 @@ import Image from "next/image";
 
 interface FAQItem {
   category: string;
-  q: string;
-  a: string;
+  q?: string;
+  a?: string;
+  question?: string;
+  answer?: string;
   hot?: boolean;
 }
 
@@ -44,14 +46,19 @@ export default function PremiumFAQHub({
   initialFaqs,
   showCategories = true
 }: PremiumFAQHubProps) {
-  const [activeCategory, setActiveCategory] = useState(initialFaqs[0]?.category || "pendaftaran");
+  const [activeCategory, setActiveCategory] = useState(initialFaqs[0]?.category?.toLowerCase() || "pendaftaran");
   const [openIndex, setOpenIndex] = useState<number | null>(0);
   const [searchQuery, setSearchQuery] = useState("");
 
-  const filteredFaqs = initialFaqs.filter(f => 
-    (!showCategories || f.category === activeCategory) && 
-    (f.q.toLowerCase().includes(searchQuery.toLowerCase()) || f.a.toLowerCase().includes(searchQuery.toLowerCase()))
-  );
+  const filteredFaqs = initialFaqs.filter(f => {
+    const qText = (f.question || f.q || "").toLowerCase();
+    const aText = (f.answer || f.a || "").toLowerCase();
+    const sText = searchQuery.toLowerCase();
+    const catMatch = !showCategories || f.category?.toLowerCase().includes(activeCategory.toLowerCase());
+    const searchMatch = qText.includes(sText) || aText.includes(sText);
+    return catMatch && searchMatch;
+  });
+
 
   return (
     <div className="min-h-screen bg-[#020617] text-white selection:bg-[#FF6B00] selection:text-white pb-20">
@@ -183,37 +190,38 @@ export default function PremiumFAQHub({
                            }`}>
                               {idx + 1}
                            </div>
-                           <h3 className={`text-xl md:text-2xl font-black pr-4 transition-colors ${
-                             isOpen ? "text-white" : "text-gray-400 group-hover:text-white"
-                           }`}>
-                             {faq.q}
-                           </h3>
-                        </div>
-                        
-                        <div className={`w-12 h-12 rounded-full flex items-center justify-center shrink-0 border transition-all duration-500 ${
-                          isOpen ? "bg-white text-[#020617] rotate-180" : "bg-white/5 border-white/10 text-white group-hover:bg-[#FF6B00] group-hover:border-[#FF6B00]"
-                        }`}>
-                          {isOpen ? <RiSubtractLine size={24} /> : <RiAddLine size={24} />}
-                        </div>
-                      </button>
+                             <h3 className={`text-xl md:text-2xl font-black pr-4 transition-colors ${
+                               isOpen ? "text-white" : "text-gray-400 group-hover:text-white"
+                             }`}>
+                               {faq.question || faq.q}
+                             </h3>
+                          </div>
+                          
+                          <div className={`w-12 h-12 rounded-full flex items-center justify-center shrink-0 border transition-all duration-500 ${
+                            isOpen ? "bg-white text-[#020617] rotate-180" : "bg-white/5 border-white/10 text-white group-hover:bg-[#FF6B00] group-hover:border-[#FF6B00]"
+                          }`}>
+                            {isOpen ? <RiSubtractLine size={24} /> : <RiAddLine size={24} />}
+                          </div>
+                        </button>
+  
+                        <AnimatePresence>
+                          {isOpen && (
+                            <motion.div
+                              initial={{ height: 0, opacity: 0 }}
+                              animate={{ height: "auto", opacity: 1 }}
+                              exit={{ height: 0, opacity: 0 }}
+                              transition={{ duration: 0.4, ease: [0.04, 0.62, 0.23, 0.98] }}
+                            >
+                              <div className="px-8 md:px-10 pb-10 md:pb-12 pt-0">
+                                 <div className="h-[1px] bg-gradient-to-r from-[#FF6B00]/50 to-transparent mb-8" />
+                                 <p className="text-lg md:text-xl text-gray-400 leading-relaxed font-medium">
+                                   {faq.answer || faq.a}
+                                 </p>
+                              </div>
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
 
-                      <AnimatePresence>
-                        {isOpen && (
-                          <motion.div
-                            initial={{ height: 0, opacity: 0 }}
-                            animate={{ height: "auto", opacity: 1 }}
-                            exit={{ height: 0, opacity: 0 }}
-                            transition={{ duration: 0.4, ease: [0.04, 0.62, 0.23, 0.98] }}
-                          >
-                            <div className="px-8 md:px-10 pb-10 md:pb-12 pt-0">
-                               <div className="h-[1px] bg-gradient-to-r from-[#FF6B00]/50 to-transparent mb-8" />
-                               <p className="text-lg md:text-xl text-gray-400 leading-relaxed font-medium">
-                                 {faq.a}
-                               </p>
-                            </div>
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
                     </div>
                   );
                 })
