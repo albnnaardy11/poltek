@@ -36,13 +36,14 @@ export function Notifications() {
     <div className="relative" ref={dropdownRef}>
       <button 
         onClick={() => setIsOpen(!isOpen)}
-        className="relative p-2.5 text-slate-400 hover:bg-slate-50 transition-all rounded-full border border-slate-100 group"
+        className="relative p-2 lg:p-2.5 text-slate-400 hover:bg-slate-50 transition-all rounded-full border border-slate-100 group"
       >
-        <Bell size={20} className="group-hover:text-indigo-600 transition-colors" />
+        <Bell size={18} className="lg:size-[20px] group-hover:text-indigo-600 transition-colors" />
         {count > 0 && (
-          <span className="absolute top-2 right-2.5 w-2.5 h-2.5 bg-rose-500 border-2 border-white rounded-full animate-bounce" />
+          <span className="absolute top-1.5 right-2 lg:top-2 lg:right-2.5 w-2 lg:h-2.5 lg:w-2.5 h-2 bg-rose-500 border-2 border-white rounded-full animate-bounce" />
         )}
       </button>
+
 
       <AnimatePresence>
         {isOpen && (

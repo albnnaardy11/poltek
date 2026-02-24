@@ -102,7 +102,27 @@ function AdminLayoutContent({ children }: { children: React.ReactNode }) {
       }
     };
     fetchProfile();
+
+    // Responsive: auto hide on small screens
+    const handleResize = () => {
+      if (window.innerWidth < 1024) {
+        setIsSidebarOpen(false);
+      } else {
+        setIsSidebarOpen(true);
+      }
+    };
+
+    handleResize(); // Init
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+  // Close sidebar on path change on mobile
+  useEffect(() => {
+    if (window.innerWidth < 1024) {
+      setIsSidebarOpen(false);
+    }
+  }, [pathname]);
 
   const handleLogout = async () => {
     try {
@@ -130,11 +150,24 @@ function AdminLayoutContent({ children }: { children: React.ReactNode }) {
           className={`flex h-screen bg-[#FDFDFD] text-slate-800 font-sans overflow-hidden`}
         >
       
+      {/* BACKDROP FOR MOBILE */}
+      <AnimatePresence>
+        {isSidebarOpen && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setIsSidebarOpen(false)}
+            className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-40 lg:hidden"
+          />
+        )}
+      </AnimatePresence>
+      
       {/* SIDEBAR */}
       <aside 
-        className={`${
-          isSidebarOpen ? "w-80" : "w-24"
-        } bg-white transition-all duration-500 cubic-bezier(0.4, 0, 0.2, 1) flex flex-col relative z-30 border-r border-slate-100 overflow-hidden shrink-0 group/sidebar`}
+        className={`fixed lg:relative top-0 bottom-0 left-0 z-50 ${
+          isSidebarOpen ? "translate-x-0 w-80 shadow-2xl lg:shadow-none" : "-translate-x-full lg:translate-x-0 lg:w-24"
+        } bg-white transition-all duration-500 cubic-bezier(0.4, 0, 0.2, 1) flex flex-col border-r border-slate-100 overflow-hidden shrink-0 group/sidebar`}
       >
         {/* Sidebar Header */}
         <div className={`p-6 ${isSidebarOpen ? "pb-4" : "pb-6 flex justify-center"}`}>
@@ -239,7 +272,7 @@ function AdminLayoutContent({ children }: { children: React.ReactNode }) {
       <div className="flex-1 flex flex-col h-screen overflow-hidden relative">
         
         {/* Top Header */}
-        <header className="h-24 px-10 flex items-center justify-between z-20 bg-white/80 backdrop-blur-2xl border-b border-slate-100 shrink-0">
+        <header className="h-20 lg:h-24 px-4 lg:px-10 flex items-center justify-between z-20 bg-white/80 backdrop-blur-2xl border-b border-slate-100 shrink-0">
           <div className="flex items-center gap-6">
              <button 
               onClick={() => setIsSidebarOpen(!isSidebarOpen)} 
@@ -255,32 +288,32 @@ function AdminLayoutContent({ children }: { children: React.ReactNode }) {
                 </div>
              </button>
              
-             <div className="flex flex-col">
-                <h1 className="text-xl font-black text-brand-dark leading-tight tracking-tight">{currentTitle.title}</h1>
-                <div className="flex items-center gap-2 mt-1">
-                   <div className="w-1.5 h-1.5 bg-brand-orange rounded-full animate-pulse" />
-                   <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest opacity-80">{currentTitle.subtitle}</p>
+              <div className="flex flex-col max-w-[150px] md:max-w-none">
+                <h1 className="text-sm lg:text-xl font-black text-brand-dark leading-tight tracking-tight truncate">{currentTitle.title}</h1>
+                <div className="flex items-center gap-2 mt-0.5 lg:mt-1">
+                   <div className="w-1 h-1 lg:w-1.5 lg:h-1.5 bg-brand-orange rounded-full animate-pulse" />
+                   <p className="text-[8px] lg:text-[10px] font-black text-slate-400 uppercase tracking-widest opacity-80">{currentTitle.subtitle}</p>
                 </div>
-             </div>
+              </div>
           </div>
 
-          <div className="flex items-center gap-8">
-             <div className="hidden lg:flex items-center gap-4 px-4 py-2 bg-slate-50 rounded-2xl border border-slate-100">
+          <div className="flex items-center gap-3 lg:gap-8">
+             <div className="hidden md:flex lg:flex items-center gap-4 px-4 py-2 bg-slate-50 rounded-2xl border border-slate-100">
                 <Search size={16} className="text-slate-400" />
                 <input 
                   type="text" 
                   placeholder="Cari fitur..." 
-                  className="bg-transparent border-none outline-none text-xs font-bold text-slate-600 placeholder:text-slate-300 w-48"
+                  className="bg-transparent border-none outline-none text-xs font-bold text-slate-600 placeholder:text-slate-300 w-24 lg:w-48"
                 />
              </div>
-             <div className="flex items-center gap-4">
+             <div className="flex items-center gap-2 lg:gap-4">
                <Notifications />
                <UserDropdown admin={admin} onLogout={handleLogout} />
              </div>
           </div>
         </header>
 
-         <main className={`flex-1 overflow-y-auto px-10 py-6 custom-scrollbar bg-[#FDFDFD]`}>
+         <main className={`flex-1 overflow-y-auto px-4 lg:px-10 py-6 custom-scrollbar bg-[#FDFDFD]`}>
             <div className="max-w-[1600px] mx-auto">
               {!loadingProfile && !admin && (
                 <div className="mb-8 p-6 bg-rose-50 border border-rose-100 rounded-[2rem] flex items-center gap-4 animate-in fade-in slide-in-from-top-4 duration-500">

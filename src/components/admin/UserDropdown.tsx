@@ -28,9 +28,9 @@ export function UserDropdown({ admin, onLogout }: UserDropdownProps) {
     <div className="relative" ref={dropdownRef}>
       <button 
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-4 pl-4 border-l border-slate-100 group transition-all"
+        className="flex items-center gap-2 lg:gap-4 pl-0 lg:pl-4 border-l-0 lg:border-l border-slate-100 group transition-all"
       >
-        <div className="flex flex-col items-end">
+        <div className="hidden lg:flex flex-col items-end">
           <span className="text-sm font-bold text-slate-900 leading-none group-hover:text-indigo-600 transition-colors">
             {admin?.name || admin?.email?.split('@')[0] || "Guest"}
           </span>
@@ -39,14 +39,15 @@ export function UserDropdown({ admin, onLogout }: UserDropdownProps) {
           </span>
         </div>
         <div className="relative group/avatar">
-           <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-[#4338CA] via-indigo-600 to-orange-500 flex items-center justify-center font-black text-white shadow-lg shadow-indigo-500/20 text-sm group-hover/avatar:scale-105 transition-transform">
+           <div className="w-9 h-9 lg:w-10 lg:h-10 rounded-full bg-gradient-to-tr from-[#4338CA] via-indigo-600 to-orange-500 flex items-center justify-center font-black text-white shadow-lg shadow-indigo-500/20 text-xs lg:text-sm group-hover/avatar:scale-105 transition-transform">
               {(admin?.name?.[0] || admin?.email?.[0] || "G").toUpperCase()}
            </div>
-           <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-white rounded-full flex items-center justify-center border border-slate-100 shadow-sm">
+           <div className="absolute -bottom-1 -right-1 w-3.5 h-3.5 lg:w-4 lg:h-4 bg-white rounded-full flex items-center justify-center border border-slate-100 shadow-sm">
               <ChevronDown size={10} className={`text-slate-400 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
            </div>
         </div>
       </button>
+
 
       <AnimatePresence>
         {isOpen && (

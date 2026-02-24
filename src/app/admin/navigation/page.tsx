@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { 
   Plus, 
   Trash2, 
@@ -325,16 +325,16 @@ export default function NavigationAdminPage() {
               </div>
             </div>
 
-            <div className="overflow-x-auto">
-              <table className="w-full text-left">
+            <div className="overflow-x-auto custom-scrollbar">
+              <table className="w-full text-left min-w-[800px] lg:min-w-0">
                 <thead className="bg-slate-50/50">
                   <tr>
-                    <th className="py-4 pl-6 text-[10px] font-black text-slate-400 uppercase tracking-widest">Label Menu</th>
-                    <th className="py-4 px-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">Link</th>
-                    <th className="py-4 px-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">Tipe</th>
-                    <th className="py-4 px-4 text-center text-[10px] font-black text-slate-400 uppercase tracking-widest">Order</th>
-                    <th className="py-4 px-4 text-center text-[10px] font-black text-slate-400 uppercase tracking-widest">Status</th>
-                    <th className="py-4 pr-6 text-right text-[10px] font-black text-slate-400 uppercase tracking-widest">Aksi</th>
+                    <th className="py-4 pl-6 text-[9px] lg:text-[10px] font-black text-slate-400 uppercase tracking-widest whitespace-nowrap">Label Menu</th>
+                    <th className="py-4 px-4 text-[9px] lg:text-[10px] font-black text-slate-400 uppercase tracking-widest whitespace-nowrap">Link</th>
+                    <th className="py-4 px-4 text-[9px] lg:text-[10px] font-black text-slate-400 uppercase tracking-widest">Tipe</th>
+                    <th className="py-4 px-4 text-center text-[9px] lg:text-[10px] font-black text-slate-400 uppercase tracking-widest">Order</th>
+                    <th className="py-4 px-4 text-center text-[9px] lg:text-[10px] font-black text-slate-400 uppercase tracking-widest">Status</th>
+                    <th className="py-4 pr-6 text-right text-[9px] lg:text-[10px] font-black text-slate-400 uppercase tracking-widest">Aksi</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -369,5 +369,3 @@ export default function NavigationAdminPage() {
     </div>
   );
 }
-
-import React from "react";
