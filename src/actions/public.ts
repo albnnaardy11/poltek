@@ -1,6 +1,7 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
+import { sendAutoReply, sendAdminNotification } from "@/lib/mail";
 
 export async function getProgramBySlug(slug: string) {
   try {
@@ -63,6 +64,19 @@ export async function submitContactForm(data: {
         message: data.message,
       },
     });
+
+    // Send emails asynchronously (don't block the return, but await them to ensure they process within the request lifecycle if needed, or fire and forget. 
+    // Vercel Serverless allows a bit of execution after response, but awaiting is safer).
+    await Promise.all([
+      sendAutoReply(data.name, data.email),
+      sendAdminNotification({
+        name: data.name,
+        email: data.email,
+        category: data.category || "Pertanyaan",
+        subject: data.subject || "No Subject",
+        message: data.message
+      })
+    ]);
 
     return { success: true, data: contactMessage };
   } catch (error) {

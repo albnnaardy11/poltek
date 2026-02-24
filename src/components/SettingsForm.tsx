@@ -87,7 +87,7 @@ export default function SettingsForm({ initialSettings }: SettingsFormProps) {
         <h3 className="text-lg font-black text-slate-900 mb-6">Kontak & Lokasi</h3>
         
         <div className="space-y-5">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
             <div>
               <label className="block text-xs font-black text-slate-700 uppercase tracking-widest mb-2">Telepon</label>
               <input 
@@ -108,6 +108,18 @@ export default function SettingsForm({ initialSettings }: SettingsFormProps) {
                 className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 outline-none transition-all font-medium text-sm"
                 placeholder="info@kampus.ac.id"
               />
+            </div>
+            
+            <div>
+              <label className="block text-xs font-black text-slate-700 uppercase tracking-widest mb-2">Email Notifikasi Admin</label>
+              <input 
+                type="email" 
+                value={settings.notification_email || ""}
+                onChange={(e) => handleChange("notification_email", e.target.value)}
+                className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 outline-none transition-all font-medium text-sm"
+                placeholder="cs@kampus.ac.id"
+              />
+              <p className="text-[10px] text-slate-500 mt-1">Email penerima setiap kali ada form kontak/inbox masuk.</p>
             </div>
           </div>
 

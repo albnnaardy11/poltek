@@ -3,22 +3,36 @@
 import React, { useState } from "react";
 import { markMessageAsRead, deleteMessage, clearMessages } from "@/actions/cms";
 import { CheckCircle2, Trash2, Loader2 } from "lucide-react";
+import { useAdminUI } from "@/providers/AdminUIProvider";
 
 export function MessageActions({ id, isRead }: { id: string, isRead: boolean }) {
+  const { confirm, toast } = useAdminUI();
   const [loading, setLoading] = useState<"read" | "delete" | null>(null);
 
   const onMarkRead = async () => {
     setLoading("read");
-    await markMessageAsRead(id);
+    const result = await markMessageAsRead(id);
+    if (result.success) {
+      toast({ title: "Success", message: "Pesan ditandai sudah dibaca", type: "success" });
+    }
     setLoading(null);
   };
 
   const onDelete = async () => {
-    if (confirm("Hapus pesan ini?")) {
-      setLoading("delete");
-      await deleteMessage(id);
-      setLoading(null);
-    }
+    confirm({
+      title: "Hapus Pesan?",
+      description: "Tindakan ini tidak dapat dibatalkan.",
+      type: "danger",
+      confirmLabel: "Hapus",
+      onConfirm: async () => {
+        setLoading("delete");
+        const result = await deleteMessage(id);
+        if (result.success) {
+          toast({ title: "Deleted", message: "Pesan berhasil dihapus", type: "success" });
+        }
+        setLoading(null);
+      }
+    });
   };
 
   return (
@@ -46,14 +60,24 @@ export function MessageActions({ id, isRead }: { id: string, isRead: boolean }) 
 }
 
 export function ClearInboxButton() {
+  const { confirm, toast } = useAdminUI();
   const [loading, setLoading] = useState(false);
 
   const onClear = async () => {
-    if (confirm("Bersihkan semua pesan di kotak masuk?")) {
-      setLoading(true);
-      await clearMessages();
-      setLoading(false);
-    }
+    confirm({
+      title: "Bersihkan Semua Pesan?",
+      description: "Ini akan menghapus seluruh isi kotak masuk secara permanen.",
+      type: "danger",
+      confirmLabel: "Hapus Semua",
+      onConfirm: async () => {
+        setLoading(true);
+        const result = await clearMessages();
+        if (result.success) {
+          toast({ title: "Success", message: "Kotak masuk dikosongkan", type: "success" });
+        }
+        setLoading(false);
+      }
+    });
   };
 
   return (
