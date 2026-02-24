@@ -4,18 +4,7 @@ import NewsDetailClient from "./NewsDetailClient";
 import { notFound } from "next/navigation";
 
 export const dynamic = "force-dynamic";
-
-export async function generateStaticParams() {
-  try {
-    const allNews = await getNews();
-    return (allNews || []).map((news) => ({
-      slug: news.slug,
-    }));
-  } catch (error) {
-    console.error("Error generating static params for news:", error);
-    return [];
-  }
-}
+export const revalidate = 0;
 
 export default async function NewsDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;

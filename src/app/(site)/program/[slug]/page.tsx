@@ -3,8 +3,8 @@ import { getProgramBySlug } from "@/actions/public";
 import ProgramDetailTemplate from "@/components/program/ProgramDetailTemplate";
 import { ProgramDetail } from "@/data/programs";
 
-// Add this to improve performance for static generation if you switch to it
 export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export default async function ProgramDynamicPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;

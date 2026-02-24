@@ -11,7 +11,8 @@ import WhyChooseUsSection from "@/components/sections/WhyChooseUsSection";
 
 import { getLatestNews } from "@/actions/public";
 
-export const revalidate = 60;
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export default async function Home() {
   const latestNews = await getLatestNews();
