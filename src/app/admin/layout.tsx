@@ -24,7 +24,8 @@ import {
   HelpCircle,
   Plus,
   AlertCircle,
-  Zap
+  Zap,
+  ShieldCheck
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -46,7 +47,7 @@ const sidebarCategories = [
       { name: "SEO Manager", href: "/admin/seo", icon: Zap },
       { name: "Inbox Messages", href: "/admin/inbox", icon: Inbox },
       { name: "Audit Logs", href: "/admin/audit", icon: ShieldAlert },
-      { name: "System Settings", href: "/admin/settings", icon: Settings },
+      { name: "System Settings", href: "/admin/settings/general", icon: Settings },
     ]
   },
   {
@@ -69,8 +70,9 @@ const pageTitles: Record<string, { title: string, subtitle: string }> = {
   "/admin/faq": { title: "FAQ Management", subtitle: "Tanya jawab cerdas untuk publik" },
   "/admin/navigation": { title: "Menu Manager", subtitle: "Kelola struktur navigasi website" },
   "/admin/inbox": { title: "Inbox Messages", subtitle: "Pesan dari pengunjung website" },
-  "/admin/audit": { title: "Audit Logs", subtitle: "Rekam jejak aktivitas sistem" },
-  "/admin/settings": { title: "System Settings", subtitle: "Konfigurasi parameter aplikasi" },
+  "/admin/audit": { title: "Security Audit Trails", subtitle: "Rekam jejak aktivitas & integritas sistem" },
+  "/admin/settings/general": { title: "General Settings", subtitle: "Konfigurasi identitas & kontak instansi" },
+  "/admin/seo": { title: "SEO Manager", subtitle: "Optimasi mesin pencari per halaman" },
 };
 
 import { Notifications } from "@/components/admin/Notifications";

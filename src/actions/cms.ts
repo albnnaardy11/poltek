@@ -7,7 +7,7 @@ import { getCurrentAdmin, checkRole } from "@/lib/auth-utils";
 import { createAuditLog } from "@/lib/audit";
 
 // NEWS ACTIONS
-export async function getNews() {
+export async function getNews() {       
   try {
     return await prisma.news.findMany({
       orderBy: { createdAt: "desc" },
@@ -655,6 +655,63 @@ export async function deleteSeoSetting(id: string) {
     return { success: true };
   } catch (err: any) {
     console.error("Error deleting SEO setting:", err);
+    return { success: false, error: err.message };
+  }
+}
+
+// AUDIT LOG ACTIONS
+export async function getAuditLogs() {
+  try {
+    const admin = await checkRole(["SUPER_ADMIN"]);
+    return await db.auditLog.findMany({
+      orderBy: { createdAt: "desc" },
+      include: {
+        admin: {
+          select: { name: true, email: true }
+        }
+      },
+      take: 100, // Limit to recent 100
+    });
+  } catch (error) {
+    console.error("Error fetching audit logs:", error);
+    return [];
+  }
+}
+
+// GENERAL SETTINGS ACTIONS
+export async function getGeneralSettings() {
+  try {
+    const settings = await db.setting.findMany();
+    // Transform to key-value object
+    return settings.reduce((acc: any, curr) => {
+      acc[curr.key] = curr.value;
+      return acc;
+    }, {});
+  } catch (error) {
+    console.error("Error fetching general settings:", error);
+    return {};
+  }
+}
+
+export async function updateGeneralSettings(data: Record<string, string>) {
+  try {
+    const admin = await checkRole(["SUPER_ADMIN"]);
+    
+    // Process all keys
+    const promises = Object.entries(data).map(([key, value]) => {
+      return db.setting.upsert({
+        where: { key },
+        update: { value },
+        create: { key, value },
+      });
+    });
+
+    await Promise.all(promises);
+
+    revalidatePath("/", "layout");
+    return { success: true };
+  } catch (err: any) {
+    console.error("Error updating general settings:", err);
     return { success: false, error: err.message };
   }
 }

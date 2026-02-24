@@ -19,7 +19,7 @@ export default async function SiteLayout({
       <Header settings={settings} menu={menu} />
 
       <main>{children}</main>
-      <FloatingButtons />
+      <FloatingButtons settings={settings} />
       <Footer settings={settings} initialMenu={menu} />
     </>
   );

@@ -19,11 +19,13 @@ import {
   RiMentalHealthLine,
   RiEyeLine,
   RiVolumeUpLine,
-  RiRefreshLine
+  RiRefreshLine,
+  RiWhatsappFill
 } from "react-icons/ri";
 
-export default function FloatingButtons() {
+export default function FloatingButtons({ settings }: { settings?: Record<string, string> }) {
   const pathname = usePathname();
+  const whatsappNumber = settings?.whatsapp?.replace(/\D/g, '') || "628123456789";
 
   /* ----------------------------------------------------
      STATE & REFS
@@ -390,6 +392,18 @@ export default function FloatingButtons() {
               <span className="absolute -top-1 -right-1 w-4 h-4 bg-green-500 border-2 border-white rounded-full" />
             )}
           </motion.button>
+          
+          {/* WhatsApp Button */}
+          <motion.a
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            href={`https://wa.me/${whatsappNumber}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-14 h-14 rounded-full bg-emerald-500 shadow-2xl flex items-center justify-center text-white text-3xl border-4 border-white pointer-events-auto"
+          >
+            <RiWhatsappFill />
+          </motion.a>
 
           {/* Back To Top */}
           <AnimatePresence>
