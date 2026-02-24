@@ -8,7 +8,7 @@ import { MENU } from "@/data/menu";
 import { useState } from "react";
 import { submitContactForm } from "@/actions/public";
 
-export default function Footer() {
+export default function Footer({ settings = {} }: { settings?: Record<string, string> }) {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -95,8 +95,7 @@ export default function Footer() {
             </Link>
 
             <p className="text-gray-400 text-sm leading-relaxed max-w-sm">
-              Institusi pendidikan vokasi yang berfokus pada keunggulan kompetensi digital, 
-              menciptakan profesional masa depan yang siap bersaing di kancah global.
+              {settings.campus_description || "Institusi pendidikan vokasi yang berfokus pada keunggulan kompetensi digital, menciptakan profesional masa depan yang siap bersaing di kancah global."}
             </p>
 
             {/* Contact Quick Info */}
@@ -105,28 +104,28 @@ export default function Footer() {
                   <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-[#F15A24] group-hover:bg-[#F15A24] group-hover:text-white transition-all">
                      <RiMapPin2Line />
                   </div>
-                  <span>Jl. Setu Cipayung No.89, RT.009/RW.05, Kel. Bambu Apus, kec. Cipayung, Jakarta Timur</span>
+                  <span>{settings.contact_address || "Jl. Setu Cipayung No.89, RT.009/RW.05, Kel. Bambu Apus, kec. Cipayung, Jakarta Timur"}</span>
                </div>
                <div className="flex items-center gap-4 text-xs font-bold group cursor-pointer hover:text-white transition-colors">
                   <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-[#F15A24] group-hover:bg-[#F15A24] group-hover:text-white transition-all">
                      <RiMailLine />
                   </div>
-                   <span>politeknik@prestasiprima.ac.id</span>
+                   <span>{settings.contact_email || "politeknik@prestasiprima.ac.id"}</span>
                </div>
                <div className="flex items-center gap-4 text-xs font-bold group cursor-pointer hover:text-white transition-colors">
                   <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-[#F15A24] group-hover:bg-[#F15A24] group-hover:text-white transition-all">
                      <RiPhoneLine />
                   </div>
-                   <span>+62 813 8000 8079</span>
+                   <span>{settings.contact_phone || "+62 813 8000 8079"}</span>
                </div>
             </div>
 
             {/* Social Icons */}
             <div className="flex items-center gap-4 pt-4">
               {[
-                { icon: RiFacebookFill, url: "https://www.facebook.com/p/Politeknik-Prestasi-Prima/" },
-                { icon: RiInstagramLine, url: "https://www.instagram.com/poltekpresma/" },
-                { icon: RiYoutubeFill, url: "https://www.youtube.com/@poltekpresma" },
+                { icon: RiFacebookFill, url: settings.social_facebook || "https://www.facebook.com/p/Politeknik-Prestasi-Prima/" },
+                { icon: RiInstagramLine, url: settings.social_instagram || "https://www.instagram.com/poltekpresma/" },
+                { icon: RiYoutubeFill, url: settings.social_youtube || "https://www.youtube.com/@poltekpresma" },
               ].map((social, i) => (
                 <a
                   key={i}
@@ -195,7 +194,7 @@ export default function Footer() {
                    Punya pertanyaan seputar pendaftaran atau program studi? Tim kami siap memberikan konsultasi gratis untuk masa depan Anda.
                  </p>
                  <Link 
-                    href="https://wa.me/6281380008079" 
+                    href={`https://wa.me/${settings.contact_phone ? settings.contact_phone.replace(/[^0-9]/g, '') : "6281380008079"}`} 
                    className="inline-flex items-center gap-4 bg-white text-[#080C1B] px-10 py-5 rounded-2xl font-black text-xs uppercase tracking-widest hover:scale-105 transition-all shadow-xl"
                  >
                     Chat on WhatsApp <RiArrowRightLine className="text-xl" />

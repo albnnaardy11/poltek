@@ -141,3 +141,16 @@ export async function getNewsBySlug(slug: string) {
     return null;
   }
 }
+
+export async function getPublicSettings() {
+  try {
+    const settings = await prisma.setting.findMany();
+    return settings.reduce((acc: Record<string, string>, setting) => {
+      acc[setting.key] = setting.value;
+      return acc;
+    }, {});
+  } catch (error) {
+    console.error("Error getting settings:", error);
+    return {};
+  }
+}

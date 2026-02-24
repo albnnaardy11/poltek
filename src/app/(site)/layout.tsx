@@ -2,17 +2,21 @@ import Header from "@/components/layouts/Header";
 import Footer from "@/components/layouts/Footer";
 import FloatingButtons from "@/components/FloatingButtons";
 
-export default function SiteLayout({
+import { getPublicSettings } from "@/actions/public";
+
+export default async function SiteLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const settings = await getPublicSettings();
+
   return (
     <>
-      <Header />
+      <Header settings={settings} />
       <main>{children}</main>
       <FloatingButtons />
-      <Footer />
+      <Footer settings={settings} />
     </>
   );
 }

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { RiPhoneLine, RiMailLine, RiDownload2Line } from "react-icons/ri";
 
-export default function Topbar() {
+export default function Topbar({ settings = {} }: { settings?: Record<string, string> }) {
   return (
     <div className="w-full bg-[#020617]/60 backdrop-blur-md text-white/50 text-[9px] font-black uppercase tracking-[0.3em] px-6 lg:px-12 hidden lg:block border-b border-white/[0.08]">
       <div className="max-w-7xl mx-auto flex items-center justify-end py-3">
@@ -13,12 +13,12 @@ export default function Topbar() {
 
           <div className="flex items-center gap-2 hover:text-white transition-colors cursor-pointer group">
             <RiPhoneLine size={12} className="text-[#FF6B00] group-hover:scale-110 transition-transform" />
-            <span>0813-8000-8079</span>
+            <span>{settings.contact_phone || "0813-8000-8079"}</span>
           </div>
 
           <div className="flex items-center gap-2 hover:text-white transition-colors cursor-pointer group">
             <RiMailLine size={12} className="text-[#FF6B00] group-hover:scale-110 transition-transform" />
-            <span>politeknik@prestasiprima.ac.id</span>
+            <span>{settings.contact_email || "politeknik@prestasiprima.ac.id"}</span>
           </div>
 
           <a

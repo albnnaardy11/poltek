@@ -1,11 +1,15 @@
-export default function PmbSection() {
+import { getPublicSettings } from "@/actions/public";
+
+export default async function PmbSection() {
+  const settings = await getPublicSettings();
+  const contactLink = settings.contact_phone ? `https://wa.me/${settings.contact_phone.replace(/[^0-9]/g, '')}` : "https://wa.me/6281380008079";
   return (
     <section className="max-w-7xl mx-auto px-6 py-20 mt-12">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
 
         {/* CARD 1 */}
         <a
-          href="https://wa.me/6281380008079"
+          href={contactLink}
           className="group block h-[416px] rounded-[20px] border-4 border-dashed border-[#1D234E] p-7 bg-white shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-[#1D234E]/30 flex flex-col"
         >
           <div className="mb-6 mt-2">
@@ -27,7 +31,7 @@ export default function PmbSection() {
 
         {/* CARD 2 */}
         <a
-          href="https://wa.me/6281380008079"
+          href={contactLink}
           className="group block h-[416px] rounded-[20px] bg-[#1D234E] p-7 text-white shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-white/30 relative overflow-hidden flex flex-col"
         >
           <div className="mb-6 mt-2">
@@ -51,7 +55,7 @@ export default function PmbSection() {
 
         {/* CARD 3 */}
         <a
-          href="https://wa.me/6281380008079"
+          href={contactLink}
           className="group block h-[416px] rounded-[20px] bg-[#ff7a00] p-7 text-white shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-white/30 relative overflow-hidden flex flex-col"
         >
           <div className="mb-6 mt-2">

@@ -8,7 +8,7 @@ import { MENU, MenuItem } from "@/data/menu";
 import { useState, useEffect } from "react";
 import { getAllProgramsMenu } from "@/actions/public";
 
-export default function Navbar() {
+export default function Navbar({ settings = {} }: { settings?: Record<string, string> }) {
   const [hoveredMenu, setHoveredMenu] = useState<string | null>(null);
   const [dynamicMenu, setDynamicMenu] = useState<MenuItem[]>(MENU);
 
@@ -161,13 +161,13 @@ export default function Navbar() {
         {/* === CTA / ACTION === */}
         <div className="hidden lg:flex items-center gap-6">
            <Link 
-             href="https://wa.me/6281380008079"
+             href={`https://wa.me/${settings.contact_phone ? settings.contact_phone.replace(/[^0-9]/g, '') : "6281380008079"}`}
              className="text-[10px] font-black uppercase tracking-[0.3em] text-brand-orange hover:text-white transition-colors"
            >
              Hotline
            </Link>
            <Link 
-             href="https://wa.me/6281380008079"
+             href={`https://wa.me/${settings.contact_phone ? settings.contact_phone.replace(/[^0-9]/g, '') : "6281380008079"}`}
              className="relative px-8 py-3.5 bg-gradient-to-r from-brand-orange to-[#FF8C00] text-white rounded-full text-[11px] font-black uppercase tracking-[0.2em] shadow-[0_10px_20px_-5px_rgba(244,121,32,0.4)] hover:scale-105 active:scale-95 transition-all overflow-hidden group"
            >
              <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />

@@ -1,7 +1,9 @@
 import { FaMapMarkerAlt, FaEnvelope, FaPhone, FaFacebookF, FaInstagram, FaYoutube } from "react-icons/fa";
 import ContactForm from "@/components/sections/ContactForm";
+import { getPublicSettings } from "@/actions/public";
 
-export default function ContactPage() {
+export default async function ContactPage() {
+  const settings = await getPublicSettings();
   return (
     <section className="relative min-h-screen bg-white pt-10 pb-20 overflow-hidden text-gray-900">
 
@@ -17,7 +19,7 @@ export default function ContactPage() {
           <span className="text-[#FF6700]">Poltek</span>Contact
         </h2>
         <p className="mt-4 text-gray-600 max-w-xl sm:max-w-2xl mx-auto leading-relaxed">
-          Mari terhubung dengan <span className="font-semibold text-[#5320C0]">Politeknik Prestasi Prima</span>.
+          Mari terhubung dengan <span className="font-semibold text-[#5320C0]">{settings.campus_name || "Politeknik Prestasi Prima"}</span>.
           Kami siap membantu dan menjawab kebutuhan Anda.
         </p>
       </div>
@@ -34,21 +36,21 @@ export default function ContactPage() {
             <div>
               <h3 className="text-3xl font-extrabold mb-2">Hubungi Kami</h3>
               <p className="text-white/80">
-                Kami siap membantu Anda untuk informasi lebih lanjut mengenai Politeknik Prestasi Prima.
+                Kami siap membantu Anda untuk informasi lebih lanjut mengenai {settings.campus_name || "Politeknik Prestasi Prima"}.
               </p>
             </div>
 
             <div className="space-y-4 text-white/90">
               <p className="flex items-start gap-3">
-                <FaMapMarkerAlt size={22} className="shrink-0" /> Jl. Setu Cipayung No.89, RT.009/RW.05, Kec. Cipayung, Jakarta Timur 13890
+                <FaMapMarkerAlt size={22} className="shrink-0" /> {settings.contact_address || "Jl. Setu Cipayung No.89, RT.009/RW.05, Kec. Cipayung, Jakarta Timur 13890"}
               </p>
 
               <p className="flex items-center gap-3">
-                <FaEnvelope size={20} /> politeknik@prestasiprima.ac.id
+                <FaEnvelope size={20} /> {settings.contact_email || "politeknik@prestasiprima.ac.id"}
               </p>
 
               <p className="flex items-center gap-3">
-                <FaPhone size={20} /> 0813 8000 8079 / 021 8430 6823
+                <FaPhone size={20} /> {settings.contact_phone || "0813 8000 8079 / 021 8430 6823"}
               </p>
             </div>
 
@@ -77,7 +79,7 @@ export default function ContactPage() {
             {/* WhatsApp Button */}
             <div className="pt-4">
               <a
-                href="https://wa.me/6281380008079"
+                href={settings.contact_phone ? `https://wa.me/${settings.contact_phone.replace(/[^0-9]/g, '')}` : "https://wa.me/6281380008079"}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="block w-full text-center bg-white text-[#5320C0] font-semibold py-4 rounded-xl shadow-md hover:bg-gray-100 transition active:scale-95"
@@ -94,7 +96,7 @@ export default function ContactPage() {
       <div className="container mx-auto mt-20 px-6 animate-fade-up delay-500">
         <div className="rounded-3xl overflow-hidden shadow-2xl border border-gray-200">
           <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3965.4748268020353!2d106.8972187!3d-6.332476499999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69ed2681bc7c67%3A0x777152b1d3f74a62!2sSMK%20Prestasi%20Prima!5e0!3m2!1sid!2sid!4v1756647265168!5m2!1sid!2sid"
+            src={settings.contact_maps_url || "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3965.4748268020353!2d106.8972187!3d-6.332476499999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69ed2681bc7c67%3A0x777152b1d3f74a62!2sSMK%20Prestasi%20Prima!5e0!3m2!1sid!2sid!4v1756647265168!5m2!1sid!2sid"}
             width="100%"
             height="420"
             style={{ border: 0 }}
