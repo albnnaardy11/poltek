@@ -62,7 +62,7 @@ export default function VisionMissionSection() {
   ];
 
   return (
-    <section className="relative w-full bg-white py-16 sm:py-24 lg:py-32 overflow-hidden">
+    <section className="relative w-full bg-white section-padding overflow-hidden">
       
       {/* Background patterns - More Energetic */}
       <div className="absolute top-0 right-0 w-[40%] h-full bg-brand-orange/5 -skew-x-12 translate-x-32 -z-10" />
@@ -86,7 +86,7 @@ export default function VisionMissionSection() {
             </span>
           </motion.div>
 
-          <motion.h2 variants={itemVariants} className="text-4xl sm:text-5xl lg:text-5xl xl:text-5xl 2xl:text-6xl font-black text-brand-dark leading-[1.05] mb-10 sm:mb-12 tracking-tighter">
+          <motion.h2 variants={itemVariants} className="text-4xl sm:text-5xl lg:text-5xl xl:text-5xl 2xl:text-6xl font-black text-brand-dark leading-[1.05] mb-10 sm:mb-12 tracking-tighter heading-tracking">
             Target <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-orange to-orange-500">
               Masa Depan

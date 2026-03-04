@@ -61,7 +61,7 @@ export default function AcademicProgramsSection() {
   };
 
   return (
-    <section className="w-full py-12 sm:py-24 lg:py-32 bg-white flex flex-col items-center overflow-hidden">
+    <section className="w-full section-padding bg-white flex flex-col items-center overflow-hidden">
       {/* Decorative background elements */}
       <div className="absolute top-0 left-0 w-full h-96 bg-gradient-to-b from-brand-purple/5 to-transparent -z-10" />
       <div className="absolute top-48 right-0 w-96 h-96 bg-brand-orange/5 rounded-full blur-[100px] -z-10" />
@@ -79,7 +79,7 @@ export default function AcademicProgramsSection() {
           <span className="text-brand-orange font-black uppercase tracking-[0.2em] text-[9px] md:text-[10px]">Academic Overview</span>
         </div>
         
-        <h2 className="text-3xl sm:text-4xl lg:text-5xl xl:text-5xl 2xl:text-6xl font-black text-brand-dark leading-[1.05] mb-6 sm:mb-8 tracking-tighter">
+        <h2 className="text-3xl sm:text-4xl lg:text-5xl xl:text-5xl 2xl:text-6xl font-black text-brand-dark leading-[1.05] mb-6 sm:mb-8 tracking-tighter heading-tracking">
           Pilihan Program <br />
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-orange to-orange-500">Studi Unggulan</span>
         </h2>

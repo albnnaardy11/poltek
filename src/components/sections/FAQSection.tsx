@@ -40,7 +40,7 @@ export default function FAQSection({ initialFaqs = [] }: { initialFaqs?: any[] }
   const displayFaqs = initialFaqs.length > 0 ? initialFaqs : staticFaqs;
 
   return (
-    <section className="relative w-full bg-white py-24 lg:py-32 overflow-hidden px-6" id="faq">
+    <section className="relative w-full bg-white section-padding overflow-hidden px-6" id="faq">
       <div className="max-w-4xl mx-auto">
         {/* Header content */}
         <motion.div 
@@ -53,7 +53,7 @@ export default function FAQSection({ initialFaqs = [] }: { initialFaqs?: any[] }
             <RiQuestionLine size={16} />
             Support Center
           </div>
-          <h2 className="text-4xl lg:text-5xl xl:text-5xl 2xl:text-6xl font-black text-[#1D234E] leading-[1.1] mb-12">
+          <h2 className="text-4xl lg:text-5xl xl:text-5xl 2xl:text-6xl font-black text-[#1D234E] leading-[1.1] mb-12 heading-tracking">
             Pertanyaan <span className="text-orange-500">Populer</span>
           </h2>
           <p className="max-w-2xl mx-auto text-gray-500 text-lg font-medium">

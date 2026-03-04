@@ -24,7 +24,7 @@ export default function DirectorMessageSection() {
   const titleWords = "Mempersiapkan Generasi Digital Masa Depan".split(" ");
 
   return (
-    <section className="relative py-12 sm:py-24 lg:py-32 overflow-hidden bg-[#020617]">
+    <section className="relative section-padding overflow-hidden bg-[#020617]">
       {/* Background Decorative Elements */}
       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#FF6B00]/5 blur-[120px] rounded-full -z-10" />
       <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-blue-600/5 blur-[120px] rounded-full -z-10" />
@@ -66,7 +66,7 @@ export default function DirectorMessageSection() {
               <span className="text-[#FF6B00] text-[10px] font-black uppercase tracking-[0.2em]">Sambutan Direktur Utama</span>
             </motion.div>
 
-            <motion.h2 variants={itemVariants} className="text-3xl sm:text-4xl lg:text-5xl xl:text-5xl 2xl:text-6xl font-black text-white leading-[1.05] tracking-tight">
+            <motion.h2 variants={itemVariants} className="text-3xl sm:text-4xl lg:text-5xl xl:text-5xl 2xl:text-6xl font-black text-white leading-[1.05] tracking-tight heading-tracking">
               {titleWords.map((word, i) => (
                 <span key={i} className="inline-block mr-[0.2em]">
                   {word === "Digital" || word === "Masa" || word === "Depan" ? (

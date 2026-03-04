@@ -19,7 +19,7 @@ export default function AboutSection() {
   };
 
   return (
-    <section className="relative overflow-hidden bg-white py-12 sm:py-24 lg:py-32">
+    <section className="relative overflow-hidden bg-white section-padding">
       {/* Background patterns - More Vibrant */}
       <div className="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-brand-orange/5 to-transparent -z-10" />
       <div className="absolute -top-24 -left-24 w-96 h-96 bg-brand-purple/10 rounded-full blur-[120px] -z-10 animate-pulse" />
@@ -77,7 +77,7 @@ export default function AboutSection() {
             Kenali Kami Lebih Dekat
           </div>
           
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl xl:text-5xl 2xl:text-6xl font-black text-brand-dark mb-6 sm:mb-8 leading-tight tracking-tighter">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl xl:text-5xl 2xl:text-6xl font-black text-brand-dark mb-6 sm:mb-8 leading-tight tracking-tighter heading-tracking">
             Membangun Generasi <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-orange to-orange-500">Digital Berkualitas</span>
           </h2>

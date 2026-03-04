@@ -1,11 +1,14 @@
 import "./globals.css";
 import "./styles/program/animations.css";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Plus_Jakarta_Sans } from "next/font/google";
 import GlobalLoader from "@/components/GlobalLoader";
 import AnalyticsTracker from "@/components/AnalyticsTracker";
 
-const inter = Inter({ subsets: ["latin"] });
+const plusJakartaSans = Plus_Jakarta_Sans({ 
+  subsets: ["latin"],
+  variable: '--font-plus-jakarta',
+});
 
 export const metadata: Metadata = {
   title: "Politeknik Prestasi Prima",
@@ -41,7 +44,7 @@ export default function RootLayout({
         />
       </head>
 
-      <body className={inter.className}>
+      <body className={`${plusJakartaSans.className} ${plusJakartaSans.variable}`}>
         <GlobalLoader />
         <AnalyticsTracker />
         {children}

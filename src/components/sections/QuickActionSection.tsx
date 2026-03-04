@@ -102,7 +102,7 @@ const cards = [
 
 export default function QuickActionSection() {
   return (
-    <section className="relative py-12 sm:py-24 px-4 sm:px-6 overflow-hidden bg-white">
+    <section className="relative section-padding px-4 sm:px-6 overflow-hidden bg-white">
       {/* Background Decorative Elements */}
       <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-indigo-500/5 blur-[120px] rounded-full -z-10" />
       <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-brand-orange/5 blur-[120px] rounded-full -z-10" />
@@ -208,7 +208,7 @@ function Card({ data }: { data: CardData }) {
         </motion.div>
 
         {/* TITLE */}
-        <h3 className="text-lg sm:text-2xl font-black leading-tight mb-3 sm:mb-4 tracking-tight">
+        <h3 className="text-lg sm:text-2xl font-black leading-tight mb-3 sm:mb-4 tracking-tight heading-tracking">
           {data.title}
         </h3>
 

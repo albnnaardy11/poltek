@@ -112,7 +112,7 @@ export default function NewsSection({ initialNews = [] }: NewsSectionProps) {
   };
 
   return (
-    <section className="py-20 lg:py-32 bg-gradient-to-br from-white via-orange-50/20 to-purple-50/30 px-4 sm:px-6 overflow-hidden relative">
+    <section className="section-padding bg-gradient-to-br from-white via-orange-50/20 to-purple-50/30 px-4 sm:px-6 overflow-hidden relative">
       {/* Decorative Background Elements */}
       <div className="absolute top-0 left-0 w-full h-[500px] bg-gradient-to-b from-white via-orange-50/10 to-transparent pointer-events-none -z-10" />
       <div className="absolute right-0 top-1/4 w-72 h-72 sm:w-96 sm:h-96 bg-purple-100/20 rounded-full blur-[120px] -z-10" />
@@ -130,7 +130,7 @@ export default function NewsSection({ initialNews = [] }: NewsSectionProps) {
             <RiNewspaperLine className="text-base sm:text-lg" />
             Berita Terkini
           </div>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-black text-brand-dark leading-[1.1] tracking-tight px-4">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-black text-brand-dark leading-[1.1] tracking-tight px-4 heading-tracking">
             Ikuti informasi & perkembangan <br className="hidden sm:block"/> terbaru seputar <span className="text-brand-orange underline decoration-brand-orange/20 decoration-4 underline-offset-4">kampus</span>
           </h2>
         </motion.div>

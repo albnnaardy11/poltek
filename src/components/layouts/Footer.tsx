@@ -46,7 +46,7 @@ export default function Footer({ settings = {}, initialMenu = [] }: { settings?:
   };
 
   return (
-    <footer className="relative bg-[#080C1B] text-gray-400 overflow-hidden font-sans">
+    <footer className="relative bg-[#080C1B] text-gray-400 overflow-hidden">
       {/* Decorative Background Elements */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute -top-[20%] -left-[10%] w-[600px] h-[600px] bg-[#F15A24]/5 blur-[120px] rounded-full" />
