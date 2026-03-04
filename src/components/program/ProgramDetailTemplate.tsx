@@ -28,7 +28,7 @@ export default function ProgramDetailTemplate({ data }: { data: ProgramDetail })
     <main ref={containerRef} className={`${jakarta.className} min-h-screen bg-[#080C1B] text-white selection:bg-[#F15A24]/30 overflow-hidden`}>
       
       {/* 1. CINEMATIC SPLIT HERO */}
-      <section className="relative min-h-screen flex items-start pt-12 md:pt-24 px-6 overflow-hidden">
+      <section className="relative min-h-screen flex items-start pt-4 md:pt-12 px-6 overflow-hidden">
         {/* Massive Background Text */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none select-none overflow-hidden w-full text-center">
             <motion.h1 

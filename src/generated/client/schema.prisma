@@ -1,6 +1,6 @@
 generator client {
   provider = "prisma-client-js"
-  output   = "../src/generated/client_v2"
+  output   = "../src/generated/client"
 }
 
 datasource db {
@@ -160,22 +160,21 @@ model SeoSetting {
 }
 
 model Facility {
-  id              String   @id @default(cuid())
-  title           String
-  subtitle        String?
-  category        String   // "lab", "kelas", "umum", "olahraga"
-  description     String   @db.Text
-  image           String?  // Main image URL
-  tourImage       String?  // 360 Tour image URL
-  capacity        String?  // Kapasitas
-  features        Json?    // Array of strings
-  tags            Json?    // Array of strings (for tour)
-  sceneId         String?  @unique // ID for virtual tour mapping
-  isVirtualTour   Boolean  @default(false)
-  quantity        Int      @default(1)
-  order           Int      @default(0)
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  id            String   @id @default(cuid())
+  title         String
+  subtitle      String?
+  category      String // "lab", "kelas", "umum", "olahraga"
+  description   String   @db.Text
+  image         String? // Main image URL
+  tourImage     String? // 360 Tour image URL
+  capacity      String? // Kapasitas
+  features      Json? // Array of strings
+  tags          Json? // Array of strings (for tour)
+  sceneId       String?  @unique // ID for virtual tour mapping
+  isVirtualTour Boolean  @default(false)
+  order         Int      @default(0)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 
   @@map("facilities")
 }

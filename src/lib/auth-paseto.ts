@@ -1,6 +1,6 @@
 import { SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
-import { Role } from "@prisma/client";
+import { Role } from "@/generated/client_v2";
 
 // ── Key Setup ─────────────────────────────────────────────────────────────────
 // jose needs a Uint8Array key of at least 256 bits (32 bytes) for HS256.

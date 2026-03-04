@@ -1,7 +1,7 @@
 "use server";
 
 import { prisma, db } from "@/lib/prisma";
-import { Prisma } from "@prisma/client";
+import { Prisma } from "@/generated/client_v2";
 import { revalidatePath } from "next/cache";
 import { getCurrentAdmin, checkRole } from "@/lib/auth-utils";
 import { createAuditLog } from "@/lib/audit";
@@ -713,5 +713,109 @@ export async function updateGeneralSettings(data: Record<string, string>) {
   } catch (err: any) {
     console.error("Error updating general settings:", err);
     return { success: false, error: err.message };
+  }
+}
+
+// FACILITY ACTIONS
+export async function getFacilities() {
+  try {
+    return await prisma.facility.findMany({
+      orderBy: { order: "asc" },
+    });
+  } catch (error) {
+    console.error("Error fetching facilities:", error);
+    return [];
+  }
+}
+
+export async function getFacilityById(id: string) {
+  try {
+    return await prisma.facility.findUnique({
+      where: { id },
+    });
+  } catch (error) {
+    console.error("Error fetching facility by id:", error);
+    return null;
+  }
+}
+
+export async function createFacility(data: any) {
+  try {
+    const admin = await checkRole(["SUPER_ADMIN"]);
+    
+    const facility = await prisma.facility.create({
+      data,
+    });
+
+    await createAuditLog({
+      adminId: admin.id,
+      action: "CREATE",
+      entity: "Facility",
+      entityId: facility.id,
+      details: { title: facility.title }
+    });
+
+    revalidatePath("/facility");
+    revalidatePath("/facility-tour");
+    revalidatePath("/admin/facilities");
+    return { success: true, data: facility };
+  } catch (err: unknown) {
+    const error = err as Error;
+    console.error("Error creating facility:", error);
+    return { success: false, error: error.message || "Gagal membuat fasilitas" };
+  }
+}
+
+export async function updateFacility(id: string, data: any) {
+  try {
+    const admin = await checkRole(["SUPER_ADMIN"]);
+    
+    const facility = await prisma.facility.update({
+      where: { id },
+      data,
+    });
+
+    await createAuditLog({
+      adminId: admin.id,
+      action: "UPDATE",
+      entity: "Facility",
+      entityId: facility.id,
+      details: { title: facility.title }
+    });
+
+    revalidatePath("/facility");
+    revalidatePath("/facility-tour");
+    revalidatePath("/admin/facilities");
+    return { success: true, data: facility };
+  } catch (err: unknown) {
+    const error = err as Error;
+    console.error("Error updating facility:", error);
+    return { success: false, error: error.message || "Gagal memperbarui fasilitas" };
+  }
+}
+
+export async function deleteFacility(id: string) {
+  try {
+    const admin = await checkRole(["SUPER_ADMIN"]);
+    
+    await prisma.facility.delete({
+      where: { id },
+    });
+
+    await createAuditLog({
+      adminId: admin.id,
+      action: "DELETE",
+      entity: "Facility",
+      entityId: id
+    });
+
+    revalidatePath("/facility");
+    revalidatePath("/facility-tour");
+    revalidatePath("/admin/facilities");
+    return { success: true };
+  } catch (err: unknown) {
+    const error = err as Error;
+    console.error("Error deleting facility:", error);
+    return { success: false, error: error.message || "Gagal menghapus fasilitas" };
   }
 }

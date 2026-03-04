@@ -1,6 +1,6 @@
 import { getSession, AdminPayload } from "./auth-paseto";
 import { prisma } from "./prisma";
-import { Role } from "@prisma/client";
+import { Role } from "@/generated/client_v2";
 import { getRedis } from "./redis";
 import { auditStorage } from "./audit-context";
 

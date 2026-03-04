@@ -616,8 +616,173 @@ const newsData = [
   },
 ];
 
+const facilitiesData = [
+  {
+    sceneId: "halaman-depan",
+    title: "Halaman Depan",
+    subtitle: "Gerbang Utama Kampus",
+    category: "umum",
+    description: "Pintu masuk utama kampus Politeknik Prestasi Prima yang asri dan merepresentasikan wajah institusi kami. Area ini dilengkapi dengan sistem keamanan 24 jam dan akses mudah ke seluruh gedung utama.",
+    image: "/images/tour360/halaman-depan.jpeg",
+    tourImage: "/images/tour360/halaman-depan.jpeg",
+    capacity: "Area Terbuka",
+    features: ["Security 24h", "Taman Asri", "Drop-off Point"],
+    tags: ["Gerbang Utama", "Area Publik"],
+    isVirtualTour: true,
+    order: 1
+  },
+  {
+    sceneId: "aula",
+    title: "Grand Auditorium",
+    subtitle: "Pusat Kegiatan Kampus",
+    category: "umum",
+    description: "Auditorium berkapasitas besar untuk seminar, workshop, dan acara kampus. Dilengkapi dengan stage lighting, LED Screen, dan surround sound system untuk mendukung berbagai skala event.",
+    image: "/images/facility/poltek-presma4-1024x768.jpg",
+    tourImage: "/images/tour360/aula.jpeg",
+    capacity: "500 Kursi",
+    features: ["Stage Lighting", "Led Screen", "Surround Sound", "VIP Room"],
+    tags: ["Event Space", "Main Hall"],
+    isVirtualTour: true,
+    order: 2
+  },
+  {
+    sceneId: "kantin",
+    title: "Kantin Digital",
+    subtitle: "Food & Beverage Hub",
+    category: "umum",
+    description: "Area relaksasi dan tempat berinteraksi mahasiswa dengan sajian kuliner lezat yang tertata bersih. Menggunakan sistem pembayaran cashless (QRIS) untuk kemudahan transaksi.",
+    image: "/images/tour360/kantin.jpeg",
+    tourImage: "/images/tour360/kantin.jpeg",
+    capacity: "150 Orang",
+    features: ["Cashless Payment", "Free WiFi", "Modern Design"],
+    tags: ["Food Court", "Hangout"],
+    isVirtualTour: true,
+    order: 3
+  },
+  {
+    sceneId: "kelas",
+    title: "Ruang Kelas Smart",
+    subtitle: "Smart Learning Environment",
+    category: "kelas",
+    description: "Ruang kelas modern dengan teknologi smart board dan sistem audio visual terkini. Dirancang dengan kursi ergonomis untuk memastikan kenyamanan belajar maksimal.",
+    image: "/images/facility/ruang-kelas03-1024x768.jpeg",
+    tourImage: "/images/tour360/kelas.jpeg",
+    capacity: "35 Kursi",
+    features: ["Smart Board", "Hybrid Ready", "Ergonomic Chairs", "Full AC"],
+    tags: ["Smart Class", "Interactive"],
+    isVirtualTour: true,
+    order: 4
+  },
+  {
+    sceneId: "lab",
+    title: "Laboratorium Komputer",
+    subtitle: "High-Spec Digital Workshop",
+    category: "lab",
+    description: "Lab komputer modern dengan PC high-spec untuk praktikum programming, networking, dan desain grafis. Dilengkapi dengan koneksi internet ultra cepat 24 jam.",
+    image: "/images/facility/ruang-kelas01-1024x768.jpeg",
+    tourImage: "/images/tour360/lab.jpeg",
+    capacity: "40 Kursi",
+    features: ["PC High-Spec", "Sistem Cloud", "Projector 4K", "WiFi 6"],
+    tags: ["IT Lab", "Modern PC", "High Speed"],
+    isVirtualTour: true,
+    order: 5
+  },
+  {
+    sceneId: "mushola",
+    title: "Mushola Al-Fattah",
+    subtitle: "Area Ibadah Kampus",
+    category: "umum",
+    description: "Fasilitas ibadah yang luas, bersih dan nyaman untuk mendukung kegiatan spiritual civitas akademika Politeknik Prestasi Prima.",
+    image: "/images/tour360/mushola.jpeg",
+    tourImage: "/images/tour360/mushola.jpeg",
+    capacity: "100 Jamaah",
+    features: ["Full AC", "Tempat Wudhu Bersih", "Sound System"],
+    tags: ["Spiritual", "Quiet Space"],
+    isVirtualTour: true,
+    order: 6
+  },
+  {
+    sceneId: "parkiran",
+    title: "Area Parkir Terpadu",
+    subtitle: "Fasilitas Kendaraan",
+    category: "umum",
+    description: "Area parkir luas dengan kapasitas besar yang dijaga oleh petugas keamanan selama jam operasional kampus 24 jam penuh.",
+    image: "/images/tour360/parkiran.jpeg",
+    tourImage: "/images/tour360/parkiran.jpeg",
+    capacity: "300 Kendaraan",
+    features: ["CCTV 24h", "Secure Parking", "Spacious"],
+    tags: ["Secure", "Spacious"],
+    isVirtualTour: true,
+    order: 7
+  },
+  {
+    sceneId: "ruang-staff",
+    title: "Ruang Staff & Admin",
+    subtitle: "Pusat Layanan Terpadu",
+    category: "umum",
+    description: "Ruang kerja staf modern dan pusat pelayanan terpadu administrasi akademik (BAAK) bagi seluruh kebutuhan mahasiswa.",
+    image: "/images/tour360/ruang-staff.jpeg",
+    tourImage: "/images/tour360/ruang-staff.jpeg",
+    capacity: "50 Staff",
+    features: ["Service Center", "Meeting Room", "Professional Office"],
+    tags: ["Admin", "Layanan Terpadu"],
+    isVirtualTour: true,
+    order: 8
+  },
+  {
+    title: "Studio Multimedia",
+    category: "lab",
+    description: "Studio lengkap untuk produksi konten digital, editing video, dan desain grafis profesional dengan standar industri.",
+    image: "/images/facility/ruang-kelas02-1024x768.jpeg",
+    capacity: "30 Kursi",
+    features: ["Mac Studio", "Green Screen", "Lighting Studio", "Audio Pro"],
+    isVirtualTour: false,
+    order: 9
+  },
+  {
+    title: "Perpustakaan Digital",
+    category: "umum",
+    description: "Perpustakaan modern dengan koleksi buku digital ribuan judul dan ruang baca yang nyaman serta tenang.",
+    image: "/images/facility/poltek-presma1-1024x768.jpg",
+    capacity: "100 Orang",
+    features: ["E-Library", "Quiet Zone", "Discussion Pod", "Coffee Corner"],
+    isVirtualTour: false,
+    order: 10
+  },
+  {
+    title: "Lapangan Olahraga",
+    category: "olahraga",
+    description: "Lapangan multifungsi untuk berbagai aktivitas olahraga seperti basket, futsal, dan voli.",
+    image: "/images/facility/poltek-presma2-1024x768.jpg",
+    capacity: "200 Orang",
+    features: ["Basketball", "Futsal Court", "Volleyball", "Modern Tribune"],
+    isVirtualTour: false,
+    order: 11
+  },
+  {
+    title: "Lab IoT & Robotics",
+    category: "lab",
+    description: "Pusat riset Internet of Things dan robotika dengan kit development terlengkap untuk inovasi mahasiswa.",
+    image: "/images/facility/poltek-presma5-1024x768.jpg",
+    capacity: "25 Kursi",
+    features: ["Arduino Kit", "3D Printing", "Robotic Arms", "Sensor Lab"],
+    isVirtualTour: false,
+    order: 12
+  }
+];
+
 async function main() {
 
+
+  console.log('Seeding facilities...');
+  // @ts-ignore
+  await prisma.facility.deleteMany({});
+  for (const facility of facilitiesData) {
+    // @ts-ignore
+    await prisma.facility.create({
+      data: facility
+    });
+  }
 
   console.log('Seeding programs...');
   await prisma.program.deleteMany({});

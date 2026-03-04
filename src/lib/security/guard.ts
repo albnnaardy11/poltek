@@ -1,6 +1,6 @@
 import { createHmac, timingSafeEqual } from "crypto";
 import { AdminPayload } from "../auth-paseto";
-import { Role } from "@prisma/client";
+import { Role } from "@/generated/client_v2";
 
 const SECURITY_SECRET = process.env.SECURITY_SECRET || "military-grade-secret-fallback-32c";
 

@@ -1,4 +1,4 @@
-import { Role } from "@prisma/client";
+import { Role } from "@/generated/client_v2";
 
 /**
  * SEMANTIC ENTITIES: Standardized definitions for AI and cross-module discovery.

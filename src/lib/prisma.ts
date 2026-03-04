@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from "../generated/client_v2";
 import { getAuditContext } from "./audit-context";
 import { semanticBus } from "./semantic/mediator";
 import { SemanticEntity } from "./semantic/types";
@@ -11,10 +11,16 @@ const globalForPrisma = global as unknown as { prisma: PrismaClient; db: PrismaC
  * Import as `db` from this module.
  */
 export const db: PrismaClient =
-  globalForPrisma.db ||
-  new PrismaClient({
-    log: process.env.NODE_ENV === "development" ? ["query", "warn", "error"] : ["error"],
-  });
+  (globalForPrisma.db && (globalForPrisma.db as any).facility) ? 
+  globalForPrisma.db :
+  (() => {
+    const client = new PrismaClient({
+      log: process.env.NODE_ENV === "development" ? ["query", "warn", "error"] : ["error"],
+    });
+    console.log("[PRISMA_INIT]: Facility model present?", !!(client as any).facility);
+    console.log("[PRISMA_INIT]: Models available:", Object.keys(client).filter(k => k.match(/^[a-z]/)));
+    return client;
+  })();
 
 // basePrisma delegates to the same raw client
 const basePrisma = db;
@@ -31,6 +37,7 @@ const mapToSemanticEntity = (model: string): SemanticEntity => {
     Faq: "SYSTEM_SETTING",
     Navigation: "SYSTEM_SETTING",
     SeoSetting: "SYSTEM_SETTING",
+    Facility: "SYSTEM_SETTING",
   };
 
   return mapping[model] || "SYSTEM_SETTING";

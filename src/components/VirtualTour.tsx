@@ -320,9 +320,10 @@ const SCENES: Scene[] = [
 ];
 
 // ─── MAIN COMPONENT ────────────────────────────────────────────
-export default function VirtualTour() {
+export default function VirtualTour({ externalScenes }: { externalScenes?: any[] }) {
   const [isClient, setIsClient] = useState(false);
-  const [currentScene, setCurrentScene] = useState<Scene>(SCENES[0]);
+  const activeScenes = externalScenes || SCENES;
+  const [currentScene, setCurrentScene] = useState<Scene>(activeScenes[0]);
   const [isNavOpen, setIsNavOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [isPanoramaLoaded, setIsPanoramaLoaded] = useState(false);

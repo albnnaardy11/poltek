@@ -1,5 +1,5 @@
 import { prisma } from "./prisma";
-import { Prisma } from "@prisma/client";
+import { Prisma } from "@/generated/client_v2";
 
 export async function createAuditLog({
   adminId,
