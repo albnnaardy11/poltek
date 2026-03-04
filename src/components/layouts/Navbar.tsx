@@ -75,7 +75,7 @@ export default function Navbar({ settings = {}, initialMenu = [] }: { settings?:
   }, []);
 
   return (
-    <nav className="relative z-[100] px-6 lg:px-12 py-5 bg-transparent">
+    <nav className="relative z-[100] px-6 lg:px-12 py-3.5 bg-transparent">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         
         {/* === LOGO === */}

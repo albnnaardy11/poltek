@@ -28,7 +28,7 @@ export default function ProgramDetailTemplate({ data }: { data: ProgramDetail })
     <main ref={containerRef} className={`${jakarta.className} min-h-screen bg-[#080C1B] text-white selection:bg-[#F15A24]/30 overflow-hidden`}>
       
       {/* 1. CINEMATIC SPLIT HERO */}
-      <section className="relative min-h-screen flex items-center pt-20 px-6 overflow-hidden">
+      <section className="relative min-h-screen flex items-start pt-12 md:pt-24 px-6 overflow-hidden">
         {/* Massive Background Text */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none select-none overflow-hidden w-full text-center">
             <motion.h1 
@@ -96,17 +96,6 @@ export default function ProgramDetailTemplate({ data }: { data: ProgramDetail })
                   <div className="absolute inset-0 bg-white translate-y-full group-hover:translate-y-0 transition-transform duration-300 -z-0 opacity-10" />
                 </Link>
                 
-                {/* Stats Pill */}
-                <div className="flex -space-x-4">
-                  {[1, 2, 3].map((i) => (
-                    <div key={i} className="w-12 h-12 rounded-full border-2 border-[#080C1B] overflow-hidden bg-gray-800">
-                      <Image src={`/images/facility/facility${i}.png`} alt="User" width={48} height={48} className="object-cover" unoptimized />
-                    </div>
-                  ))}
-                  <div className="h-12 flex items-center pl-8 text-xs font-bold text-gray-400">
-                    Trusted by 500+ Industry Leaders
-                  </div>
-                </div>
               </div>
             </motion.div>
           </div>
