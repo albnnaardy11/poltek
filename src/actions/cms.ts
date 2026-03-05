@@ -719,9 +719,12 @@ export async function updateGeneralSettings(data: Record<string, string>) {
 // FACILITY ACTIONS
 export async function getFacilities() {
   try {
-    return await prisma.facility.findMany({
+    const res = await prisma.facility.findMany({
       orderBy: { order: "asc" },
     });
+    console.log("[FACILITIES_ACTION]: Found", res.length, "facilities.");
+    console.log("[FACILITIES_ACTION]: Virtual tours:", res.filter(x => x.isVirtualTour).length);
+    return res;
   } catch (error) {
     console.error("Error fetching facilities:", error);
     return [];

@@ -1,10 +1,10 @@
 import { getFacilities } from "@/actions/cms";
-import TourClient from "@/components/facility/TourClient";
+import FacilityTourLanding from "@/components/facility/FacilityTourLanding";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "360° Virtual Tour | SMK PRESTASI PRIMA",
-  description: "Jelajahi kampus SMK PRESTASI PRIMA secara virtual dengan teknologi 360 derajat.",
+  title: "Virtual Tour 360° | Politeknik Prestasi Prima",
+  description: "Jelajahi kampus Politeknik Prestasi Prima secara virtual dengan teknologi 360 derajat.",
 };
 
 export const dynamic = "force-dynamic";
@@ -12,5 +12,5 @@ export const dynamic = "force-dynamic";
 export default async function TourPage() {
   const facilities = await getFacilities();
 
-  return <TourClient initialFacilities={facilities} />;
+  return <FacilityTourLanding facilities={facilities as any} />;
 }
