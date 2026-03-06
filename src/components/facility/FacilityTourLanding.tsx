@@ -3,18 +3,11 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { RiCompass3Line, RiPlayFill, RiArrowRightLine } from "react-icons/ri";
 import { Plus_Jakarta_Sans } from "next/font/google";
 
 const jakarta = Plus_Jakarta_Sans({ subsets: ["latin"], weight: ["400", "500", "600", "700", "800"] });
-
-const CATEGORY_MAP: Record<string, string> = {
-  lab: "Laboratorium",
-  kelas: "Ruang Kelas",
-  umum: "Fasilitas Umum",
-  olahraga: "Olahraga",
-};
 
 interface Facility {
   id: string;
@@ -30,11 +23,14 @@ interface Facility {
   tags?: any;
 }
 
+// ── OPTIMIZED ANIMATION VARIANTS (Hardware Accelerated, No CPU Bottlenecks) ── 
+const smoothEase: [number, number, number, number] = [0.22, 1, 0.36, 1]; // CSS easeOutCubic
+
 export default function FacilityTourLanding({ facilities }: { facilities: Facility[] }) {
   const [count, setCount] = useState(0);
   const tourFacilities = facilities.filter((f) => f.isVirtualTour);
 
-  // Animated counter
+  // Animated counter for "Scene 360"
   useEffect(() => {
     let current = 0;
     const target = tourFacilities.length;
@@ -50,122 +46,128 @@ export default function FacilityTourLanding({ facilities }: { facilities: Facili
   const heroImage = tourFacilities[0]?.tourImage || tourFacilities[0]?.image;
 
   return (
-    <div className={`${jakarta.className} min-h-screen bg-[#090D1F]`}>
+    <div className={`${jakarta.className} min-h-screen bg-[#090D1F] selection:bg-[#F47920]/30`}>
 
       {/* ══════ HERO ══════ */}
       <section className="relative min-h-[100svh] pt-20 flex flex-col overflow-hidden">
         {/* BG Photo */}
         {heroImage && (
-          <div className="absolute inset-0 z-0">
-            <Image src={heroImage} alt="Hero" fill className="object-cover opacity-25" unoptimized />
-          </div>
+          <motion.div 
+            initial={{ scale: 1.05, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 1.2, ease: smoothEase }}
+            className="absolute inset-0 z-0"
+          >
+            <Image 
+              src={heroImage} 
+              alt="Hero Preview" 
+              fill 
+              priority
+              className="object-cover opacity-25 object-center" 
+              unoptimized 
+            />
+          </motion.div>
         )}
-        {/* Gradient cover */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#090D1F]/70 via-[#090D1F]/60 to-[#090D1F] z-10" />
+        
+        {/* Gradient cover base */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#090D1F]/80 via-[#090D1F]/60 to-[#090D1F] z-10" />
 
         {/* Grid dot pattern */}
         <div
-          className="absolute inset-0 z-10 pointer-events-none opacity-[0.035]"
+          className="absolute inset-0 z-10 pointer-events-none opacity-[0.03]"
           style={{ backgroundImage: "radial-gradient(circle, #fff 1px, transparent 1px)", backgroundSize: "44px 44px" }}
         />
 
-        {/* Glow orbs */}
-        <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-[#F47920]/8 rounded-full blur-[150px] z-10 pointer-events-none" />
-        <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-indigo-700/8 rounded-full blur-[130px] z-10 pointer-events-none" />
+        {/* Glow orbs - Optimized with Hardware Accelerated Radial Gradients (No heavy CSS blur) */}
+        <div 
+          className="absolute top-0 right-0 w-[800px] h-[800px] z-10 pointer-events-none" 
+          style={{ background: "radial-gradient(circle, rgba(244,121,32,0.12) 0%, rgba(244,121,32,0) 70%)" }}
+        />
+        <div 
+          className="absolute bottom-0 left-0 w-[700px] h-[700px] z-10 pointer-events-none" 
+          style={{ background: "radial-gradient(circle, rgba(67,56,202,0.15) 0%, rgba(67,56,202,0) 70%)" }}
+        />
 
         {/* ── Center content ── */}
         <div className="relative z-20 flex-1 flex items-center justify-center px-6 pb-20">
-          <div className="text-center max-w-4xl w-full flex flex-col items-center gap-8 -mt-3">
-
+          <div className="text-center max-w-4xl w-full flex flex-col items-center gap-7 -mt-6">
+            
             {/* Badge */}
             <motion.div
-              initial={{ opacity: 0, y: 16 }}
+              initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.55 }}
-              className="inline-flex items-center gap-2.5 px-6 py-2.5 rounded-full border border-white/15 bg-white/8 backdrop-blur-md"
+              transition={{ duration: 0.8, ease: smoothEase, delay: 0.1 }}
+              className="inline-flex items-center gap-2.5 px-6 py-2.5 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm shadow-xl shadow-black/20"
             >
-              <span className="w-2 h-2 rounded-full bg-[#F47920] animate-pulse" />
-              <span className="text-[9px] font-black uppercase tracking-[0.35em] text-white/70">360° Immersive Experience</span>
+              <span className="w-2 h-2 rounded-full bg-[#F47920] animate-pulse glow-shadow" style={{boxShadow: "0 0 10px #F47920"}} />
+              <span className="text-[10px] font-black uppercase tracking-[0.3em] text-white/80">360° Immersive Experience</span>
             </motion.div>
 
             {/* Heading */}
             <motion.h1
-              initial={{ opacity: 0, y: 24 }}
+              initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.65, delay: 0.1 }}
-              className="text-6xl sm:text-7xl lg:text-8xl xl:text-[6.5rem] font-black text-white leading-[1.05] tracking-tight"
+              transition={{ duration: 0.8, ease: smoothEase, delay: 0.2 }}
+              className="text-5xl sm:text-7xl lg:text-8xl xl:text-[6.5rem] font-black text-white leading-[1.05] tracking-tight"
             >
               Jelajahi Kampus<br />
-              <span className="text-[#F47920]">Tanpa Batas</span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#F47920] to-orange-300 drop-shadow-lg">Tanpa Batas</span>
             </motion.h1>
 
             {/* Subtitle */}
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.65, delay: 0.2 }}
-              className="text-white/55 text-base lg:text-lg leading-relaxed max-w-md mx-auto"
+              transition={{ duration: 0.8, ease: smoothEase, delay: 0.3 }}
+              className="text-white/60 text-base lg:text-lg leading-relaxed max-w-lg mx-auto font-medium"
             >
-              Masuki setiap sudut lingkungan Politeknik Prestasi Prima melalui teknologi virtual tour 360° berkualitas tinggi, langsung dari kenyamanan layar Anda.
+              Masuki setiap sudut lingkungan Politeknik Prestasi Prima melalui teknologi virtual tour 360° interaktif!
             </motion.p>
 
             {/* Buttons */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.65, delay: 0.3 }}
-              className="flex flex-col sm:flex-row items-center justify-center gap-5 mt-2 w-full max-w-2xl mx-auto"
+              transition={{ duration: 0.8, ease: smoothEase, delay: 0.4 }}
+              className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-4 w-full max-w-xl mx-auto"
             >
               <Link
                 href="/virtual-tour"
-                className="inline-flex items-center justify-center gap-3 bg-[#F47920] hover:bg-orange-500 text-white w-full sm:w-auto px-14 py-5 rounded-2xl font-black text-sm uppercase tracking-[0.2em] shadow-xl shadow-[#F47920]/30 transition-all duration-300 hover:-translate-y-0.5"
+                className="inline-flex items-center justify-center gap-3 bg-[#F47920] hover:bg-orange-500 text-white w-full sm:w-auto px-10 py-4 rounded-2xl font-black text-xs uppercase tracking-[0.2em] shadow-xl shadow-[#F47920]/25 transition-all duration-300 hover:scale-105 active:scale-95"
               >
-                <RiPlayFill className="text-xl" />
+                <RiPlayFill className="text-lg" />
                 Mulai Eksplorasi
               </Link>
               <a
                 href="#explore"
-                className="inline-flex items-center justify-center gap-3 bg-white/8 hover:bg-white/15 text-white w-full sm:w-auto px-14 py-5 rounded-2xl font-black text-sm uppercase tracking-[0.2em] border border-white/15 transition-all duration-300 hover:-translate-y-0.5"
+                className="inline-flex items-center justify-center gap-3 bg-white/5 hover:bg-white/10 text-white w-full sm:w-auto px-10 py-4 rounded-2xl font-black text-xs uppercase tracking-[0.2em] border border-white/10 transition-all duration-300 hover:scale-105 active:scale-95"
               >
                 Daftar Fasilitas
               </a>
             </motion.div>
 
-            {/* ── EXPLORE MAP — Moved inside hero content ── */}
+            {/* ── EXPLORE MAP ── */}
             <motion.a
               href="#explore"
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.5 }}
-              className="mt-8 flex flex-col items-center gap-4 group cursor-pointer select-none w-full max-w-md mx-auto z-30"
+              transition={{ duration: 0.8, delay: 0.7, ease: smoothEase }}
+              className="mt-10 flex flex-col items-center gap-4 group cursor-pointer select-none w-full max-w-sm mx-auto z-30 opacity-70 hover:opacity-100 transition-opacity"
             >
-              <div className="flex items-center justify-center gap-6 w-full">
-                <motion.div
-                  animate={{ scaleX: [0.3, 1, 0.3] }}
-                  transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
-                  className="w-16 h-px bg-gradient-to-r from-transparent to-white/30 origin-right"
-                />
-                <span className="text-[11px] font-black uppercase tracking-[0.7em] text-white/40 group-hover:text-white/80 transition-colors duration-300">
+              <div className="flex items-center justify-center gap-5 w-full">
+                <div className="h-px bg-gradient-to-r from-transparent to-white/20 flex-1" />
+                <span className="text-[10px] font-black uppercase tracking-[0.6em] text-white/50 group-hover:text-white/90 transition-colors duration-300">
                   Explore Map
                 </span>
-                <motion.div
-                  animate={{ scaleX: [0.3, 1, 0.3] }}
-                  transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
-                  className="w-16 h-px bg-gradient-to-l from-transparent to-white/30 origin-left"
-                />
+                <div className="h-px bg-gradient-to-l from-transparent to-white/20 flex-1" />
               </div>
-              {/* Staggered chevrons (Larger) */}
-              <div className="flex flex-col items-center gap-1">
-                {[0, 1].map((i) => (
-                  <motion.svg
-                    key={i}
-                    animate={{ opacity: [0.15, 1, 0.15] }}
-                    transition={{ duration: 1.4, repeat: Infinity, ease: "easeInOut", delay: i * 0.25 }}
-                    width="20" height="10" viewBox="0 0 14 8" fill="none"
-                  >
-                    <path d="M1 1L7 7L13 1" stroke="#F47920" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-                  </motion.svg>
-                ))}
+              <div className="flex flex-col items-center gap-1 group-hover:translate-y-1 transition-transform duration-300">
+                <svg width="16" height="8" viewBox="0 0 14 8" fill="none" className="opacity-40 animate-pulse">
+                  <path d="M1 1L7 7L13 1" stroke="#F47920" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+                <svg width="16" height="8" viewBox="0 0 14 8" fill="none" className="opacity-80">
+                  <path d="M1 1L7 7L13 1" stroke="#F47920" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
               </div>
             </motion.a>
 
@@ -173,69 +175,58 @@ export default function FacilityTourLanding({ facilities }: { facilities: Facili
         </div>
       </section>
 
-      {/* ══════ STATS SECTION (Separated from Hero) ══════ */}
-      <section className="relative z-20 w-full max-w-6xl mx-auto px-6 py-24 mb-10">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-        >
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
-            {[
-              { value: count.toString(), label: "Scene 360°" },
-              { value: "4K", label: "HD Resolution" },
-              { value: "24/7", label: "Online Akses" },
-            ].map((s, index) => (
-              <motion.div 
-                key={s.label}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.15 }}
-                className="group relative flex flex-col items-center justify-center rounded-[2.5rem] bg-white/[0.02] hover:bg-white/[0.06] border border-white/5 hover:border-white/20 backdrop-blur-xl px-4 py-12 transition-all duration-500 hover:-translate-y-3 hover:shadow-[0_20px_40px_-15px_rgba(244,121,32,0.2)]"
-              >
-                {/* Glow effect on hover */}
-                <div className="absolute inset-0 bg-gradient-to-br from-[#F47920]/0 to-[#F47920]/0 group-hover:from-[#F47920]/5 group-hover:to-transparent rounded-[2.5rem] transition-colors duration-500" />
-                
-                <div className="relative text-6xl sm:text-7xl lg:text-[5.5rem] font-black text-transparent bg-clip-text bg-gradient-to-b from-white to-white/70 tracking-tighter mb-4 group-hover:scale-110 transition-transform duration-500 drop-shadow-2xl">
-                  {s.value}
-                </div>
-                <div className="relative text-[11px] lg:text-xs font-black text-[#F47920] uppercase tracking-[0.4em] drop-shadow-md">
-                  {s.label}
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
+      {/* ══════ STATS SECTION ══════ */}
+      <section className="relative z-20 w-full max-w-5xl mx-auto px-6 py-16">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+          {[
+            { value: count.toString(), label: "Scene 360°" },
+            { value: "4K", label: "HD Resolution" },
+            { value: "24/7", label: "Online Akses" },
+          ].map((s, idx) => (
+            <motion.div 
+              key={s.label}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-40px" }}
+              transition={{ duration: 0.6, delay: idx * 0.1, ease: smoothEase }}
+              className="group flex flex-col items-center justify-center rounded-[2rem] bg-white/[0.02] border border-white/5 hover:bg-white/[0.04] hover:border-white/10 px-4 py-8 sm:py-12 transition-all duration-300"
+            >
+              <div className="text-5xl lg:text-6xl font-black text-white tracking-tighter mb-2 group-hover:scale-105 group-hover:text-[#F47920] transition-all duration-500">
+                {s.value}
+              </div>
+              <div className="text-[10px] font-black text-white/40 group-hover:text-[#F47920]/80 uppercase tracking-[0.2em] transition-colors duration-300">
+                {s.label}
+              </div>
+            </motion.div>
+          ))}
+        </div>
       </section>
 
       {/* ══════ FACILITIES GRID ══════ */}
-      <section id="explore" className="max-w-7xl mx-auto px-6 py-28">
-        {/* Header */}
+      <section id="explore" className="relative max-w-7xl mx-auto px-6 py-20 lg:py-24">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-16"
+           initial={{ opacity: 0, y: 30 }}
+           whileInView={{ opacity: 1, y: 0 }}
+           viewport={{ once: true }}
+           transition={{ duration: 0.6, ease: smoothEase }}
+           className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12"
         >
           <div>
-            <div className="flex items-center gap-4 mb-5">
-              <div className="w-12 h-0.5 bg-[#F47920] rounded-full" />
-              <span className="text-[#F47920] font-black uppercase tracking-[0.3em] text-[9px]">Immersional</span>
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-8 h-1 bg-[#F47920] rounded-full" />
+              <span className="text-[#F47920] font-black uppercase tracking-[0.2em] text-[10px]">Immersive View</span>
             </div>
-            <h2 className="text-4xl lg:text-5xl font-black text-white leading-tight tracking-tight">
+            <h2 className="text-4xl sm:text-5xl font-black text-white leading-tight tracking-tight">
               Sudut Pandang <span className="text-[#F47920]">Baru</span>
             </h2>
           </div>
-          <p className="text-white/45 text-base lg:text-lg leading-relaxed max-w-md lg:text-right">
-            Pilih lokasi yang ingin Anda telusuri secara detail. Setiap area dilengkapi informasi interaktif untuk memandu perjalanan Anda.
+          <p className="text-white/45 text-sm sm:text-base leading-relaxed max-w-md md:text-right font-medium">
+            Pilih area kampus yang ingin ditelusuri. Jelajahi fasilitas modern Politeknik Prestasi Prima secara lebih dekat dan nyata.
           </p>
         </motion.div>
 
-        {/* 2-Col Grid */}
         {tourFacilities.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
             {tourFacilities.map((facility, index) => {
               const tags: string[] = Array.isArray(facility.tags) ? facility.tags : [];
               return (
@@ -243,66 +234,64 @@ export default function FacilityTourLanding({ facilities }: { facilities: Facili
                   key={facility.id}
                   initial={{ opacity: 0, y: 40 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.15 }}
-                  transition={{ duration: 0.5, delay: (index % 2) * 0.12 }}
-                  className="group relative rounded-[1.75rem] overflow-hidden bg-[#111827] border border-white/10 hover:border-white/20 transition-all duration-500 hover:shadow-2xl hover:shadow-black/50 cursor-pointer"
+                  viewport={{ once: true, margin: "0px 0px -50px 0px" }}
+                  transition={{ duration: 0.6, delay: (index % 2) * 0.1, ease: smoothEase }}
+                  className="group flex flex-col rounded-[2rem] overflow-hidden bg-[#121826] border border-white/5 hover:border-white/15 transition-all duration-300 hover:-translate-y-1 shadow-2xl shadow-black/40 cursor-pointer"
                 >
-                  {/* ── Full-card image ── */}
-                  <div className="relative h-[340px] overflow-hidden">
+                  {/* Aspect video ensures image holds its shape perfectly and lazy loads properly */}
+                  <div className="relative w-full aspect-video bg-black/50 overflow-hidden">
                     <Image
                       src={facility.tourImage || facility.image || "/images/placeholder.jpg"}
                       alt={facility.title}
                       fill
+                      sizes="(max-width: 768px) 100vw, 50vw"
                       className="object-cover transition-transform duration-700 group-hover:scale-105"
-                      unoptimized
+                      unoptimized={true}
                     />
 
-                    {/* Dark gradient — heavier at bottom for readability */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-black/10" />
+                    {/* Simpler Gradient overlay (faster gpu render) */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#121826] via-transparent to-transparent opacity-90" />
+                    <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500" />
 
-                    {/* ── Compass icon — top right ── */}
-                    <div className="absolute top-5 right-5 w-9 h-9 bg-white/10 backdrop-blur-md border border-white/15 rounded-full flex items-center justify-center text-white/80 group-hover:bg-[#F47920]/20 group-hover:border-[#F47920]/40 group-hover:text-[#F47920] transition-all duration-300">
-                      <RiCompass3Line className="text-base" />
+                    <div className="absolute top-5 right-5 h-8 px-4 bg-black/30 backdrop-blur-sm border border-white/10 rounded-full flex items-center justify-center text-white/90 font-bold text-xs tracking-widest gap-2 group-hover:bg-[#F47920]/90 group-hover:border-[#F47920] transition-colors duration-300">
+                      <RiCompass3Line className="text-sm" />
+                      <span>360°</span>
                     </div>
 
-                    {/* ── Tags row — lower inside image ── */}
-                    <div className="absolute bottom-[90px] left-6 flex flex-wrap gap-2">
-                      {tags.slice(0, 3).map((tag: string) => (
-                        <span
-                          key={tag}
-                          className="bg-white/10 backdrop-blur-sm border border-white/15 text-white/70 text-[9px] font-bold uppercase tracking-[0.2em] px-3 py-1.5 rounded-full"
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-
-                    {/* ── Title + subtitle — bottom of image ── */}
-                    <div className="absolute bottom-0 left-0 right-0 px-6 pb-5">
-                      <h3 className="text-2xl font-black text-white leading-tight tracking-tight">
+                    <div className="absolute bottom-6 left-6 right-6 z-10">
+                       <div className="flex flex-wrap gap-2 mb-3">
+                        {tags.slice(0, 2).map((tag: string) => (
+                          <span
+                            key={tag}
+                            className="bg-white/10 backdrop-blur-sm border border-white/10 text-white/90 text-[10px] font-bold uppercase tracking-[0.1em] px-3 py-1 rounded-full"
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                      <h3 className="text-2xl sm:text-3xl font-black text-white leading-tight">
                         {facility.title}
                       </h3>
                       {facility.subtitle && (
-                        <p className="text-white/45 text-sm font-medium mt-1 line-clamp-1">
+                        <p className="text-white/60 text-sm font-medium mt-1 line-clamp-1">
                           {facility.subtitle}
                         </p>
                       )}
                     </div>
                   </div>
 
-                  {/* ── Bottom action bar ── */}
-                  <div className="flex items-center justify-between px-6 py-4 border-t border-white/8 bg-[#0d1117]">
-                    <span className="text-[10px] font-black uppercase tracking-[0.25em] text-white/40">
+                  <div className="flex items-center justify-between px-6 py-5 bg-[#121826] flex-1">
+                    <span className="text-[10px] font-black uppercase tracking-[0.2em] text-white/30 group-hover:text-white/50 transition-colors">
                       Inisiasi Tour
                     </span>
                     <Link
                       href={`/virtual-tour${facility.sceneId ? `?scene=${facility.sceneId}` : ""}`}
                       onClick={(e) => e.stopPropagation()}
-                      className="inline-flex items-center gap-2 text-[#F47920] hover:text-orange-400 font-black text-[10px] uppercase tracking-[0.2em] transition-colors duration-200 group/cta"
+                      className="inline-flex items-center gap-2 text-[#F47920] group-hover:text-orange-400 font-black text-[11px] uppercase tracking-[0.15em] transition-colors duration-200"
                     >
                       Launch 360°
-                      <span className="inline-flex items-center justify-center w-5 h-5 rounded-full border border-[#F47920]/50 group-hover/cta:bg-[#F47920]/20 transition-all duration-200">
-                        <RiArrowRightLine className="text-xs -rotate-45" />
+                      <span className="inline-flex items-center justify-center w-6 h-6 rounded-full border border-[#F47920]/50 group-hover:bg-[#F47920]/20 transition-colors duration-200">
+                        <RiArrowRightLine className="text-xs group-hover:-rotate-45 transition-transform" />
                       </span>
                     </Link>
                   </div>
@@ -311,49 +300,56 @@ export default function FacilityTourLanding({ facilities }: { facilities: Facili
             })}
           </div>
         ) : (
-          <div className="flex flex-col items-center justify-center py-24 text-center">
-            <RiCompass3Line className="text-7xl text-white/10 mb-6 animate-pulse" />
-            <p className="text-white/20 font-black uppercase tracking-widest text-sm">
-              Belum ada fasilitas Virtual Tour tersedia.
+          <motion.div 
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            className="flex flex-col items-center justify-center py-24 text-center border border-white/5 rounded-3xl bg-white/[0.02]"
+          >
+            <RiCompass3Line className="text-6xl text-white/10 mb-4 animate-pulse" />
+            <p className="text-white/30 font-bold uppercase tracking-widest text-sm">
+              Belum ada fasilitas Virtual Tour.
             </p>
-            <p className="text-white/10 text-xs mt-2">Tambahkan dari panel admin → Fasilitas</p>
-          </div>
+          </motion.div>
         )}
       </section>
 
       {/* ══════ CTA ══════ */}
-      <section className="max-w-7xl mx-auto px-6 pb-32">
+      <section className="relative max-w-7xl mx-auto px-6 pb-24">
         <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="relative rounded-[3rem] overflow-hidden bg-[#0E1328] border border-white/8 py-24 px-8 text-center"
+           initial={{ opacity: 0, y: 30 }}
+           whileInView={{ opacity: 1, y: 0 }}
+           viewport={{ once: true, margin: "0px 0px -50px 0px" }}
+           transition={{ duration: 0.8, ease: smoothEase }}
+           className="relative rounded-[2.5rem] overflow-hidden bg-[#0F1426] border border-white/5 py-16 px-6 sm:px-12 text-center shadow-2xl shadow-black/50"
         >
-          {/* Decorative glows */}
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-[#F47920]/12 blur-[100px] pointer-events-none rounded-full" />
+          {/* Performant Glow Effect */}
+          <div 
+            className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] pointer-events-none opacity-40" 
+            style={{ background: "radial-gradient(ellipse at top, rgba(244,121,32,0.15) 0%, rgba(244,121,32,0) 70%)" }}
+          />
+
           <div
-            className="absolute inset-0 opacity-[0.04] pointer-events-none"
-            style={{ backgroundImage: "radial-gradient(circle, #fff 1px, transparent 1px)", backgroundSize: "36px 36px" }}
+            className="absolute inset-0 opacity-[0.02] pointer-events-none"
+            style={{ backgroundImage: "radial-gradient(circle, #fff 1px, transparent 1px)", backgroundSize: "32px 32px" }}
           />
 
           <div className="relative z-10">
-            <h2 className="text-5xl lg:text-6xl font-black text-white tracking-tight leading-tight mb-6">
-              Mulai Masa Depan Anda<br />
-              <span className="text-[#F47920] italic">Di Sini</span>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight leading-tight mb-4">
+              Mulai Masa Depan Anda <span className="text-[#F47920] italic">Di Sini</span>
             </h2>
-            <p className="text-white/45 text-lg leading-relaxed max-w-2xl mx-auto mb-12">
-              Bergabunglah dengan ribuan mahasiswa terbaik dan buktikan sendiri fasilitas kelas dunia yang siap mendukung perjalanan akademik Anda bersama kami.
+            <p className="text-white/50 text-sm sm:text-base leading-relaxed max-w-xl mx-auto mb-8 font-medium">
+              Bergabunglah dengan ribuan mahasiswa terbaik dan buktikan sendiri fasilitas kelas dunia yang siap mendukung perjalanan akademik Anda.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link
                 href="/pendaftaran"
-                className="inline-flex items-center gap-3 bg-[#F47920] hover:bg-orange-500 text-white px-10 py-5 rounded-2xl font-black text-xs uppercase tracking-[0.2em] shadow-xl shadow-[#F47920]/30 transition-all duration-300 hover:-translate-y-0.5"
+                className="inline-flex items-center justify-center bg-[#F47920] hover:bg-orange-500 text-white w-full sm:w-auto px-10 py-4 rounded-xl font-black text-xs uppercase tracking-[0.15em] shadow-lg shadow-[#F47920]/20 transition-all duration-300 hover:-translate-y-1"
               >
                 Daftar Sekarang
               </Link>
               <Link
                 href="/program"
-                className="inline-flex items-center gap-3 bg-white/5 hover:bg-white/10 text-white px-10 py-5 rounded-2xl font-black text-xs uppercase tracking-[0.2em] border border-white/10 transition-all duration-300 hover:-translate-y-0.5"
+                className="inline-flex items-center justify-center bg-white/5 hover:bg-white/10 text-white w-full sm:w-auto px-10 py-4 rounded-xl font-black text-xs uppercase tracking-[0.15em] border border-white/10 transition-all duration-300 hover:-translate-y-1"
               >
                 Info Program
               </Link>

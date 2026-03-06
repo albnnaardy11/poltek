@@ -11,6 +11,6 @@ export const dynamic = "force-dynamic";
 
 export default async function TourPage() {
   const facilities = await getFacilities();
-
+  // Clear SSR cache in Turbopack
   return <FacilityTourLanding facilities={facilities as any} />;
 }
