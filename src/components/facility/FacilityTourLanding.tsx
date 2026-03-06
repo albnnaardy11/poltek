@@ -53,7 +53,7 @@ export default function FacilityTourLanding({ facilities }: { facilities: Facili
     <div className={`${jakarta.className} min-h-screen bg-[#090D1F]`}>
 
       {/* ══════ HERO ══════ */}
-      <section className="relative h-screen flex flex-col overflow-hidden">
+      <section className="relative min-h-[100svh] pt-20 flex flex-col overflow-hidden">
         {/* BG Photo */}
         {heroImage && (
           <div className="absolute inset-0 z-0">
@@ -74,8 +74,8 @@ export default function FacilityTourLanding({ facilities }: { facilities: Facili
         <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-indigo-700/8 rounded-full blur-[130px] z-10 pointer-events-none" />
 
         {/* ── Center content ── */}
-        <div className="relative z-20 flex-1 flex items-center justify-center px-6">
-          <div className="text-center max-w-4xl w-full flex flex-col items-center gap-8">
+        <div className="relative z-20 flex-1 flex items-center justify-center px-6 pb-20">
+          <div className="text-center max-w-4xl w-full flex flex-col items-center gap-8 -mt-3">
 
             {/* Badge */}
             <motion.div
@@ -131,15 +131,15 @@ export default function FacilityTourLanding({ facilities }: { facilities: Facili
               </a>
             </motion.div>
 
-            {/* ── EXPLORE MAP — directly under buttons ── */}
+            {/* ── EXPLORE MAP — Moved inside hero content ── */}
             <motion.a
               href="#explore"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.8 }}
-              className="relative z-20 flex flex-col items-center gap-4 pt-12 group cursor-pointer select-none"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.5 }}
+              className="mt-8 flex flex-col items-center gap-4 group cursor-pointer select-none w-full max-w-md mx-auto z-30"
             >
-              <div className="flex items-center gap-6">
+              <div className="flex items-center justify-center gap-6 w-full">
                 <motion.div
                   animate={{ scaleX: [0.3, 1, 0.3] }}
                   transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
@@ -171,24 +171,42 @@ export default function FacilityTourLanding({ facilities }: { facilities: Facili
 
           </div>
         </div>
+      </section>
 
-        {/* ── Stats — pinned to bottom ── */}
+      {/* ══════ STATS SECTION (Separated from Hero) ══════ */}
+      <section className="relative z-20 w-full max-w-6xl mx-auto px-6 py-24 mb-10">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.5 }}
-          className="relative z-20 flex items-center justify-center gap-16 px-6 py-8 border-t border-white/5"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
         >
-          {[
-            { value: count.toString(), label: "Scene 360°" },
-            { value: "4K", label: "HD Resolution" },
-            { value: "24/7", label: "Online Akses" },
-          ].map((s) => (
-            <div key={s.label} className="text-center">
-              <div className="text-3xl lg:text-4xl font-black text-white tracking-tighter">{s.value}</div>
-              <div className="text-[9px] font-black text-white/30 uppercase tracking-[0.3em] mt-1.5">{s.label}</div>
-            </div>
-          ))}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+            {[
+              { value: count.toString(), label: "Scene 360°" },
+              { value: "4K", label: "HD Resolution" },
+              { value: "24/7", label: "Online Akses" },
+            ].map((s, index) => (
+              <motion.div 
+                key={s.label}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: index * 0.15 }}
+                className="group relative flex flex-col items-center justify-center rounded-[2.5rem] bg-white/[0.02] hover:bg-white/[0.06] border border-white/5 hover:border-white/20 backdrop-blur-xl px-4 py-12 transition-all duration-500 hover:-translate-y-3 hover:shadow-[0_20px_40px_-15px_rgba(244,121,32,0.2)]"
+              >
+                {/* Glow effect on hover */}
+                <div className="absolute inset-0 bg-gradient-to-br from-[#F47920]/0 to-[#F47920]/0 group-hover:from-[#F47920]/5 group-hover:to-transparent rounded-[2.5rem] transition-colors duration-500" />
+                
+                <div className="relative text-6xl sm:text-7xl lg:text-[5.5rem] font-black text-transparent bg-clip-text bg-gradient-to-b from-white to-white/70 tracking-tighter mb-4 group-hover:scale-110 transition-transform duration-500 drop-shadow-2xl">
+                  {s.value}
+                </div>
+                <div className="relative text-[11px] lg:text-xs font-black text-[#F47920] uppercase tracking-[0.4em] drop-shadow-md">
+                  {s.label}
+                </div>
+              </motion.div>
+            ))}
+          </div>
         </motion.div>
       </section>
 
